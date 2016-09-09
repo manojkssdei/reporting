@@ -1,0 +1,107 @@
+<div class="container">
+    <h1>contact us</h1>
+    <div class="form-section wt-frame">        
+        <span ng-show="success_message1" class="ng-hide">
+            <p class="success-fld ng-binding">{{success}}</p>
+        </span>
+        <span ng-show="error_message1" class="ng-hide">
+            <p class="error-fld ng-binding">{{error}}</p>
+        </span>
+        <form class="event-form" name="dataForm" novalidate>
+            <section class="row">
+                <section class="col-sm-8 col-lg-9"> 
+                    <section class="row">
+                        <div class="col-sm-6 form-group"><input type="text"  class="form-control" placeholder="First &amp; Last Name" name=""></div>
+                        <div class="col-sm-6 form-group"><input type="text" class="form-control" placeholder="Email" name="">                        </div>
+                    </section> 
+                    <section class="row">
+                         <div class="col-sm-6 form-group"> 
+                              <select class="form-control">
+                                <option value="Advertising Related">Advertising Related</option>
+                                <option value="Billing Questions">Billing Questions</option>
+                                <option value="General Enquiry">General Enquiry</option>
+                                <option value="Services/Business Enquiry">Services/Business Enquiry</option>
+                               </select>                        
+                          </div>
+                           <div class="col-sm-6 form-group"><input type="text" name="" placeholder="Phone Number" class="form-control"> </div>
+                    </section>    
+                    <section class="row">
+                           <div class="col-sm-12 form-group"><textarea name="data[CmsPage][message]" placeholder="Message" class="form-control h-120"></textarea></div>
+                    </section>  
+                    <section class="row">
+                       <div class="col-sm-6 form-group"> 
+                           <label class="f-b">How would you like us to contact you?</label>
+                           <section class="form-group custom-radio rd-ck-inline">
+                            <div class="radio-check-inline"><input type="radio" id="ContactType1" name="data[type]" value="1" checked="checked"> <label for="ContactType1"><span></span>Email</label></div>
+                            <div class="radio-check-inline"><input type="radio" id="ContactType2" name="data[type]" value="2"> <label for="ContactType2"><span></span>Phone</label></div>
+                           </section>
+                       </div>
+                       <div class="col-sm-6"><div class="captch-rt" id="recaptcha2">
+                        
+                       <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<div class="g-recaptcha" data-callback="recaptchaCalled" data-sitekey="6LdgDyUTAAAAAHlJqEPPfg59c9e14SUxn0mL3C5u"></div>
+<noscript>
+  <div>
+    <div style="width: 302px; height: 422px; position: relative;">
+      <div style="width: 302px; height: 422px; position: absolute;">
+        <iframe src="https://www.google.com/recaptcha/api/fallback?k=6LdgDyUTAAAAAHlJqEPPfg59c9e14SUxn0mL3C5u"
+                frameborder="0" scrolling="no"
+                style="width: 302px; height:422px; border-style: none;">
+        </iframe>
+        <input type="checkbox" ng-model="recaptchaValid" />
+      </div>
+    </div>
+    <div style="width: 300px; height: 60px; border-style: none;
+                   bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                   background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+      <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                   class="g-recaptcha-response"
+                   style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                          margin: 10px 25px; padding: 0px; resize: none;">
+      </textarea>
+    </div>
+  </div>
+</noscript>
+               
+                        
+                        
+                       </div></div>
+                    </section>                     
+                    <div class="editor-btn">                        
+                        <button class="btn gray-btn" ui-sref="dashboard">Cancel</button>
+                        <button class="pink-btn btn" ng-click="submitContact()" ng-disabled="dataForm.$invalid">Submit</button>
+                    </div>
+                </section><!--Left-->
+                <section class="col-sm-4 col-lg-3 text-center">                          
+                    <div class="contactmob-box">
+                            <div class="contact-brand">
+                                <img src="/images/brandlogo.png">
+                            </div>
+                            
+                            <ul class="address_list">
+                              <li>
+                                 <p><strong>ALIST Solutions LLC</strong></p>
+                                 <p>PO Box 966</p>
+                                 <p>Fairfax, California 94978</p>
+                              </li>
+                              <li>
+                                <ul class="contact-info contct-info">
+                                    <li><p><a href="mailto:support@alisthub.com">support@alisthub.com</a></p>
+                                        <p>844-77-ALIST</p>
+                                    </li>
+                                    <li class="scl-icn">
+                                       <a href="javascript:void(0)"><i aria-hidden="true" class="fa fa-facebook-square fbnet"></i></a>
+                                        <a href="javascript:void(0)"> <i aria-hidden="true" class="fa fa-twitter-square twnet"></i> </a>
+                                    </li>
+                                </ul>
+                              </li>
+                          </ul>
+                            
+                        </div>
+                </section><!--Right-->
+
+            </section>
+            
+        </form>
+  </div>
+</div>

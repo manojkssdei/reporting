@@ -1,0 +1,104 @@
+<!-- Container -->
+  <div class="container">   
+  <div ng-class="loadingclass"></div>
+  <div ng-class="progressbardiv" class="loader-container-bar">
+              <div class="progress-wrapper-bar">
+                  <div class="progress-bar ng-cloak" ng-style="getStyle()">{{ preciseCurrent || current }}%</div>
+                  <round-progress
+                      max="max"
+                      current="current"
+                      color="{{currentColor}}"
+                      bgcolor="{{ bgColor }}"
+                      radius="{{ radius }}"
+                      semi="isSemi"
+                      rounded="true"
+                      stroke="{{stroke}}"
+                      clockwise="true"
+                      responsive="false"
+                      duration="{{ duration }}"
+                      animation="{{ currentAnimation }}"
+                      animation-delay="{{ animationDelay }}"
+                      on-render="showPreciseCurrent">
+                  </round-progress>
+              </div>
+     </div>
+      <h1>Configure</h1>
+      <div class="wt-frame form-section">
+        <section class="d-panel">
+          <section class="d-panel-heading">
+              <section class="row">
+                    <div class="col-sm-3">
+                         <a href="/auth/getfacebooktoken/" class="btn facebook-btn btn-mrg f-w"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a>
+                    </div>
+                    <div class="col-sm-3">
+                         <a href="/auth/getgoogletoken/" class="btn google-btn btn-mrg f-w"><i class="fa fa-google" aria-hidden="true"></i> Google</a>
+                    </div>
+
+                    <div class="col-sm-3">
+                         <a href="/networks/geteventbritetoken/" class="btn eventbrite-btn btn-mrg f-w"> Eventbrite</a>
+                    </div>
+
+                    <!--<div class="col-sm-3">
+                         <button type="button" class="btn linkdin-btn btn-mrg f-w"><i class="fa fa-linkedin" aria-hidden="true"></i> Linkedin</button>
+                    </div>
+                    <div class="col-sm-3">
+                         <button type="button" class="btn twitter-btn btn-mrg f-w"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</button>
+                    </div>-->
+                    
+                    
+                </section>
+            </section>
+        </section> <!--/Top Section-->
+        <section class="module">
+          <section class="prof-hd no-icon">
+                    <h2>Link Accounts <!--<span class="rt-img"><i class="fa fa-caret-down"></i></span>--></h2>
+            </section>
+            <section class="gray-frame">
+              <section class="form-group">Here you can link your ad accounts with Google and Facebook<!--, LinkedIn and Twitter--> to ALISThub.</section>
+                
+                <section class="grid-widget">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th width="25%">Account Name</th>
+                                <th width="25%" align="center">Network</th>
+                                <th width="20%">Account ID</th>
+                                <th width="20%">Visibility</th>                                       
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>                           
+                            <tr ng-repeat="configureaccount in configureaccounts">
+                                <td>Account Name</td>
+                                <td align="center"><i class="fa fa-facebook-official facebook-icon f-16" aria-hidden="true"></i></td>
+                                <td>123456789</td>
+                                <td><div class="onoffswitch">
+                                    <input type="checkbox" checked="" id="myonoffswitch" class="onoffswitch-checkbox" name="onoffswitch">
+                                    <label for="myonoffswitch" class="onoffswitch-label m-b0"></label>
+                                </div></td>                                       
+                                <td class="action"><a href="#"><i class="fa fa-chain-broken"></i></a></td>
+                            </tr>
+                        </tbody>
+                
+                    </table>
+                  </div>
+                  <section class="grid-bottm clearfix">
+                    <section class="gr-right pull-right">
+                      <ul class="legends">                          
+                            <li><i class="fa fa-chain-broken"></i><span>Unlink</span></li>
+                        </ul>
+                    </section>
+                </section>
+              </section>
+            </section>
+        </section><!--/Upcoming Events-->
+        
+       
+    </div>
+    
+    <!-- //Form COntainer --> 
+  </div>
+    
+</div>
+<!-- //Container -->

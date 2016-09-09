@@ -1,0 +1,48 @@
+<div class="container">
+    <h1>contact us</h1>
+    <div class="form-section  wt-frame">
+        <div class="form-section  gray-frame">
+            <section class="form-group">
+                <div class="row">
+                    <div class="col-sm-6 section-col">
+                        <form class="event-form" name="contactForm" novalidate>
+                            <div class="row" ng-class="{ 'has-error' : contactForm.name.$invalid && !contactForm.name.$pristine }">
+                                <label> Name <span class="req">*</span></label>
+                                <!-- <font color="blue">*</font> -->
+                                <input type="text" name="name" ng-model="contact.name" class="form-control" placeholder="name" ng-pattern="/^[a-z ,.'-]+$/i" required>
+                                <p ng-show="contactForm.name.$invalid && !contactForm.name.$pristine" class="error-fld ng-binding">Enter Name.</p>
+                            </div>
+                            <div class="row" ng-class="{ 'has-error' : contactForm.email.$invalid && !contactForm.email.$pristine }">
+                                <label>Email Address <span class="req">*</span></label>
+                                <input type="email" name="email" ng-model="contact.email" class="form-control" ng-blur="checkuniquecontact();" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" placeholder="email address" required>
+                                <span ng-show="success_message">
+                            <p class="success-fld">{{unique}}</p>
+                        </span>
+                                <span ng-show="error_message">
+                            <p class="error-fld">{{unique}}</p>
+                        </span>
+                                <span ng-hide="error_message">
+                            <p class="error-fld ng-binding" ng-show="(unique && unique_type == 3 ) || (contactForm.email.$error.required  && contactForm.email.$invalid && !contactForm.email.$pristine) || contactForm.email.$error.pattern">Enter a valid email</p>
+                        </span>
+                            </div>
+                            <div class="row" ng-class="{ 'has-error' : contactForm.subject.$invalid && !contactForm.subject.$pristine }">
+                                <label>Subject <span class="req">*</span></label>
+                                <!-- <font color="blue">*</font> -->
+                                <input type="text" name="subject" ng-model="contact.subject" class="form-control" placeholder="subject" ng-pattern="/^[a-z ,.'-]+$/i" required>
+                                <p ng-show="contactForm.first_name.$invalid && !contactForm.subject.$pristine" class="error-fld ng-binding">Enter SUBJECT.</p>
+                            </div>
+                            <div class="row" ng-class="{ 'has-error' : contactForm.message.$invalid && !contactForm.message.$pristine }">
+                                <label>Message <span class="req">*</span></label>
+                                <textarea ng-model="contact.message" name="textarea" class="form-control" cols="150" rows="5">
+                                </textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-6">
+                        dfgfhfghh
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

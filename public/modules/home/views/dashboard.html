@@ -1,0 +1,116 @@
+<div class="container">
+     <h1>Welcome to ALIST Reporting</h1>
+    
+    <!-- Form COntainer -->
+    
+    <div class="wt-frame form-section"> 
+      <section class="welcome-row">
+        <p>ALIST Reporting helps you to view all your event reports of <strong>Facebook Campaigns</strong>, <strong>Google Campaigns</strong>and <strong>Eventbrite </strong>, in a single application.</p>       
+      </section>
+    
+       <section class="module">
+          <!--<section class="prof-hd no-icon">
+                    <h2>Campaign Listing <span class="rt-img"><i class="fa fa-caret-down"></i></span></h2>
+            </section>-->
+          
+            <section class="gray-frame">
+              <section class="mtop">
+            <p class="float"><select class="form-control select30 w-auto" ng-model="searchcampiagn">
+              <option value="1">Facebook</option>
+              <option value="2">Google</option>
+            </select>
+            </p>
+            <p class="float marginleft15"><select class="form-control select30 w-auto" ng-model="configaccount">
+             <option ng-repeat="configureaccountdatanew in configureaccountdata" value="{{configureaccountdatanew.profile_id}}">{{configureaccountdatanew.username}}</option>              
+            </select>
+            </p>
+            <p class="float"><input type="text" class="form-control searchcls" placeholder="Search by campaign or objective" ng-model="filername">
+            </p>
+            <p class="floatright"><a href="/#/select_network"><button class="btn btn-small">Start Creating New Ads</button></a></p>
+
+            </section>
+                <section class="grid-widget clearboth">
+                  <div class="table-responsive">
+                    <table class="table campaginlisting table-striped">
+                        <thead>
+                          <tr>
+                            <th class="maketableleft" width="35%">Campaign Name</th>
+                            <th width="20%" class="maketableleft">Objective</th>
+                            <th width="15%">Campaign ID</th>
+                            <th width="15%">Campaign Status</th>                                       
+                            <th width="15%">Action</th>
+                          </tr>
+                        </thead> 
+                        <tbody>                           
+                            <tr dir-paginate = "campaignlistdata in campaignlist | filter:filername | itemsPerPage:pagesize" ng-show="facebookdata">
+                                <!-- <td class="maketableleft"><a href="#/reports">{{campaignlistdata.name}}</a></td> -->
+                                <td class="maketableleft" ng-show="campaigndata.indexOf(campaignlistdata.id)>-1">
+                                <a href="javascript:void(0)" ng-click="facebookmodal(campaignlistdata.id,'fbcampaign_id')">{{campaignlistdata.name}}</a>                               
+                                </td>
+                                <td class="maketableleft" ng-show="campaigndata.indexOf(campaignlistdata.id)<0">
+                                  {{campaignlistdata.name}}
+                                </td>
+
+                                <td class="maketableleft">{{campaignlistdata.objective | underscoreless}}</td>
+                                <td>{{campaignlistdata.id}}</td>
+                                <td>
+                                  <div class="onoffswitch">
+                                      <input type="checkbox" id="myonoffswitch{{campaignlistdata.id}}" class="onoffswitch-checkbox" name="onoffswitch" ng-model="onoffswitch" value="campaignlistdata.id" ng-click="updatecampaign(campaignlistdata.id,campaignlistdata.status)" ng-checked="campaignlistdata.status=='ACTIVE'">
+                                      <label for="myonoffswitch{{campaignlistdata.id}}" class="onoffswitch-label m-b0"></label>
+                                  </div>
+                                </td>                                       
+                                <td class="action rightalign">
+                                  <a href="javascript:void(0)" ng-click="copygooglecampmodal(campaignlistdata.id,'facebook')" title="Copy Campaign" ng-show="campaigndata.indexOf(campaignlistdata.id)>-1"><i class="fa fa-files-o" aria-hidden="true"></i></a>
+                                  <a href="javascript:void(0)" ng-click="editfacebookcampaign(campaignlistdata.id)"  ng-show="campaigndata.indexOf(campaignlistdata.id)>-1"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit Campaign"></i></a>
+                                  <a href="javascript:void(0)" ng-click="removecampaign(campaignlistdata.id)" title="Delete Campaign"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                </td>
+                            </tr>
+
+                            <tr dir-paginate ="googlecampaignlistdata in googlecampaignlist | filter:filername | itemsPerPage:pagesize" ng-show="googledata">
+
+                                <td class="maketableleft" ng-show="googlecampaigndata.indexOf(googlecampaignlistdata.id)>-1"> <a href="javascript:void(0)" ng-click="googlemodal(googlecampaignlistdata.id,'googlecampaignid')">{{googlecampaignlistdata.name}}</a> </td>
+
+                                <td class="maketableleft" ng-show="googlecampaigndata.indexOf(googlecampaignlistdata.id)<0">{{googlecampaignlistdata.name}}</td>
+
+                                <td class="maketableleft"> {{googlecampaignlistdata.channel}} </td>
+                                <td>{{googlecampaignlistdata.id}}</td>
+                                <td>
+                                  <div class="onoffswitch">
+                                      <input type="checkbox" id="myonoffswitch{{googlecampaignlistdata.id}}" class="onoffswitch-checkbox" name="onoffswitch" ng-model="onoffswitch" value="googlecampaignlistdata.id" ng-click="updategooglecampaign(googlecampaignlistdata.id,googlecampaignlistdata.status)" ng-checked="googlecampaignlistdata.status=='ENABLED'">
+                                      <label for="myonoffswitch{{googlecampaignlistdata.id}}" class="onoffswitch-label m-b0"></label>
+                                  </div>
+                                </td>                                       
+                                <td class="action rightalign">
+                                 <a href="javascript:void(0)" 
+                                 ng-click="copygooglecampmodal(googlecampaignlistdata.id,'google')" title="Copy Campaign" ng-show="googlecampaigndata.indexOf(googlecampaignlistdata.id)>-1"><i class="fa fa-files-o" aria-hidden="true" ></i></a>
+                                  <a href="javascript:void(0)" ng-show="googlecampaigndata.indexOf(googlecampaignlistdata.id)>-1" ng-click="editgooglecampaign(googlecampaignlistdata.id)"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit Campaign"></i></a>
+                                <a href="javascript:void(0)" ng-click="removegooglecampaign(googlecampaignlistdata.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+                            </tr>
+                        </tbody>                
+                    </table>
+                  </div>
+                  <div class="grayarea" ng-show="facebookdata && campaignlist.length>0"><span class="perpagesize">Campaigns Per Page: </span> <select class="form-control pagesize" ng-model="pagesize">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select><dir-pagination-controls max-size=pagesize direction-links="true" boundary-links="true" ></dir-pagination-controls> 
+                  </div> 
+                  <div class="grayarea" ng-show="googledata && googlecampaignlist.length>0"><span class="perpagesize">Campaigns Per Page: </span> <select class="form-control pagesize" ng-model="pagesize">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select><dir-pagination-controls max-size=pagesize direction-links="true" boundary-links="true" ></dir-pagination-controls> 
+                  </div> 
+              </section>
+
+
+
+            </section>
+        </section><!--/Upcoming Events-->
+    </div>    
+    <!-- //Form COntainer --> 
+    <div id="sticky-anchor"></div>
+    <div  ng-class="loadingclass" class=""></div>
+  </div> 

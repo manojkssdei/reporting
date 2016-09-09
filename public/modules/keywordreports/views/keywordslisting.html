@@ -1,0 +1,196 @@
+<!-- Container -->
+  <div class="container">
+      <h1>Reports</h1>
+    <div ng-class="loadingclass"></div>
+    <!-- Form COntainer -->
+    
+    <div class="wt-frame form-section">
+        <section class="d-panel">
+            <section class="d-panel-heading">
+                <section class="row searchheight">
+                <div class="col-sm-2">
+                        <div class="form-group">
+                            <label>Date Filter</label>
+                            <select class="form-controlcd form-control" ng-model="datetype">
+                                <!--<option value="LifeTime">LifeTime</option> -->
+                                <option value="Today">Today</option>
+                                <option value="Yesterday">Yesterday</option>
+                                <option value="Last 7 days">Last 7 days</option>
+                                <option value="Last 14 days">Last 14 days</option>
+                                <option value="Last 30 days">Last 30 days</option>
+                                <option value="Last month">Last month</option>
+                                <option value="This month">This month</option>
+                                 <!--<option value="This year">This year</option>-->
+                                <option value="Custom">Custom</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-2" ng-show="showdatereports">
+                        <div class="form-group">
+                                      <section class="left-label-reports">
+                                          <label for="EndTime">Start Date</label>
+                                          <section class="left-fields">                                            
+                                                <section class="select-date-reports">
+                                                    <div class='input-group date' id='datetimepicker1'>   
+                                                      <input type="text" class="form-control" uib-datepicker-popup="{{'MM-dd-yyyy'}}" ng-model="startdatereports" is-open="popuprepo.opened" datepicker-options="dateoptions"  close-text="Close" alt-input-formats="{{'MM-dd-yyyy'}}" ng-change="customsearchdata()"/>
+                                                      <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"  ng-click="openrep()"></span> </span>
+                                                    </div>
+                                                </section>
+                                            <section class="clearfix"></section>
+                                          </section>
+                                      </section>
+                                </div>
+                      </div>
+                      <div class="col-sm-2" ng-show="showdatereports">            
+                                    <div class="form-group">
+                                      <section class="left-label-reports">
+                                          <label for="EndTime">End Date</label>
+                                          <section class="left-fields">                                            
+                                                <section class="select-date-reports">
+                                                    <div class='input-group date' id='datetimepicker1'>
+                                                      <input type="text" class="form-control" uib-datepicker-popup="{{'MM-dd-yyyy'}}" ng-model="enddatereports" is-open="popuprepor.opened" datepicker-options="dateoptions"  close-text="Close" alt-input-formats="{{'MM-dd-yyyy'}}"  ng-change="customsearchdata()"/>
+                                                      <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"  ng-click="openrepo()"></span> </span>  
+                                                    </div>
+                                                </section>
+                                            <!--<section class="left-label">
+                                             <div class="infotext time_error" ng-show="error_message"><p class="error-fld" >{{error}}</p></div>
+                                             <div class="infotext time_error" ng-hide="select_delect_event"> </div>
+                                            </section> -->
+                                          </section>
+                                      </section>
+                                    </div> 
+                         </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label>Breakdowns</label>
+                                <select  ng-show="networkid==1" class="form-controlcd form-control" ng-model="breakdown" ng-change="breakdownchange()">
+                                    <option value="0"> --Select-- </option>
+                                    <option value="age">Age</option>
+                                    <option value="gender">Gender</option>
+                                    <option value="country">Country</option>
+                                    <option value="hourly_stats_aggregated_by_advertiser_time_zone">Hourly Advertiser</option>
+                                    <option value="hourly_stats_aggregated_by_audience_time_zone">Hourly Audience</option>
+                                    <option value="impression_device">Device</option>
+                                    <option value="placement">Placement</option>
+                                    <option value="region">Region</option>                                    
+                                </select>
+                                <select  ng-show="networkid==2" class="form-controlcd form-control" ng-model="breakdown" ng-change="breakdownchange()" ng-options="breakdownsdata.brdown for breakdownsdata in breakdowndata ">
+                                 <option value="">All</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </section>
+                </section>
+            </section>
+        <section class="module">
+            <section class="prof-hd no-icon padding6">
+                    <h2 ng-show="networkid==1">Campaign: {{facebookcampaignlist[0].campaign_name}}  <a href="/#/reports" class="floatrightnew">< Back</a></h2>
+                    <h2 ng-show="networkid==2">Campaign: {{googlecampaignlist.details[0].Campaign}}  <a href="/#/reports" class="floatrightnew">< Back</a></h2>
+                    
+            </section>
+            <section class="gray-frame removepadding">
+                
+                <section class="grid-widget">
+                  <div class="table-responsive">
+
+                    <table class="table table-striped" ng-show="networkid==2">
+                        <div class="tablehead" ng-show="googlecampaignlist.details.length>0"> 
+                             <!-- <div class="data"><b>Campaign Title:</b> {{googlecampaigndatalist.title}}</div> -->
+                             <div class="data"><b>Group:</b> {{googlecampaigndatalist.groupname}}</div>
+                             <div class="data floatright"><b>Ads Title: </b>{{googlecampaigndatalist.adstitle}}</div>
+                             <div class="data floatright"><b>Schedule: </b>{{googlecampaigndatalist.start_date |  date:"MMM-dd-yyyy"}} - {{googlecampaigndatalist.end_date |  date:"MMM-dd-yyyy"}}</div>
+                         </div>
+                        <thead>
+                            <tr>
+                                <th class="maketableleft" width="15%">Group</th>
+                                <th class="maketableleft" width="5%">KeywordID</th>
+                                <th class="maketableleft" width="5%">Keyword/Placement</th>
+                                <th class="maketableleft" width="5%">CriteriaType</th>
+                                <th width="5%" class="numbers">Impressions</th>
+                                <th width="5%" class="numbers">Clicks</th>
+                                <th width="5%" class="numbers">CTR(%)</th>     
+                                <th width="5%" class="numbers">Spend</th> 
+                                <th width="5%" class="numbers">CPM</th>   
+                                <th width="5%" class="numbers">CPC</th>     
+                            </tr>                            
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="googlecampaignlistdata in googlecampaignlist.details  | filter:filtertext">
+                                <td class="maketableleft">{{googlecampaignlistdata.Adgroup}}</td>
+                                <td class="maketableleft">{{googlecampaignlistdata.KeywordID}}</td>
+                                <td class="maketableleft">{{googlecampaignlistdata.KeywordPlacement}}</td>
+                                <td class="maketableleft">{{googlecampaignlistdata.CriteriaType}}</td>
+                                <td class="numbers">{{googlecampaignlistdata.Impressions}}</td>     
+                                <td class="numbers">{{googlecampaignlistdata.Clicks}}</td> 
+                                <td class="numbers">{{googlecampaignlistdata.CTR}}</td>
+                                <td class="numbers">{{googlecampaignlistdata.Cost | currency}}</td>
+                                <td class="numbers">{{googlecampaignlistdata.AvgCPM | currency}}</td>
+                                <td class="numbers">{{googlecampaignlistdata.AvgCPC | currency}}</td>
+                            </tr>
+                            <tr ng-show="!googlecampaignlist.details">
+                                <td colspan="50" align="center">No Record Found</td>
+                            </tr>          
+                        </tbody>                
+                    </table>
+                    <table class="table table-striped" ng-show="networkid==1">
+                    <div class="tablehead" ng-show="facebookcampaignlist.length>0"> <div class="data padding6"><b>Group:</b> {{facebookcampaignlist[0].adset_name}}</div> <div class="data floatright"><b>Ads Title: </b>{{facebookcampaignlist[0].ad_name}}</div>
+                    <div class="data floatright"><b>Schedule: </b>{{facebookcampaignlist[0].date_start | cmdatenew:'MM dd, yyyy'}} - {{facebookcampaignlist[0].date_stop | cmdatenew:'MM dd, yyyy'}}</div></div>
+                        <thead>
+                            <tr ng-show="facebookcampaignlist">                                
+                                <th class="maketableleft" width="5%" ng-show="breakdown==0">Age</th>
+                                <th class="maketableleft" width="5%" ng-show="breakdown==0">Gender</th>
+                                <th class="maketableleft" width="5%" ng-show="breakdown=='age'">Age</th>
+                                <th class="maketableleft" width="5%" ng-show="breakdown=='gender'">Gender</th>
+                                <th class="maketableleft" width="5%" ng-show="breakdown=='country'">Country</th>
+                                <th class="maketableleft" width="5%" ng-show="breakdown=='hourly_stats_aggregated_by_advertiser_time_zone'">Hourly Advertiser</th>
+                                <th class="maketableleft" width="5%" ng-show="breakdown=='hourly_stats_aggregated_by_audience_time_zone'">Hourly Audience</th>
+                                <th class="maketableleft" width="5%" ng-show="breakdown=='impression_device'">Device</th>
+                                <th class="maketableleft" width="5%" ng-show="breakdown=='placement'">Placement</th>
+                                <th class="maketableleft" width="5%" ng-show="breakdown=='region'">Region</th>                              
+                                <th class="numbers" width="5%">Reach</th>
+                                <th width="5%" class="numbers">Impressions</th>
+                                <th width="5%" class="numbers">Clicks</th>
+                                <th width="5%" class="numbers">CTR(%)</th>     
+                                <th width="5%" class="numbers">Spend</th> 
+                                <th width="5%" class="numbers">CPM</th>   
+                                <th width="5%" class="numbers">CPC</th>                             
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="facebookcampaign in facebookcampaignlist">                                
+                                <td class="maketableleft" ng-show="breakdown==0">{{facebookcampaign.age}}</td>
+                                <td class="maketableleft" ng-show="breakdown==0">{{facebookcampaign.gender}}</td>
+                                <td class="maketableleft" ng-show="breakdown=='age'">{{facebookcampaign.age}}</td>
+                                <td class="maketableleft" ng-show="breakdown=='gender'">{{facebookcampaign.gender}}</td>
+                                <td class="maketableleft" ng-show="breakdown=='country'">{{facebookcampaign.country}}</td>
+                                <td class="maketableleft" ng-show="breakdown=='hourly_stats_aggregated_by_advertiser_time_zone'">{{facebookcampaign.hourly_stats_aggregated_by_advertiser_time_zone | cmdatenew:"hh"}}</td>
+                                <td class="maketableleft" ng-show="breakdown=='hourly_stats_aggregated_by_audience_time_zone'">{{facebookcampaign.hourly_stats_aggregated_by_audience_time_zone | cmdatenew:"hh"}}</td>
+                                <td class="maketableleft" ng-show="breakdown=='impression_device'">{{facebookcampaign.impression_device}}</td>
+                                <td class="maketableleft" ng-show="breakdown=='placement'">{{facebookcampaign.placement}}</td>
+                                <td class="maketableleft" ng-show="breakdown=='region'">{{facebookcampaign.region}}</td>
+                                <td class="numbers">{{facebookcampaign.inline_post_engagement}}</td>
+                                <td class="numbers">{{facebookcampaign.impressions}}</td>     
+                                <td class="numbers">{{facebookcampaign.clicks}}</td> 
+                                <td class="numbers">{{facebookcampaign.ctr | number:2}}</td>
+                                <td class="numbers">{{facebookcampaign.spend | currency}}</td>
+                                <td class="numbers">{{facebookcampaign.cpm | number:2}}</td>
+                                <td class="numbers">{{facebookcampaign.cpc | number:2}}</td>
+                            </tr>
+                            <tr ng-show="facebookcampaignlist.length==0">
+                                <td colspan="50" align="center">No Record Found</td>
+                            </tr>                   
+                        </tbody>                
+                    </table>
+                  </div>                 
+              </section>
+            </section>
+        </section><!--/Upcoming Events-->
+        
+       
+    </div>
+    
+    <!-- //Form COntainer --> 
+  </div>
+  <!-- //Container --> 

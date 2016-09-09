@@ -1,0 +1,62 @@
+<div class="container">
+    <h1>contact us</h1>
+    <div class="form-section  wt-frame">
+        <div class="form-section  gray-frame">
+            <section class="form-group">
+                <div class="row">
+                    <div class="col-sm-6 section-col">
+                        <span ng-show="success_message1" class="ng-hide">
+                    <p class="success-fld ng-binding">{{success}}</p>
+                </span>
+                        <span ng-show="error_message1" class="ng-hide">
+                    <p class="error-fld ng-binding">{{error}}</p>
+                </span>
+                        <form class="event-form" name="dataForm" novalidate>
+                            <div class="row" ng-class="{ 'has-error' : dataForm.name.$invalid && !dataForm.name.$pristine }">
+                                <label> Name <span class="req">*</span></label>
+                                <!-- <font color="blue">*</font> -->
+                                <input type="text" name="name" ng-model="data.name" class="form-control" placeholder="Enter your name" ng-pattern="/^[a-z ,.'-]+$/i" required>
+                                <p ng-show="dataForm.name.$invalid && !dataForm.name.$pristine" class="error-fld ng-binding">Enter Name.</p>
+                            </div>
+                            <div class="row" ng-class="{ 'has-error' : dataForm.email.$invalid && !dataForm.email.$pristine }">
+                                <label>Email Address <span class="req">*</span></label>
+                                <input type="email" name="email" ng-model="data.email" class="form-control" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" placeholder="test@example.com" required>
+                                <span ng-show="success_message">
+                            <p class="success-fld">{{unique}}</p>
+                        </span>
+                                <span ng-show="error_message">
+                            <p class="error-fld">{{unique}}</p>
+                        </span>
+                                <span ng-hide="error_message">
+                            <p class="error-fld ng-binding" ng-show="(unique && unique_type == 3 ) || (dataForm.email.$error.required  && dataForm.email.$invalid && !dataForm.email.$pristine) || dataForm.email.$error.pattern">Enter a valid email</p>
+                        </span>
+                            </div>
+                            <div class="row" ng-class="{ 'has-error' : dataForm.subject.$invalid && !dataForm.subject.$pristine }">
+                                <label>Subject <span class="req">*</span></label>
+                                <!-- <font color="blue">*</font> -->
+                                <input type="text" name="subject" ng-model="data.subject" class="form-control" placeholder="Enter your subject" ng-pattern="/^[a-z ,.'-]+$/i" required>
+                                <p ng-show="dataForm.first_name.$invalid && !dataForm.subject.$pristine" class="error-fld ng-binding">Enter Subject.</p>
+                            </div>
+                            <div class="row" ng-class="{ 'has-error' : dataForm.message.$invalid && !dataForm.message.$pristine }">
+                                <label>Message <span class="req">*</span></label>
+                                <textarea ng-model="data.message" name="textarea" class="form-control" cols="150" rows="5" required>
+                                </textarea>
+                            </div>
+                            <div class="row">
+                                <div class="editor-btn">
+                                    <button class="pink-btn btn" ng-click="submitContact()" ng-disabled="dataForm.$invalid">SUBMIT</button>
+                                    <button class="pink-btn btn" ui-sref="dashboard">CANCEL</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-6">
+                         <section class="v-map-overview">
+                                <div id="map" style="height:400px;"></div>
+                            </section>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
