@@ -2,21 +2,38 @@
 var mysql    = require('mysql');
 var constant = require('./constants.js');
 
-module.exports.connection=function (){
+//module.exports.connection=function (){
 
-var connection = mysql.createConnection(constant.MYSQL_DB);
-return connection;
+//var connection = mysql.createConnection(constant.MYSQL_DB);
+//return connection;
 
-}
+//}
 
 // Central Calendar Database connection
+connection = mysql.createConnection(constant.CENTRAL_MYSQL_DB); 
 
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+
+  console.log('connected as id ' + connection.threadId)
+});
+
+/*
 module.exports.connection=function (){
-
-var connection2 = mysql.createConnection(constant.CENTRAL_MYSQL_DB);
-return connection2;
-
-}
+var connection = mysql.createConnection(constant.CENTRAL_MYSQL_DB);
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+  else{
+    console.error('connection success');
+  }
+});
+}*/
 
 /////// Reporting Database connection
 /*

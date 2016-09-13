@@ -1,6 +1,7 @@
 var showClix     = require('./../../showclix/showclix_sales.js');
 var ticket_sales = require('./../../../models/ticket_sales.js');
 var component    = require('./../../../component/common.js');
+
 /**
 Express Controller to Ticket Crons
 Created : 2016-08-31
@@ -89,7 +90,7 @@ exports.saveTicketSales = function(req, res, next) {
     // Showclix end
     
     var data          = CONSTANT.TEST_DATA;
-    var existing_data = get_existing_sales(data);
+    //var existing_data = get_existing_sales(data);
     
     
 }

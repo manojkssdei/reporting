@@ -13,7 +13,9 @@
 					    user     : 'eventhub',
 					    password : 'eventhub',
 					    database : 'db_eventhub',
-					    port     : 3306
+					    insecureAuth: true
+					    //port     : 8001,
+					    
 		    },
 		    'MONGO_DB'      	:'mongodb://localhost/alistreporting', // using in db.js
 		    'USE_SECRET'    	:'alist_reporting', // session secret key using in app.js
