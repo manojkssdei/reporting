@@ -1,6 +1,5 @@
 var request      = require("request");
 var http         = require("http");
-var googleapiurl = "/googleadwordsapi/adword/examples/AdWords/v201603/";
 var db           = require('../../../db.js');
 // Creation of object for services
 var fbConfig     = require('./FacebookAdsConfig.js');  
@@ -29,65 +28,45 @@ Created : 2016-09-12
 Created By: Manoj Singh
 Module : Get Report of campaign
 */
-exports.saveFacebookReport = function(){   
-    var fields = ["campaign_id","campaign_name","account_id","objective","cpm","cpc","impressions","spend","ctr","adset_name","ad_id","ad_name","clicks","cost_per_total_action","inline_post_engagement"];
-    var setaccesstoken   = "EAAPuVVbNTTMBAL9AAkbkKazTgw66NCYaYVTwbKrqRtSzYJJXVteKsBX4zxkx3W4CvnEwDMxQJWZCZA2PWWLoOrM0wiXazoawrSn1wzAyO1I0TalmyGDjOXKOqxRNZASZAFaYPASzIYn15lX3gK5XvhN9LwgD3F9NIo7RKIXwUuf9hMXfGV1qyoHAJpZCSOixKUhhYjgY2Mnv6UUowWDfZA";
-    var useraccountid    = 114882752278348;
-    //{ message: '(#100) date_preset must be one of the following values: today, yesterday, last_3_days, this_week, last_week, last_7_days, last_14_days, last_28_days, last_30_days, last_90_days, this_month, last_month, this_quarter, last_3_months, lifetime',
-     //type: 'OAuthException',
-     //code: 100,
-     //fbtrace_id: 'C/GDVfKZWqD' } }
+exports.saveFacebookReport = function(){
 
+var fields          = ["account_id","account_name","action_values","actions","ad_id","ad_name","adset_id","adset_name","app_store_clicks","buying_type","campaign_id","cost_per_unique_action_type","cost_per_unique_click","cpm","cpp","ctr","cost_per_unique_inline_link_click","call_to_action_clicks","campaign_name,canvas_avg_view_percent","canvas_avg_view_time","cost_per_10_sec_video_view","cost_per_action_type","cost_per_inline_link_click","cost_per_inline_post_engagement","cost_per_total_action","clicks","cpc","date_start","date_stop","deeplink_clicks","frequency","impressions","inline_link_clicks","inline_link_click_ctr","inline_post_engagement","newsfeed_avg_position","newsfeed_clicks","newsfeed_impressions","objective","place_page_name","reach","relevance_score","social_clicks","social_impressions","social_reach","social_spend","spend","total_action_value","total_actions","total_unique_actions","unique_ctr","unique_actions","unique_clicks","unique_impressions","unique_inline_link_click_ctr","unique_inline_link_clicks","unique_link_clicks_ctr","unique_social_clicks","unique_social_impressions","video_10_sec_watched_actions","video_15_sec_watched_actions","video_30_sec_watched_actions","video_avg_pct_watched_actions","video_avg_sec_watched_actions","video_complete_watched_actions","video_p100_watched_actions","video_p25_watched_actions","video_p50_watched_actions","video_p75_watched_actions","video_p95_watched_actions","website_clicks","website_ctr"];
+var setaccesstoken   = "EAAPuVVbNTTMBAL9AAkbkKazTgw66NCYaYVTwbKrqRtSzYJJXVteKsBX4zxkx3W4CvnEwDMxQJWZCZA2PWWLoOrM0wiXazoawrSn1wzAyO1I0TalmyGDjOXKOqxRNZASZAFaYPASzIYn15lX3gK5XvhN9LwgD3F9NIo7RKIXwUuf9hMXfGV1qyoHAJpZCSOixKUhhYjgY2Mnv6UUowWDfZA";
+var useraccountid    = 114882752278348;
+
+//{{ date_preset must be one of the following values: today, yesterday, last_3_days, this_week, last_week, last_7_days, last_14_days, last_28_days, last_30_days, last_90_days, this_month, last_month, this_quarter, last_3_months, lifetime',
+//type: 'OAuthException',fbtrace_id: 'C/GDVfKZWqD' } }
         
     fb.getreportCampaign({     
         fields:JSON.stringify(fields),     
-        date_preset:'last_3_months',
+        date_preset:'last_90_days',
         level:'ad',    
         access_token:setaccesstoken,
         account_id:useraccountid
     },function(error, response){
       
-       if(response.data.length>0){
+        if(response.data.length>0){
           console.log("++++++++++++++++++++++++++++");
           console.log(response);
           console.log("++++++++++++++++++++++++++++");
-            /*var connection = db.connection();  
-            for(var i=0;i<response.data.length;i=i+1){
-              var savedata = response.data[i];        
-              var query = "INSERT INTO `marketing_facebook_campaignreport` SET ";
-              query = query + "  `id` = NULL";
-              query = query + ", `campaign_id` = '"+savedata.campaign_id+"'";
-              query = query + ", `network_id` = 1";
-              query = query + ", `campaign_name` = '"+savedata.campaign_name+"'";
-              query = query + ", `account_id` = '"+savedata.account_id+"'";
-              query = query + ", `objective` = '"+savedata.objective+"'";
-              query = query + ", `cpm` = '"+savedata.cpm+"'";
-              query = query + ", `cpc` = '"+savedata.cpc+"'";
-              query = query + ", `impressions` = '"+savedata.impressions+"'";
-              query = query + ", `spend` = '"+savedata.spend+"'";
-              query = query + ", `ctr` = '"+savedata.ctr+"'";
-              query = query + ", `group_name` = '"+savedata.adset_name+"'";
-              query = query + ", `ad_id` = '"+savedata.ad_id+"'";
-              query = query + ", `ad_name` = '"+savedata.ad_name+"'";
-              query = query + ", `clicks` = '"+savedata.clicks+"'";
-              query = query + ", `cost_per_total_action` = '"+savedata.cost_per_total_action+"'";
-              query = query + ", `inline_post_engagement` = '"+savedata.inline_post_engagement+"'";
-              query = query + ", `date_start` = '"+savedata.date_start+"'";
-              query = query + ", `date_stop` = '"+savedata.date_stop+"'"; 
-              query = query + ", `createddate` = '"+savedata.date_start+"'";             
-              connection.query(query, function(err7, results) {
-                if (err7) { console.log('error'); }else{ console.log('success'); }
-                connection.end();
-              }); 
-            }
-        */
-        }else {
-          //res.json({result:response,code:200});
+          facebook_ads_report.collection.insert(response.data,function(err1,data)
+          {
+            if (err1)
+            {
+              console.log(err1);
+              console.log("fail");
+              }
+              else
+              {
+              console.log(data);
+              console.log("success");   
+              }
+          });
+        }else{
           console.log("===================");
           console.log(response);
           console.log(error);
           console.log("===================");
-          //connection.end();
         }     
         
     });    

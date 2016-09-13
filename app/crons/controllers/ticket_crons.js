@@ -95,17 +95,3 @@ exports.saveTicketSales = function(req, res, next) {
     
 }
 
-/**
-Express Controller to Ticket Sales Crons
-Created : 2016-08-31
-Created By: Manoj Kumar Singh
-Module : Ticket Crons
-*/
-
-
-/**
-Express Controller to Ticket Cancelled Crons
-Created : 2016-08-31
-Created By: Manoj Kumar Singh
-Module : Ticket Crons
-*/

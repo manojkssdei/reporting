@@ -15,7 +15,7 @@ LEFT JOIN campaign_emails AS CE ON CM.id = CE.campaign_id
 LEFT JOIN campaign_statistics AS CS ON CE.email = CS.email
 WHERE CM.user_id =1
 AND CS.campaign_msg_id != ''
-LIMIT 200 
+LIMIT 200  
 */
 
 exports.saveMarketSales = function(req, res, next) {
