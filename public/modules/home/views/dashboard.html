@@ -3,113 +3,343 @@
     
     <!-- Form COntainer -->
     
-    <div class="wt-frame form-section"> 
-      <section class="welcome-row">
-        <p>ALIST Reporting helps you to view all your event reports of <strong>Facebook Campaigns</strong>, <strong>Google Campaigns</strong>and <strong>Eventbrite </strong>, in a single application.</p>       
-      </section>
+     <!-- Form COntainer -->
     
-       <section class="module">
-          <!--<section class="prof-hd no-icon">
-                    <h2>Campaign Listing <span class="rt-img"><i class="fa fa-caret-down"></i></span></h2>
-            </section>-->
-          
-            <section class="gray-frame">
-              <section class="mtop">
-            <p class="float"><select class="form-control select30 w-auto" ng-model="searchcampiagn">
-              <option value="1">Facebook</option>
-              <option value="2">Google</option>
-            </select>
-            </p>
-            <p class="float marginleft15"><select class="form-control select30 w-auto" ng-model="configaccount">
-             <option ng-repeat="configureaccountdatanew in configureaccountdata" value="{{configureaccountdatanew.profile_id}}">{{configureaccountdatanew.username}}</option>              
-            </select>
-            </p>
-            <p class="float"><input type="text" class="form-control searchcls" placeholder="Search by campaign or objective" ng-model="filername">
-            </p>
-            <p class="floatright"><a href="/#/select_network"><button class="btn btn-small">Start Creating New Ads</button></a></p>
-
+    <div class="wt-frame form-section">
+        <section class="d-title form-group clearfix">
+             <h3 class="pull-left">Overview</h3>
+             <div class="date-range pull-right">
+                 <select class="form-control sml-input w-auto">
+                     <option>Last 7 Days</option>
+                     <option>Last 15 Days</option>
+                     <option>Last 30 Days</option>
+                 </select></div>
+              <ul class="from-to posrt">
+                    <li>
+                       <label>From</label> 
+                       <input type="text" class="form-control sml-input w-auto calendar-input">
+                    </li>
+                    <li>
+                       <label>To</label> 
+                       <input type="text" class="form-control sml-input w-auto calendar-input">
+                    </li>
+                </ul>
+        </section>
+        
+      <section class="row">
+            <section class="col-sm-4 form-group">
+                <section class="top-overview sales-view">                   
+                    <h3>Sales</h3>
+                    <div class="with-icon">  
+                        <p class="icon-p"><span class="neticn salesnet"><i class="fa fa-ticket" aria-hidden="true"></i></span></p> 
+                        <section class="ov-value row">
+                             <div class="va-left col-xs-6">
+                                 <h4>1520</h4>
+                                 <p>Ticket Sold</p>
+                             </div>
+                             <div class="va-right col-xs-6">
+                                 <h4>$250</h4>
+                                 <p>Revenue</p>
+                             </div>
+                        </section> 
+                    </div>              
+                </section>
             </section>
-                <section class="grid-widget clearboth">
-                  <div class="table-responsive">
-                    <table class="table campaginlisting table-striped">
-                        <thead>
-                          <tr>
-                            <th class="maketableleft" width="35%">Campaign Name</th>
-                            <th width="20%" class="maketableleft">Objective</th>
-                            <th width="15%">Campaign ID</th>
-                            <th width="15%">Campaign Status</th>                                       
-                            <th width="15%">Action</th>
-                          </tr>
-                        </thead> 
-                        <tbody>                           
-                            <tr dir-paginate = "campaignlistdata in campaignlist | filter:filername | itemsPerPage:pagesize" ng-show="facebookdata">
-                                <!-- <td class="maketableleft"><a href="#/reports">{{campaignlistdata.name}}</a></td> -->
-                                <td class="maketableleft" ng-show="campaigndata.indexOf(campaignlistdata.id)>-1">
-                                <a href="javascript:void(0)" ng-click="facebookmodal(campaignlistdata.id,'fbcampaign_id')">{{campaignlistdata.name}}</a>                               
-                                </td>
-                                <td class="maketableleft" ng-show="campaigndata.indexOf(campaignlistdata.id)<0">
-                                  {{campaignlistdata.name}}
-                                </td>
-
-                                <td class="maketableleft">{{campaignlistdata.objective | underscoreless}}</td>
-                                <td>{{campaignlistdata.id}}</td>
-                                <td>
-                                  <div class="onoffswitch">
-                                      <input type="checkbox" id="myonoffswitch{{campaignlistdata.id}}" class="onoffswitch-checkbox" name="onoffswitch" ng-model="onoffswitch" value="campaignlistdata.id" ng-click="updatecampaign(campaignlistdata.id,campaignlistdata.status)" ng-checked="campaignlistdata.status=='ACTIVE'">
-                                      <label for="myonoffswitch{{campaignlistdata.id}}" class="onoffswitch-label m-b0"></label>
-                                  </div>
-                                </td>                                       
-                                <td class="action rightalign">
-                                  <a href="javascript:void(0)" ng-click="copygooglecampmodal(campaignlistdata.id,'facebook')" title="Copy Campaign" ng-show="campaigndata.indexOf(campaignlistdata.id)>-1"><i class="fa fa-files-o" aria-hidden="true"></i></a>
-                                  <a href="javascript:void(0)" ng-click="editfacebookcampaign(campaignlistdata.id)"  ng-show="campaigndata.indexOf(campaignlistdata.id)>-1"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit Campaign"></i></a>
-                                  <a href="javascript:void(0)" ng-click="removecampaign(campaignlistdata.id)" title="Delete Campaign"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                                </td>
-                            </tr>
-
-                            <tr dir-paginate ="googlecampaignlistdata in googlecampaignlist | filter:filername | itemsPerPage:pagesize" ng-show="googledata">
-
-                                <td class="maketableleft" ng-show="googlecampaigndata.indexOf(googlecampaignlistdata.id)>-1"> <a href="javascript:void(0)" ng-click="googlemodal(googlecampaignlistdata.id,'googlecampaignid')">{{googlecampaignlistdata.name}}</a> </td>
-
-                                <td class="maketableleft" ng-show="googlecampaigndata.indexOf(googlecampaignlistdata.id)<0">{{googlecampaignlistdata.name}}</td>
-
-                                <td class="maketableleft"> {{googlecampaignlistdata.channel}} </td>
-                                <td>{{googlecampaignlistdata.id}}</td>
-                                <td>
-                                  <div class="onoffswitch">
-                                      <input type="checkbox" id="myonoffswitch{{googlecampaignlistdata.id}}" class="onoffswitch-checkbox" name="onoffswitch" ng-model="onoffswitch" value="googlecampaignlistdata.id" ng-click="updategooglecampaign(googlecampaignlistdata.id,googlecampaignlistdata.status)" ng-checked="googlecampaignlistdata.status=='ENABLED'">
-                                      <label for="myonoffswitch{{googlecampaignlistdata.id}}" class="onoffswitch-label m-b0"></label>
-                                  </div>
-                                </td>                                       
-                                <td class="action rightalign">
-                                 <a href="javascript:void(0)" 
-                                 ng-click="copygooglecampmodal(googlecampaignlistdata.id,'google')" title="Copy Campaign" ng-show="googlecampaigndata.indexOf(googlecampaignlistdata.id)>-1"><i class="fa fa-files-o" aria-hidden="true" ></i></a>
-                                  <a href="javascript:void(0)" ng-show="googlecampaigndata.indexOf(googlecampaignlistdata.id)>-1" ng-click="editgooglecampaign(googlecampaignlistdata.id)"><i class="fa fa-pencil-square-o" aria-hidden="true" title="Edit Campaign"></i></a>
-                                <a href="javascript:void(0)" ng-click="removegooglecampaign(googlecampaignlistdata.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
-                            </tr>
-                        </tbody>                
-                    </table>
+            <section class="col-sm-4 form-group">
+                <section class="top-overview fb-marketing">
+                    <h3>Facebook Marketing</h3>
+                    
+                    <div class="with-icon">  
+                    <p class="icon-p"><span class="neticn fbnet"><i class="fa fa-facebook" aria-hidden="true"></i></span></p>   
+                    <section class="ov-value row">
+                         <div class="va-left col-xs-6">
+                             <h4>$30</h4>
+                             <p>Spend</p>
+                         </div>
+                         <div class="va-right col-xs-6">
+                             <h4>50</h4>
+                             <p>Conversion</p>
+                         </div>
+                    </section>  
+                    </div>             
+                </section>
+            </section>
+            <section class="col-sm-4 form-group">
+                <section class="top-overview email-marketing">
+                    <h3>Email Marketing</h3>
+                    <div class="with-icon">  
+                    <p class="icon-p"><span class="neticn emailnet"><i class="fa fa-envelope-o" aria-hidden="true"></i></span></p>   
+                    <section class="ov-value row">
+                         <div class="va-left col-xs-6">
+                             <h4>550</h4>
+                             <p>Sent</p>
+                         </div>
+                         <div class="va-right col-xs-6">
+                             <h4>220</h4>
+                             <p>Clicks</p>
+                         </div>
+                    </section>  
+                    </div>             
+                </section>
+            </section>
+        </section>
+        <div class="panel panel-gray">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="neticn wt-brder icon24"><i class="fa fa-facebook" aria-hidden="true"></i></span> Facebook</h3>
+            </div>
+            <div class="panel-body">
+                <section class="brief-info form-group">
+                    <ul class="values-list clearfix">
+                       <li>
+                           <div class="wtframe vl-div">
+                              <h3>50</h3>
+                              <p>Clicks</p>
+                          </div>
+                       </li>
+                      <li><div class="wtframe vl-div active">
+                          <h3>50</h3>
+                          <p>Impressions</p></div>
+                       </li>
+                      <li><div class="wtframe vl-div">
+                          <h3>30</h3>
+                          <p>CTR</p></div>
+                       </li>
+                      <li><div class="wtframe vl-div">
+                          <h3>$30</h3>
+                          <p>Spend</p></div>
+                       </li>
+                      <li><div class="wtframe vl-div">
+                          <h3>$1.0</h3>
+                          <p>Avg. CPC</p></div>
+                       </li>
+                      <li><div class="wtframe vl-div">
+                          <h3>5</h3>
+                          <p>CPP</p></div>
+                       </li>
+                      <li><div class="wtframe vl-div">
+                          <h3>$2.0</h3>
+                          <p>Social Speed</p></div>
+                       </li>
+                      <li><div class="wtframe vl-div">
+                          <h3>20</h3>
+                          <p>Social Impression</p></div>
+                       </li>
+                       <li><div class="wtframe vl-div">
+                          <h3>5</h3>
+                          <p>Reach</p></div>
+                       </li>
+                       <li><div class="wtframe vl-div">
+                          <h3>10</h3>
+                          <p>CPM</p></div>
+                       </li>
+                    </ul>
+                </section>
+            
+               
+                  <div class="form-group  gray-frame module-widget">
+                     <div class="row form-group">
+                        <h3 class="col-xs-7 ttl"><a href="#">Age <i class="fa fa-angle-down" aria-hidden="true"></i></a></h3>
+                        <div class="col-xs-5 text-right rt-sort">
+                        <select class="form-control sml-input w-auto">
+                             <option>Bar Graph</option>
+                         </select>
+                         </div>
+                     </div>
+                     
+                     <section class="row">
+                         <section class="col-sm-8 form-group">
+                             
+                                <div class="col-sm-4 pull-right">
+                                   <div class="grp-vl">
+                                      <div class="grpvl">
+                                           <h3 class="f-24">50</h3>
+                                           <p>Impression</p>
+                                      </div>
+                                   </div>
+                                </div>
+                               <div class="col-sm-8 data-div"><img src="/images/graph.jpg" alt="" style="width:100%;" /></div>
+                            
+                         </section>
+                         <section class="col-sm-4">
+                            <div class="table-responsive">
+                               <table class="table data-tabl table-striped"> 
+                                  <thead> 
+                                     <tr>                                         
+                                        <th colspan="2" class="tb-tr">Male</th> 
+                                        <th colspan="2">Female</th> 
+                                     </tr> 
+                                 </thead>
+                                 <tbody> 
+                                 <tr> 
+                                    <td><strong>13-17</strong></td> 
+                                    <td class="tb-tr">19%</td> 
+                                    <td>8%</td> 
+                                    <td class="tb-tr totl-col">26%</td> 
+                                </tr> 
+                                <tr> 
+                                    <td><strong>18-24</strong></td> 
+                                    <td class="tb-tr">22%</td> 
+                                    <td>8%</td> 
+                                    <td class="tb-tr totl-col">30%</td> 
+                                </tr> 
+                                <tr> 
+                                    <td><strong>25-34</strong></td> 
+                                    <td class="tb-tr">9%</td> 
+                                    <td>5%</td> 
+                                    <td class="tb-tr totl-col">14%</td> 
+                                </tr> 
+                                <tr> 
+                                    <td><strong>35-44</strong></td> 
+                                    <td class="tb-tr">6%</td> 
+                                    <td>6%</td> 
+                                    <td class="tb-tr totl-col">12%</td> 
+                                </tr> 
+                                <tr> 
+                                    <td><strong>45-54</strong></td> 
+                                    <td class="tb-tr">6%</td> 
+                                    <td>6%</td> 
+                                    <td class="tb-tr totl-col">12%</td> 
+                                </tr> 
+                                <tr> 
+                                    <td><strong>55+</strong></td> 
+                                    <td class="tb-tr">2%</td> 
+                                    <td>5%</td> 
+                                    <td class="tb-tr totl-col">7%</td> 
+                                </tr> 
+                              </tbody> </table>
+                            </div>
+                         </section>
+                     </section>        
+                       
                   </div>
-                  <div class="grayarea" ng-show="facebookdata && campaignlist.length>0"><span class="perpagesize">Campaigns Per Page: </span> <select class="form-control pagesize" ng-model="pagesize">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                  </select><dir-pagination-controls max-size=pagesize direction-links="true" boundary-links="true" ></dir-pagination-controls> 
-                  </div> 
-                  <div class="grayarea" ng-show="googledata && googlecampaignlist.length>0"><span class="perpagesize">Campaigns Per Page: </span> <select class="form-control pagesize" ng-model="pagesize">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                  </select><dir-pagination-controls max-size=pagesize direction-links="true" boundary-links="true" ></dir-pagination-controls> 
-                  </div> 
-              </section>
+                  
+                  <div class="form-group  gray-frame module-widget">
+                     <div class="row form-group">
+                        <h3 class="col-xs-7 ttl">Conperission</h3>
+                        <div class="col-xs-5 text-right rt-sort">
+                        <select class="form-control sml-input w-auto">
+                             <option>Clicks</option>
+                         </select> <span class="vs">vs</span> <select class="form-control sml-input w-auto">
+                             <option>Impressions</option>
+                         </select>
+                         </div>
+                     </div>
+                                
+                      <div class="data-div">
+                      <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                      </div>
+                  </div>
+                  
+             </div>
+            </div>
+        
+        
+        <div class="panel  panel-gray">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="neticn wt-brder icon24"><i aria-hidden="true" class="fa fa-ticket"></i></span> Sale</h3>
+            </div>
+            <div class="panel-body">
+                  
+                  <div class="form-group  gray-frame module-widget">
+                     <div class="row form-group">
+                        <div class="col-xs-7"><select class="form-control sml-input w-auto">
+                             <option>Bar Graph</option>
+                         </select></div>
+                        <div class="col-xs-5 text-right rt-sort">                        
+                         <button class="btn btn-small">Export CSV</button>
+                         </div>
+                     </div>
+                     
+                     <section class="row">
+                         <section class="col-sm-9 form-group">
+                            <div class="data-div"><img src="/images/chart-1.jpg" alt="" style="width:100%;" /></div>
+                         </section>
+                         <section class="col-sm-3 form-group">
+                            
+                            <div class="form-group data-value">
+                                <div class="wtframe text-center">
+                                   <h3>1520</h3>
+                                   <p>Ticket Sold</p>
+                                </div>
+                            </div>
+                            <div class="form-group data-value">
+                                <div class="wtframe text-center">
+                                   <h3>$520</h3>
+                                   <p>Total Revenue</p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group data-value">
+                                <div class="wtframe text-center">
+                                   <h3>$400</h3>
+                                   <p class="date-txt">Aug 15, 2016</p>
+                                   <p>Top Day</p>
+                                </div>
+                            </div>
+                         </section>
+                     </section>        
+                       
+                  </div>
+                  
+             </div>
+            </div>  <!--Sale Summary--> 
+            
+        <div class="panel  panel-gray">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="neticn wt-brder icon24"><i aria-hidden="true" class="fa fa-envelope-o"></i></span> Email</h3>
+            </div>
+            <div class="panel-body">
+                  <div class="form-group  gray-frame module-widget">
+                     <div class="row form-group">
+                        <div class="col-xs-7"><select class="form-control sml-input w-auto">
+                             <option>Pie Chart</option>
+                         </select></div>
+                       
+                     </div>
+                     
+                     <section class="row">
+                         <section class="col-sm-7 form-group">
+                            <div class="data-div"><img src="assets/images/chart-1.jpg" alt="" style="width:100%;" /></div>
+                         </section>
+                         <section class="col-sm-5 form-group">
+                            <ul class="list-group">
+                              <li class="list-group-item ttl-email f-16">
+                                <span class="badge">9093</span>
+                                <strong>Total Email Sent</strong>
+                              </li>
+                              <li class="list-group-item list-group-item-success">
+                                <span class="badge">1093</span>                                
+                                Opened Emails                                
+                              </li>
+                              <li class="list-group-item list-group-item-success">
+                                <span class="badge">25</span>                                
+                                Links Clicked                                
+                              </li>
+                              <li class="list-group-item list-group-item-info">
+                                <span class="badge">608</span>                             
+                                Email Bounced
+                              </li>
+                              <li class="list-group-item list-group-item-warning">
+                                <span class="badge">7392</span>                          
+                                Unopened
+                              </li>
+                              <li class="list-group-item list-group-item-danger">
+                                <span class="badge">53</span>                          
+                                Unsubscribes
+                              </li>
+                            </ul>
+                            
+                         </section>
+                     </section>        
+                       
+                  </div>
+                  
+             </div>
+            </div>  <!--Email Summary--> 
+           
+    </div>
 
-
-
-            </section>
-        </section><!--/Upcoming Events-->
-    </div>    
+<!-- //Form COntainer -->
     <!-- //Form COntainer --> 
     <div id="sticky-anchor"></div>
     <div  ng-class="loadingclass" class=""></div>

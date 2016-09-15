@@ -19,14 +19,15 @@ LIMIT 200
 */
 
 exports.saveMarketSales = function(req, res, next) {
-    var query   = "SELECT CM.user_id, CM.subject_line, CE.email, CS.* FROM `campaigns` AS CM LEFT JOIN campaign_emails AS CE ON CM.id = CE.campaign_id LEFT JOIN campaign_statistics AS CS ON CE.email = CS.email WHERE CS.campaign_msg_id != ''";
-    connection.query(query, function(err, results) {
+    var connection = db.connection_central();
+    var query      = "SELECT CM.user_id, CM.subject_line, CE.email, CS.* FROM `campaigns` AS CM LEFT JOIN campaign_emails AS CE ON CM.id = CE.campaign_id LEFT JOIN campaign_statistics AS CS ON CE.email = CS.email WHERE CS.campaign_msg_id != ''";
+    /*connection.query(query, function(err, results) {
                     if (err) {
-                        console.log('error');
+                        console.log(err);
                     }
                     else {
                         console.log(results);
                     }
                    // connectioncentral.end();
-    });
+    });*/
 }

@@ -36,8 +36,26 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   });*/
 
   // Get Associated Accounts 
- 
+  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Highcharts.chart('container', {
+      title: {
+        text: 'Comparison Data'
+      },
 
+      xAxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        ]
+      },
+
+      series: [{
+        data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+      },
+      {
+        data: [39.9, 51.5, 106.4, 149.2, 144.0, 106.0, 105.6, 148.5, 206.4, 194.1, 90.6, 44.4]
+      }]
+    });
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   $scope.$watch('configaccount',function(){
       //cfpLoadingBar.start();
