@@ -8,27 +8,169 @@ Module : Dashboard Setup
 angular.module('alisthub').controller('homeController', function($scope,$localStorage,$location,$rootScope,$injector,ngDialog,$uibModal,cfpLoadingBar,$state ,SweetAlert,$anchorScroll,$timeout) {
 
 
-    $rootScope.class_status=false;
-    if(window.innerWidth>767){  
+  $rootScope.class_status=false;
+  if(window.innerWidth>767){  
       $scope.navCollapsed = false;    
-    }else{ 
+  }else{ 
       $scope.navCollapsed = true;
       $scope.toggleMenu = function() {
         $scope.navCollapsed = $scope.navCollapsed === false ? true: false;
-      };    
-  } 
-  //$localStorage.configureaccountid = '114963642270259';
+    };    
+  }
+  
+  $scope.status1 = {
+    isopen: false
+  };
+  $scope.status2 = {
+    isopen: false
+  };
+  $scope.status5 = {
+    isopen: false
+  };
+  $scope.status8 = {
+    isopen: false
+  };
+  $scope.status9 = {
+    isopen: false
+  };
+  $scope.status10 = {
+    isopen: false
+  };
+
+  $scope.toggled = function(open) {
+    $log.log('Dropdown is now: ', open);
+  };
+
+  $scope.toggleDropdown = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.status.isopen = !$scope.status.isopen;
+  };
+
+    //$localStorage.configureaccountid = '114963642270259';
   $localStorage.configureaccountid = '';
   //$scope.marketingpage = 'current-menu-item';
   var $serviceTest = $injector.get("home");
+  
   $anchorScroll();
   //var $servicecfpLoadingBar = $injector.get("cfpLoadingBar");
   
-  $scope.facebookdata = true;
+  $scope.facebookdata   = true;
   $scope.searchcampiagn = '1';
-  $scope.googledata = false;
-  $scope.pagesize = '10';
-  var data = {};
+  $scope.googledata     = false;
+  $scope.pagesize       = '10';
+  $scope.input_filter   = {};
+  $scope.input_filter.id= "7";
+  $scope.filter_title   = '7 Days';
+  //$scope.filter_options = [{id: 7,label: 'Last 7 Days'}, {id: 16,label: 'Last 15 Days'},{id: 31,label: 'Last 30 Days'},{id: 'custom',label: 'Custom'}];
+  var data              = {};
+  
+    
+  
+  $scope.graphDate = function(convertdate) {
+      var today = new Date(convertdate);     
+      var dd = today.getDate();
+      if(dd<10){ dd='0'+dd; }
+      var month = parseInt(today.getMonth());   
+      var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return  dd + " " + monthNames[month];
+  }
+  
+  function formatsearchDate(convertdate) {
+        if(convertdate != '' && convertdate != undefined)
+            var today = new Date(convertdate);
+        else 
+            var today = new Date();
+
+        var dd = today.getDate();
+        if(dd<10){ dd='0'+dd; }
+        var month = parseInt(today.getMonth())+1;        
+        if(month<10){  month='0'+month; } 
+        return today.getFullYear()+ ":" + month + ":" + dd + " 00:00:00";
+  }
+  
+  $scope.graphdaterange = function(startdatereports,enddatereports){
+    var date1 = new Date($scope.startdatereports);
+    var date2 = new Date($scope.enddatereports);
+    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    $scope.labelvalues = [];
+    $scope.graph_date = [];
+    console.log(timeDiff +"::::"+diffDays);
+  }
+  
+  $scope.calculatedaterange = function(startdatereports,enddatereports){
+        $scope.startdatereports = startdatereports;
+        $scope.enddatereports   = enddatereports;
+                
+        var date1 = new Date($scope.startdatereports);
+        var date2 = new Date($scope.enddatereports);
+        
+        console.log(date1 +":::"+date2);
+        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        $scope.labelvalues = [];
+        $scope.graph_date = [];
+        console.log(diffDays);
+        if(diffDays>=7){
+          var daysdate = parseInt(diffDays/7);
+          for(var i=1;i<9;i=i+1){
+            if(i==1){
+              var enddif = diffDays-daysdate;
+              var setstartdate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - diffDays));
+              var setenddate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - enddif));
+            console.log(setstartdate+" ::: "+setenddate);
+            $scope.graph_date.push({"start_date":setstartdate,"end_date":setenddate});
+            $scope.labelvalues.push(setstartdate+'-'+setenddate);
+            console.log($scope.graph_date);
+            } else if(i==7){
+              var setstartdate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - enddif1));
+              var setenddate = formatsearchDate(new Date($scope.enddatereports));
+$scope.graph_date.push({"start_date":setstartdate,"end_date":setenddate});
+$scope.labelvalues.push(setstartdate+'-'+setenddate);
+            } else {
+              var addt = i-1;
+              var enddif = diffDays-(daysdate*(addt)+addt);
+              var enddif1 = enddif-daysdate;
+              var setstartdate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - enddif));
+              var setenddate   = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - enddif1));
+            $scope.graph_date.push({"start_date":setstartdate,"end_date":setenddate});
+            $scope.labelvalues.push($scope.graphDate(setstartdate)+'-'+$scope.graphDate(setenddate));
+          }
+          }
+        }else {
+          for(var i=0;i<diffDays+1;i=i+1){
+              var setdate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - i));
+              $scope.graph_date.push({"start_date":setdate,"end_date":setdate});
+              $scope.labelvalues.push($scope.graphDate(setdate));
+          }
+        }
+      console.log($scope.graph_date);
+      console.log($scope.labelvalues);  
+  }
+  
+  // Get filter
+  $scope.show_custom = 0;
+  $scope.getFilter   = function(str)
+  {
+    console.log(str);
+    if (str != 'custom') {
+     $scope.filter_title   = str+' Days'; 
+     $scope.show_custom      = 0;
+     var todayDate           = new Date();
+     $scope.startdatereports = todayDate;
+     $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt($scope.input_filter.id)));
+     
+     //$scope.calculatedaterange($scope.startdatereports,$scope.enddatereports);
+     console.log($scope.startdatereports +"::::::"+ $scope.enddatereports);
+     //$scope.format      = $scope.data($scope.input_filter);
+    }else{
+     $scope.show_custom = 1;
+     $scope.filter_title   = 'Custom';
+    }
+  }
+  
+  $scope.getFilter(7);
   
   $scope.draw_graph = function(child)
   {
@@ -79,13 +221,15 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   /////////////////////////////////////////// Comparison  Graphs //////////////////////////////////////////////////////////////
   
   ////////////////////////////////////////////// Facebook Graphs ////////////////////////////////////////////////////////////
-  $scope.fgraph_type = 'bar';
+    
+  $scope.facebook_graph = function(str){
   
-  $scope.facebook_graph = function(){
+  $scope.fb_chart_title = str;
+  
   $scope.facebook = {};
   $scope.facebook.chart_title     = 'Age wise data';
   $scope.facebook.chart_sub_title = 'Source: Facebook ads data';
-  $scope.facebook.chart           = {type:$scope.fgraph_type};
+  $scope.facebook.chart           = {type:str};
   $scope.facebook.xAxis           = [{
                 categories: ['13-17', '18-24', '25-34', '35-44', '45-54', '55+'],
                 reversed: false,
@@ -136,18 +280,18 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
             }
   Highcharts.chart('container_fb', $scope.draw_graph($scope.facebook));
   }
-  $scope.facebook_graph();
+  $scope.facebook_graph('bar');
   
   ////////////////////////////////////////////// Facebook Graphs ////////////////////////////////////////////////////////////
   
   
   /////////////////////////////////////////// Sales Graphs //////////////////////////////////////////////////////////////
-  $scope.sgraph_type = 'column';
-  $scope.sales_graph = function(){
+  $scope.sales_graph = function(str){
+  $scope.sales_graph_title = str;
   $scope.sales = {};
   $scope.sales.chart_title     = 'Ticket Sales';
   $scope.sales.chart_sub_title = 'Source: sales';
-  $scope.sales.chart           = {type:$scope.sgraph_type};
+  $scope.sales.chart           = {type:str};
   $scope.sales.xAxis           = {
             categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
             crosshair: true
@@ -184,19 +328,19 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
         }
   Highcharts.chart('container_sales', $scope.draw_graph($scope.sales));
   }
-  $scope.sales_graph();
+  $scope.sales_graph('column');
   /////////////////////////////////////////// Sales Graphs //////////////////////////////////////////////////////////////
   
  
   /////////////////////////////////////////// Email Graphs //////////////////////////////////////////////////////////////
-  $scope.egraph_type = 'pie';
-  $scope.email_graph = function(){
+  $scope.email_graph = function(str){
+  $scope.email_graph_title = str;
   $scope.email = {};
   $scope.email.chart           =  {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
-                type: 'pie',
+                type: str,
                 options3d: {
                 enabled: true,
                 alpha: 45,
@@ -256,7 +400,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
             };
   Highcharts.chart('container_email', $scope.draw_graph($scope.email));
   }
-  $scope.email_graph();
+  $scope.email_graph('pie');
   
   /////////////////////////////////////////// Email Graphs ////////////////////////////////////////////////////////////// 
     
@@ -266,7 +410,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
 
 
 
-   function formatsearchDate(convertdate) {
+  function formatsearchDate(convertdate) {
       if(convertdate != '' && convertdate != undefined)
           var today = new Date(convertdate);
       else 
@@ -277,7 +421,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
       var month = parseInt(today.getMonth())+1;        
       if(month<10){  month='0'+month; } 
       return  month + "-" + dd + "-" + today.getFullYear();
-    }
+  }
 
 })
 

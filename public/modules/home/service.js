@@ -12,8 +12,8 @@ angular.module('alisthub').factory('home', ['$q', '$timeout','communicationServi
     
   /*Webservice call for get all network*/
   
-  url.getcampaignlist = function(jsondata,callback){
-       communicationService.resultViaPost(webservices.getcampaignlist,appConstants.authorizationKey,headerConstants.json,jsondata, function(res,req){
+  url.getSummaryReport = function(jsondata,callback){
+       communicationService.resultViaPost(webservices.getSummaryReport,appConstants.authorizationKey,headerConstants.json,jsondata, function(res,req){
        callback(res.data);
     });
   };

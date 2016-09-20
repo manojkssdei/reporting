@@ -3,24 +3,24 @@ var Schema   = mongoose.Schema;
 
 var SaleSchema = new Schema({
     sale_id              : {type:String},
-    event_id             : {type:String},
-    seller_id            : {type:String},
-    user_id              : {type:String},
+    event_id             : {type:Number},
+    seller_id            : {type:Number},
+    user_id              : {type:Number},
     transaction_id       : {type:String},
-    tickets              : {type:String},
+    tickets              : {type:Number},
     confirmation_number  : {type:String},
-    total_cost           : {type:String},
-    buyer_fee            : {type:String},
-    seller_fee           : {type:String},
-    buyer_fee_covered    : {type:String},
-    custom_buyer_fee     : {type:String},
-    addl_fees_total      : {type:String},
-    service_fee_discount : {type:String},
-    donation             : {type:String},
-    venue_fee            : {type:String},    
-    delivery_fee         : {type:String},  
+    total_cost           : {type:Number},
+    buyer_fee            : {type:Number},
+    seller_fee           : {type:Number},
+    buyer_fee_covered    : {type:Number},
+    custom_buyer_fee     : {type:Number},
+    addl_fees_total      : {type:Number},
+    service_fee_discount : {type:Number},
+    donation             : {type:Number},
+    venue_fee            : {type:Number},    
+    delivery_fee         : {type:Number},  
     delivery_type        : {type:String},
-    discount             : {type:String},
+    discount             : {type:Number},
     cardnumber           : {type:String},
     first_four           : {type:String},
     date                 : {type:String},
@@ -38,8 +38,8 @@ var SaleSchema = new Schema({
     currency             : {type:String},
     ticket_set           : {type:String},
     cancel_set           : {type:String},
-    created              : {type:Date,default:Date.now}
+    created              : {type:Date,default:Date.now()}
 });
 // Mongoose Model definition
-var Sale       = mongoose.model('ticket_sales', SaleSchema);
+var Sale       = mongoose.model('ticket_sales_data', SaleSchema);
 module.exports = Sale;

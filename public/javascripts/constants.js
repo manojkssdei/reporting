@@ -46,7 +46,11 @@ var webservices = {
         "geteventbritecategories":localhostUrl+"/networks/geteventbritecategories",
         "geteventbritesubcategories":localhostUrl+"/networks/geteventbritesubcategories",
         "geteventbriteevents":localhostUrl+"/networks/geteventbriteevents",
-        "geteventbritecontactlists":localhostUrl+"/networks/geteventbritecontactlists",        
+        "geteventbritecontactlists":localhostUrl+"/networks/geteventbritecontactlists",
+	
+	
+	///////////////////////////////////// NEW services ///////////////////////////////
+	"getSummaryReport":"/networks/getSummaryReport",
 }
 
 var global_message = {

@@ -8,6 +8,26 @@ Created : 2016-08-31
 Created By: Manoj Kumar Singh
 Module : Ticket Crons
 */
+function formatDate(convertdate,type) {
+  var today = convertdate;
+  var month = today.getMonth() + +1;
+  if (month < 10) { month = "0" + month; } else { month = month; }
+  switch (type) {
+    case 'DATE':
+        return today.getFullYear() + "-" + month + "-" + today.getDate();
+        break;
+    case 'DATETIME':
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+        var strTime = hours + ':' + minutes + ':' + seconds;
+        var month = +today.getMonth() + +1;
+        return today.getFullYear() + "-" + month + "-" + today.getDate() + " " + strTime;
+        break;
+      
+    default: return today.getFullYear() + "-" + month + "-" + today.getDate();
+  }
+}
 
 exports.saveTicketSales = function(req, res, next) {
         
@@ -21,7 +41,7 @@ exports.saveTicketSales = function(req, res, next) {
         
         /** To save new data ***/
             if (input.length > 0) {
-                ticket_sales.collection.insert(input,function(err1,data)
+                ticket_sales.insertMany(input,function(err1,data)
                 {
                     if (err1)
                     {
@@ -30,8 +50,20 @@ exports.saveTicketSales = function(req, res, next) {
                     }
                     else
                     {
-                        console.log(data);
-                        console.log("success");   
+                        console.log(data.insertedIds);
+                        console.log("success");
+                        ticket_sales.update({_id:{$in:data.insertedIds}},{$set:{created:formatDate(new Date(),'DATE')}},{multi:true},function(err5,res2)                  {
+                        if (err5)
+                        {
+                          console.log(err5);
+                          console.log("fail2");
+                        }
+                        else{
+                          console.log("success2");
+                        }
+                      });
+                        
+                        
                     }
                           
                 });
@@ -90,7 +122,7 @@ exports.saveTicketSales = function(req, res, next) {
     // Showclix end
     
     var data          = CONSTANT.TEST_DATA;
-    //var existing_data = get_existing_sales(data);
+    var existing_data = get_existing_sales(data);
     
     
 }
