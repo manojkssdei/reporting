@@ -470,3 +470,14 @@ input[type="radio"]:checked + label span:after{ opacity: 1; transform: scale(0.7
 .inline-el{display:inline-block; vertical-align:middle;}
 .l-b{display:block;}
 
+.ev-icon{margin-bottom:15px; display:inline-table; border-radius:50%; background:#fff; width:100px; height:100px;}
+.ev-icon span{display:table-cell; vertical-align:middle;}
+.events-col{padding:25px 15px; margin-bottom:15px; text-align:center; background:#f3f3f3;}
+.events-col h2{font-size:16px; margin-bottom:15px; font-weight:600;}
+.col-con{min-height:50px; margin-bottom:15px; line-height:20px;}
+
+.ev-icon .fa {
+    color: #ccc;
+    font-size: 50px;
+}
+

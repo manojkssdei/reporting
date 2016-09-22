@@ -11,6 +11,4 @@ exports.getSummaryReport = function(req, res, next) {
        obj_global_manager.global_dashboard_count(req,res,function(sdata){
          res.send({"code":200,"sdata":sdata,"message":"success!"});
     });
-
-    
 }

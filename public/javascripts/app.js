@@ -134,13 +134,14 @@ var routerApp = angular.module('alisthub', ['angular-loading-bar','ngRoute','aut
             }
         })
         //Network Preview
-         .state('reports', {
+        .state('reports', {
             url: '/reports',
             
             views: {
                 "lazyLoadView": {
                   controller: 'reportsController', // This view will use AppCtrl loaded below in the resolve
-                  templateUrl: 'modules/reports/views/listing.html'
+                  //templateUrl: 'modules/reports/views/listing.html',
+                  templateUrl: 'modules/reports/views/report.html'
                 }
             },
             resolve: { // Any property in resolve should return a promise and is executed before the view is loaded
@@ -151,13 +152,105 @@ var routerApp = angular.module('alisthub', ['angular-loading-bar','ngRoute','aut
                     //var $serviceTest = $injector.get("CustomerFirstLoad");
                            // return $serviceTest.testLoad(); // <-- CHANGED HERE
                     })*/.then(function(){
-                    return $ocLazyLoad.load(['modules/reports/controller.js']);
+                    return $ocLazyLoad.load(['modules/reports/main_controller.js']);
+                    })
+               
+              }]
+            }
+        }) 
+
+        .state('combine_reports', {
+            url: '/combine_reports',
+            
+            views: {
+                "lazyLoadView": {
+                  controller: 'combineReportController', // This view will use AppCtrl loaded below in the resolve
+                  //templateUrl: 'modules/reports/views/listing.html',
+                  templateUrl: 'modules/reports/views/combine_report.html'
+                }
+            },
+            resolve: { // Any property in resolve should return a promise and is executed before the view is loaded
+              authentication:routerApp.logauthentication,
+              resources: ['$ocLazyLoad', '$injector',function($ocLazyLoad, $injector) {
+                // you can lazy load files for an existing module
+                return $ocLazyLoad.load('modules/reports/service.js')/**/
+                    .then(function(){
+                    return $ocLazyLoad.load(['modules/reports/combine_controller.js']);
                     })
                
               }]
             }
         })
-
+         
+        .state('sales_reports', {
+            url: '/sales_reports',
+            
+            views: {
+                "lazyLoadView": {
+                  controller: 'salesReportController', // This view will use AppCtrl loaded below in the resolve
+                  //templateUrl: 'modules/reports/views/listing.html',
+                  templateUrl: 'modules/reports/views/sales_report.html'
+                }
+            },
+            resolve: { // Any property in resolve should return a promise and is executed before the view is loaded
+              authentication:routerApp.logauthentication,
+              resources: ['$ocLazyLoad', '$injector',function($ocLazyLoad, $injector) {
+                // you can lazy load files for an existing module
+                return $ocLazyLoad.load('modules/reports/service.js')/**/
+                    .then(function(){
+                    return $ocLazyLoad.load(['modules/reports/sales_controller.js']);
+                    })
+               
+              }]
+            }
+        })
+         
+        .state('facebook_reports', {
+            url: '/facebook_reports',
+            
+            views: {
+                "lazyLoadView": {
+                  controller: 'facebookReportController', // This view will use AppCtrl loaded below in the resolve
+                  //templateUrl: 'modules/reports/views/listing.html',
+                  templateUrl: 'modules/reports/views/facebook_report.html'
+                }
+            },
+            resolve: { // Any property in resolve should return a promise and is executed before the view is loaded
+              authentication:routerApp.logauthentication,
+              resources: ['$ocLazyLoad', '$injector',function($ocLazyLoad, $injector) {
+                // you can lazy load files for an existing module
+                return $ocLazyLoad.load('modules/reports/service.js')/**/
+                    .then(function(){
+                    return $ocLazyLoad.load(['modules/reports/facebook_controller.js']);
+                    })
+               
+              }]
+            }
+        })
+        
+        .state('email_reports', {
+            url: '/email_reports',
+            
+            views: {
+                "lazyLoadView": {
+                  controller: 'emailReportController', // This view will use AppCtrl loaded below in the resolve
+                  //templateUrl: 'modules/reports/views/listing.html',
+                  templateUrl: 'modules/reports/views/email_report.html'
+                }
+            },
+            resolve: { // Any property in resolve should return a promise and is executed before the view is loaded
+              authentication:routerApp.logauthentication,
+              resources: ['$ocLazyLoad', '$injector',function($ocLazyLoad, $injector) {
+                // you can lazy load files for an existing module
+                return $ocLazyLoad.load('modules/reports/service.js')/**/
+                    .then(function(){
+                    return $ocLazyLoad.load(['modules/reports/email_controller.js']);
+                    })
+               
+              }]
+            }
+        }) 
+                
         .state('reportdetails', {
             url: '/reportdetails/:campaignid/:networkid',
             

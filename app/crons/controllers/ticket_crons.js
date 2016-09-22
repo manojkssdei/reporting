@@ -2,32 +2,6 @@ var showClix     = require('./../../showclix/showclix_sales.js');
 var ticket_sales = require('./../../../models/ticket_sales.js');
 var component    = require('./../../../component/common.js');
 
-/**
-Express Controller to Ticket Crons
-Created : 2016-08-31
-Created By: Manoj Kumar Singh
-Module : Ticket Crons
-*/
-function formatDate(convertdate,type) {
-  var today = convertdate;
-  var month = today.getMonth() + +1;
-  if (month < 10) { month = "0" + month; } else { month = month; }
-  switch (type) {
-    case 'DATE':
-        return today.getFullYear() + "-" + month + "-" + today.getDate();
-        break;
-    case 'DATETIME':
-        var hours = today.getHours();
-        var minutes = today.getMinutes();
-        var seconds = today.getSeconds();
-        var strTime = hours + ':' + minutes + ':' + seconds;
-        var month = +today.getMonth() + +1;
-        return today.getFullYear() + "-" + month + "-" + today.getDate() + " " + strTime;
-        break;
-      
-    default: return today.getFullYear() + "-" + month + "-" + today.getDate();
-  }
-}
 
 exports.saveTicketSales = function(req, res, next) {
         
@@ -52,7 +26,8 @@ exports.saveTicketSales = function(req, res, next) {
                     {
                         console.log(data.insertedIds);
                         console.log("success");
-                        ticket_sales.update({_id:{$in:data.insertedIds}},{$set:{created:formatDate(new Date(),'DATE')}},{multi:true},function(err5,res2)                  {
+                        var formatDate = new component();
+                        ticket_sales.update({_id:{$in:data.insertedIds}},{$set:{created:formatDate.formatDate(new Date(),'DATE')}},{multi:true},function(err5,res2)                  {
                         if (err5)
                         {
                           console.log(err5);

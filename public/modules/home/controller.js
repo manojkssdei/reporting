@@ -51,10 +51,9 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $localStorage.configureaccountid = '';
   //$scope.marketingpage = 'current-menu-item';
   var $serviceTest = $injector.get("home");
-  
   $anchorScroll();
-  //var $servicecfpLoadingBar = $injector.get("cfpLoadingBar");
   
+  // Constant define for dashboard
   $scope.facebookdata   = true;
   $scope.searchcampiagn = '1';
   $scope.googledata     = false;
@@ -62,10 +61,24 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.input_filter   = {};
   $scope.input_filter.id= "7";
   $scope.filter_title   = '7 Days';
-  //$scope.filter_options = [{id: 7,label: 'Last 7 Days'}, {id: 16,label: 'Last 15 Days'},{id: 31,label: 'Last 30 Days'},{id: 'custom',label: 'Custom'}];
   var data              = {};
   
+  /**************************************** Services Start For Get Global Count  ******************************************/
+  $scope.filters = {from:"",to:""};
+  
+  $serviceTest.getSummaryReport($scope.filters,function(response){
+    console.log(response.code);
+    console.log(response.sdata);
+    if (response.code == 200) {
+    $scope.facebook_count = response.sdata.facebook_count;
+    $scope.sales_count = response.sdata.sales_count;
+    console.log($scope.facebook_count);
+    }else{
+      $scope.error_msg = global_message.dashboard_fetch_err;
+    }
     
+  }); 
+  /**************************************** Services Start For Get Global Count  ******************************************/
   
   $scope.graphDate = function(convertdate) {
       var today = new Date(convertdate);     

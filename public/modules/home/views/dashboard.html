@@ -41,11 +41,11 @@
                         <p class="icon-p"><span class="neticn salesnet"><i class="fa fa-ticket" aria-hidden="true"></i></span></p> 
                         <section class="ov-value row">
                              <div class="va-left col-xs-6">
-                                 <h4>1520</h4>
+                                 <h4>{{sales_count.sold_ticket}}</h4>
                                  <p class="gray-text">Ticket Sold</p>
                              </div>
                              <div class="va-right col-xs-6">
-                                 <h4>$250</h4>
+                                 <h4>${{sales_count.revenue}}</h4>
                                  <p class="gray-text">Revenue</p>
                              </div>
                         </section> 
@@ -60,11 +60,11 @@
                     <p class="icon-p"><span class="neticn fbnet"><i class="fa fa-facebook" aria-hidden="true"></i></span></p>   
                     <section class="ov-value row">
                          <div class="va-left col-xs-6">
-                             <h4>$30</h4>
+                             <h4>$ {{facebook_count.spend}}</h4>
                              <p class="gray-text">Spend</p>
                          </div>
                          <div class="va-right col-xs-6">
-                             <h4>50</h4>
+                             <h4>{{facebook_count.conversion}}</h4>
                              <p class="gray-text">Conversion</p>
                          </div>
                     </section>  
@@ -99,44 +99,44 @@
                     <ul class="values-list clearfix">
                        <li>
                            <div class="wtframe vl-div">
-                              <h3>50</h3>
+                              <h3>{{facebook_count.clicks}}</h3>
                               <p>Clicks</p>
                           </div>
                        </li>
                       <li><div class="wtframe vl-div active">
-                          <h3>50</h3>
+                          <h3>{{facebook_count.impressions}}</h3>
                           <p>Impressions</p></div>
                        </li>
                       <li><div class="wtframe vl-div">
-                          <h3>30</h3>
+                          <h3>{{facebook_count.ctr}}</h3>
                           <p>CTR</p></div>
                        </li>
                       <li><div class="wtframe vl-div">
-                          <h3>$30</h3>
+                          <h3>${{facebook_count.spend}}</h3>
                           <p>Spend</p></div>
                        </li>
                       <li><div class="wtframe vl-div">
-                          <h3>$1.0</h3>
+                          <h3>${{facebook_count.cpc}}</h3>
                           <p>Avg. CPC</p></div>
                        </li>
                       <li><div class="wtframe vl-div">
-                          <h3>5</h3>
+                          <h3>{{facebook_count.cpp}}</h3>
                           <p>CPP</p></div>
                        </li>
                       <li><div class="wtframe vl-div">
-                          <h3>$2.0</h3>
-                          <p>Social Speed</p></div>
+                          <h3>${{facebook_count.social_spend}}</h3>
+                          <p>Social Spend</p></div>
                        </li>
                       <li><div class="wtframe vl-div">
-                          <h3>20</h3>
+                          <h3>{{facebook_count.social_impressions}}</h3>
                           <p>Social Impression</p></div>
                        </li>
                        <li><div class="wtframe vl-div">
-                          <h3>5</h3>
+                          <h3>{{facebook_count.reach}}</h3>
                           <p>Reach</p></div>
                        </li>
                        <li><div class="wtframe vl-div">
-                          <h3>10</h3>
+                          <h3>{{facebook_count.cpm}}</h3>
                           <p>CPM</p></div>
                        </li>
                     </ul>
@@ -168,7 +168,7 @@
                                     <div class="col-sm-4 pull-right">
                                        <div class="grp-vl">
                                           <div class="grpvl">
-                                               <h3 class="f-24">50</h3>
+                                               <h3 class="f-24">{{facebook_count.impressions}}</h3>
                                                <p>Impression</p>
                                           </div>
                                        </div>

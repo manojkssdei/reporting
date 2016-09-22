@@ -5,27 +5,6 @@ var fbConfig     = require('./FacebookAdsConfig.js');
 var fb           = fbConfig.getInstance();
 
 
-function formatDate(convertdate,type) {
-  var today = convertdate;
-  var month = today.getMonth() + +1;
-  if (month < 10) { month = "0" + month; } else { month = month; }
-  switch (type) {
-    case 'DATE':
-        return today.getFullYear() + "-" + month + "-" + today.getDate();
-        break;
-    case 'DATETIME':
-        var hours = today.getHours();
-        var minutes = today.getMinutes();
-        var seconds = today.getSeconds();
-        var strTime = hours + ':' + minutes + ':' + seconds;
-        var month = +today.getMonth() + +1;
-        return today.getFullYear() + "-" + month + "-" + today.getDate() + " " + strTime;
-        break;
-      
-    default: return today.getFullYear() + "-" + month + "-" + today.getDate();
-  }
-}
-
 /**
 Express Controller to Add Facebook Campaign
 Created : 2016-09-12
@@ -54,7 +33,8 @@ var useraccountid    = 114882752278348;
                   //res.insertedIds.map(function(obj){
                   // obj = mongoose.Schema.ObjectId(obj) 
                   //})
-                  facebook_ads.update({_id:{$in:res.insertedIds}},{$set:{created_date:formatDate(new Date(),'DATE')}},{multi:true},function(err5,res2)                  {
+                  var formatDate = new component();
+                  facebook_ads.update({_id:{$in:res.insertedIds}},{$set:{created_date:formatDate.formatDate(new Date(),'DATE')}},{multi:true},function(err5,res2)                  {
                         if (err5)
                         {
                           console.log(err5);
@@ -99,7 +79,8 @@ var useraccountid    = 114882752278348;
             console.log("step-2");
             if(response.data !== undefined && response.data != null && response.data != "" && response.data.length>0){
               console.log({created_date:formatDate(new Date(),'DATE')});
-              facebook_ads.collection.count({created_date:formatDate(new Date(),'DATE'),account_id:useraccountid},function(err5,rcount)
+              var formatDate = new component();
+              facebook_ads.collection.count({created_date:formatDate.formatDate(new Date(),'DATE'),account_id:useraccountid},function(err5,rcount)
               {
                 console.log("rcount : "+ rcount);
                   if (rcount > 0) {

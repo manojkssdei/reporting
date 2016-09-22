@@ -69,6 +69,7 @@ var global_message = {
     "date_comparison":'End time must be greater than start time. ',
     "endDateError" : 'End date must be same or greater than start date',
     "minbudgetamount":'The entered Budget is very less!',
+    "dashboard_fetch_err":'There is some problem in server, Please try after some time.'
 }
  
 var appConstants = {
@@ -119,17 +120,27 @@ var LOADER_CONS = {
     }
                 }
 /// loader constants end.
-/*
-var eventbritedetails =  {
-        'url'              : 'https://www.eventbrite.com/',
-        'clientID'         : '5RLGSPSPPPM237QT4Q',
-        'clientSecret'     : 'Q5ERHNU3YCQL5CGXFTSQAZREIKOYZEX3CHWNRLZRGB4YUEQ5PQ',
-       // 'callbackURL'      : 'http://alist.marketing:5000/auth/eventbrite/callback',
-        'callbackURL'      : 'http://alistixs.com',
-    }
 
-var eventbriteapi = {
-    'getclientsidetoken': eventbritedetails.url + 'oauth/authorize?response_type=token&client_id='+eventbritedetails.clientID +'&redirect_uri='+eventbritedetails.callbackURL,
-    'getserversidetoken': eventbritedetails.url + 'oauth/authorize?response_type=code&client_id='+eventbritedetails.clientID +'&redirect_uri='+eventbritedetails.callbackURL,
-}
-*/
+
+var CONSTANT_GR  = {
+    "xData": [0.287166,1.298953,3.310644,1.321583,5.345676,9.356738,7.366782],
+    "datasets": [{
+        "name": "Sales",
+        "data": [13.833,12.524,11.441,10.651,9.961,4.566,4.617],
+        "unit": "$",
+        "type": "line",
+        "valueDecimals": 1
+    }, {
+        "name": "Facebook",
+        "data": [26.857,27,27.111,27.2,27.272,30.545,32.181],
+        "unit": "$",
+        "type": "area",
+        "valueDecimals": 0
+    }, {
+        "name": "Email",
+        "data": [101,98,103,115,124,128,133],
+        "unit": "",
+        "type": "area",
+        "valueDecimals": 0
+    }]
+};

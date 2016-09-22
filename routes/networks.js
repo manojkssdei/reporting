@@ -18,6 +18,7 @@ module.exports = function(app, express) {
     /*Express routing for get summary report on dashboard */
     
     router.get('/getSummaryReport/', auth.check_permission, service_con.getSummaryReport);
+    router.post('/getSummaryReport/', auth.check_permission, service_con.getSummaryReport);
     
     
     
