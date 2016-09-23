@@ -59,9 +59,7 @@ module.exports = function()
     var spend = cpp =  cpm =  ctr =  impressions = social_spend =  social_impressions = reach = cpc = clicks = unique_clicks = conversion = 0;
     array.forEach(function(value,key){
       /////////////////////////////////////////////
-      console.log(value);
-      console.log(key);
-      spend += value.spend;
+     spend += value.spend;
       cpp   += value.cpp;
       ctr   += value.ctr;
       impressions += value.impressions;

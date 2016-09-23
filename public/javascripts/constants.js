@@ -50,7 +50,8 @@ var webservices = {
 	
 	
 	///////////////////////////////////// NEW services ///////////////////////////////
-	"getSummaryReport":"/networks/getSummaryReport",
+	"getSummaryReport"  :"/networks/getSummaryReport",
+	"getBreakdownReport":"/networks/getBreakdownReport",
 }
 
 var global_message = {

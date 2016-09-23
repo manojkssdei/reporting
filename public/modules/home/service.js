@@ -1,8 +1,8 @@
 /**
   Anguler Service to Manage Network, Budget and Placement
-  Created : 2016-05-18
-  Created By: Regal Singh
-  Module : Manage Network, Budget and Placement
+  Created : 2016-09-20
+  Created By: Manoj Singh
+  Module : Manage Services
 */
 
 'use strict'; 
@@ -18,7 +18,12 @@ angular.module('alisthub').factory('home', ['$q', '$timeout','communicationServi
     });
   };
 
-
+  url.getBreakdownReport = function(jsondata,callback){
+       communicationService.resultViaPost(webservices.getBreakdownReport,appConstants.authorizationKey,headerConstants.json,jsondata, function(res,req){
+       callback(res.data);
+    });
+  };
+   
   /*Webservice call for add network object*/
   url.updatecampaignstatus = function(jsondata,callback){
        communicationService.resultViaPost(webservices.updatecampaignstatus,appConstants.authorizationKey,headerConstants.json,jsondata, function(res,req){

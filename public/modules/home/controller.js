@@ -17,26 +17,24 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
         $scope.navCollapsed = $scope.navCollapsed === false ? true: false;
     };    
   }
+  //////////// Loader class start ///////////////////////
+        $scope.current =        LOADER_CONS.current;
+        $scope.max =            LOADER_CONS.max;
+        $scope.duration =       LOADER_CONS.duration;
+        $scope.stroke =         LOADER_CONS.stroke;
+        $scope.radius =         LOADER_CONS.radius;
+        $scope.isSemi =         LOADER_CONS.isSemi;
+        $scope.currentColor =   LOADER_CONS.currentColor;
+        $scope.bgColor =        LOADER_CONS.bgColor;
+        $scope.currentAnimation = LOADER_CONS.currentAnimation;
+        $scope.animationDelay   = LOADER_CONS.animationDelay;
+        $scope.getStyle = LOADER_CONS.getStyle;
+  //////////// Loader class end ////////////////////////
   
-  $scope.status1 = {
-    isopen: false
-  };
-  $scope.status2 = {
-    isopen: false
-  };
-  $scope.status5 = {
-    isopen: false
-  };
-  $scope.status8 = {
-    isopen: false
-  };
-  $scope.status9 = {
-    isopen: false
-  };
-  $scope.status10 = {
-    isopen: false
-  };
-
+  
+  $scope.status1  = {isopen: false}; $scope.status2 = { isopen: false }; $scope.status5 = { isopen: false };
+  $scope.status8  = { isopen: false };$scope.status9 = { isopen: false }; $scope.status10 = { isopen: false };
+  $scope.status11 = { isopen: false };
   $scope.toggled = function(open) {
     $log.log('Dropdown is now: ', open);
   };
@@ -61,112 +59,104 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.input_filter   = {};
   $scope.input_filter.id= "7";
   $scope.filter_title   = '7 Days';
+  $scope.fb_breakdown_title = 'Age';
   var data              = {};
   
   /**************************************** Services Start For Get Global Count  ******************************************/
   $scope.filters = {from:"",to:""};
+  $scope.email_count    = {};
+  $scope.email_graph    = {};
+  $scope.email_3d_pie   = {};
+  $scope.sale_2d_column = {};
+  $scope.fb_2d_bar      = {};
+  $scope.fb_2d_line     = {};
+  
+  $scope.loadingclass = 'loadingclass';
+  $scope.progressbardiv = 'progressbardiv';
+  $rootScope.noscrollclass = 'noscroll';
+  $scope.current = 80;
   
   $serviceTest.getSummaryReport($scope.filters,function(response){
-    console.log(response.code);
-    console.log(response.sdata);
+    
+    //////// end loader class //////////
+      $scope.loadingclass = ''; 
+      $scope.progressbardiv = ''; 
+      $rootScope.noscrollclass = '';  
+      $scope.current = 0;
+    //////// end loader class //////////
+        
     if (response.code == 200) {
+      
+    /*****************************  COUNT DATA ************************************/
     $scope.facebook_count = response.sdata.facebook_count;
-    $scope.sales_count = response.sdata.sales_count;
-    console.log($scope.facebook_count);
+    $scope.sales_count    = response.sdata.sales_count;
+    if (response.sdata.cnemail && response.sdata.cnemail != '' && response.sdata.cnemail.clicks !== undefined) {
+      $scope.email_count.email_clicks = response.sdata.cnemail.clicks[0].CLICKS;
+    }else{
+      $scope.email_count.email_sent   = 0;
+      $scope.email_count.email_clicks = 0;
+    }
+    if (response.sdata.cnemail && response.sdata.cnemail != '' && response.sdata.cnemail.email_count !== undefined) {
+      $scope.email_count.email_sent   = response.sdata.cnemail.email_count[0].COUNT; 
+    }
+    else{
+      $scope.email_count.email_sent = 0;
+    }
+    /*****************************  COUNT DATA ************************************/
+    /*****************************  GRAPH DATA ************************************/
+    // CASE 1 : EMAIL GRAPH DATA
+    //0=opened, 1=clicked, 2=unsubscribed,3= rejected and failed
+    var $serviceEmailGraph = $injector.get("EMAILGRAPH");
+    var $serviceSaleGraph  = $injector.get("SALEGRAPH");
+    var $serviceFBGraph    = $injector.get("FACEBOOKGRAPH");
+    
+    var e_graph    = response.sdata.cnemail.email_graph_data;
+     $scope.e_graph = e_graph; 
+     $serviceEmailGraph.draw_3d_pie({sent:$scope.email_count.email_sent,e_graph:e_graph},function(response){
+     $scope.email_3d_pie.plotOptions = response.plotOptions;
+     $scope.email_3d_pie.series      = response.series;
+     $scope.email_3d_pie.tooltip     = response.tooltip;
+     $scope.email_3d_pie.total_unopened     = response.total_unopened;
+     $scope.email_graph('pie');
+    });
+    // CASE 2 : SALES GRAPH DATA
+    
+     $serviceSaleGraph.draw_2d_column({sent:$scope.email_count.email_sent,e_graph:e_graph},function(response2){
+     $scope.sale_2d_column.plotOptions = response2.plotOptions;
+     $scope.sale_2d_column.series      = response2.series;
+     $scope.sale_2d_column.tooltip     = response2.tooltip;
+     $scope.sale_2d_column.xAxis       = response2.xAxis;
+     $scope.sales_graph('column');
+    });
+    // CASE 3 : FACEBOOK GRAPH DATA
+    // Breakdown base graph
+    
+     $serviceFBGraph.draw_2d_bar(e_graph,function(response3){
+     $scope.fb_2d_bar.plotOptions = response3.plotOptions;
+     $scope.fb_2d_bar.series      = response3.series;
+     $scope.fb_2d_bar.tooltip     = response3.tooltip;
+     $scope.fb_2d_bar.xAxis       = response3.xAxis;
+     $scope.facebook_graph('bar');
+    });
+    // CASE 4 : FACEBOOK  COMPARISON GRAPH DATA
+    $serviceFBGraph.draw_2d_line(e_graph,function(response4){
+     $scope.fb_2d_line.series      = response4.series;
+     $scope.fb_2d_line.xAxis       = response4.xAxis;
+     $scope.comparison_graph('line');
+    }); 
+     
+    /*****************************  GRAPH DATA ************************************/
     }else{
       $scope.error_msg = global_message.dashboard_fetch_err;
     }
-    
   }); 
-  /**************************************** Services Start For Get Global Count  ******************************************/
-  
-  $scope.graphDate = function(convertdate) {
-      var today = new Date(convertdate);     
-      var dd = today.getDate();
-      if(dd<10){ dd='0'+dd; }
-      var month = parseInt(today.getMonth());   
-      var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-      return  dd + " " + monthNames[month];
-  }
-  
-  function formatsearchDate(convertdate) {
-        if(convertdate != '' && convertdate != undefined)
-            var today = new Date(convertdate);
-        else 
-            var today = new Date();
-
-        var dd = today.getDate();
-        if(dd<10){ dd='0'+dd; }
-        var month = parseInt(today.getMonth())+1;        
-        if(month<10){  month='0'+month; } 
-        return today.getFullYear()+ ":" + month + ":" + dd + " 00:00:00";
-  }
-  
-  $scope.graphdaterange = function(startdatereports,enddatereports){
-    var date1 = new Date($scope.startdatereports);
-    var date2 = new Date($scope.enddatereports);
-    var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    $scope.labelvalues = [];
-    $scope.graph_date = [];
-    console.log(timeDiff +"::::"+diffDays);
-  }
-  
-  $scope.calculatedaterange = function(startdatereports,enddatereports){
-        $scope.startdatereports = startdatereports;
-        $scope.enddatereports   = enddatereports;
-                
-        var date1 = new Date($scope.startdatereports);
-        var date2 = new Date($scope.enddatereports);
-        
-        console.log(date1 +":::"+date2);
-        var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        $scope.labelvalues = [];
-        $scope.graph_date = [];
-        console.log(diffDays);
-        if(diffDays>=7){
-          var daysdate = parseInt(diffDays/7);
-          for(var i=1;i<9;i=i+1){
-            if(i==1){
-              var enddif = diffDays-daysdate;
-              var setstartdate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - diffDays));
-              var setenddate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - enddif));
-            console.log(setstartdate+" ::: "+setenddate);
-            $scope.graph_date.push({"start_date":setstartdate,"end_date":setenddate});
-            $scope.labelvalues.push(setstartdate+'-'+setenddate);
-            console.log($scope.graph_date);
-            } else if(i==7){
-              var setstartdate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - enddif1));
-              var setenddate = formatsearchDate(new Date($scope.enddatereports));
-$scope.graph_date.push({"start_date":setstartdate,"end_date":setenddate});
-$scope.labelvalues.push(setstartdate+'-'+setenddate);
-            } else {
-              var addt = i-1;
-              var enddif = diffDays-(daysdate*(addt)+addt);
-              var enddif1 = enddif-daysdate;
-              var setstartdate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - enddif));
-              var setenddate   = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - enddif1));
-            $scope.graph_date.push({"start_date":setstartdate,"end_date":setenddate});
-            $scope.labelvalues.push($scope.graphDate(setstartdate)+'-'+$scope.graphDate(setenddate));
-          }
-          }
-        }else {
-          for(var i=0;i<diffDays+1;i=i+1){
-              var setdate = formatsearchDate(new Date($scope.enddatereports).setDate(new Date($scope.enddatereports).getDate() - i));
-              $scope.graph_date.push({"start_date":setdate,"end_date":setdate});
-              $scope.labelvalues.push($scope.graphDate(setdate));
-          }
-        }
-      console.log($scope.graph_date);
-      console.log($scope.labelvalues);  
-  }
+  /**************************** Services Start For Get Global Count******************************/
   
   // Get filter
   $scope.show_custom = 0;
   $scope.getFilter   = function(str)
   {
-    console.log(str);
+    $scope.date_range = str;
     if (str != 'custom') {
      $scope.filter_title   = str+' Days'; 
      $scope.show_custom      = 0;
@@ -182,9 +172,24 @@ $scope.labelvalues.push(setstartdate+'-'+setenddate);
      $scope.filter_title   = 'Custom';
     }
   }
-  
   $scope.getFilter(7);
   
+  
+  /*************************** Facebook Breakdown Code Start ************************************/
+  $scope.facebook_breakdown = function(breakdown)
+  {
+    var filter = {};
+    filter.date_range         = $scope.date_range;
+    filter.breakdown          = breakdown;
+    $scope.fb_breakdown_title = breakdown;
+    $serviceTest.getBreakdownReport(filter,function(response){
+      
+    });
+  }
+  
+  /*************************** Facebook Breakdown Code Start ************************************/
+  
+    
   $scope.draw_graph = function(child)
   {
     var data = {
@@ -207,34 +212,20 @@ $scope.labelvalues.push(setstartdate+'-'+setenddate);
         
     return data;
   }
-  
-  
-  ////////////////////////////////////////////// Comparison Graphs ////////////////////////////////////////////////////////////
+    
+  ////////////////////////////////////////////// Comparison Graphs ////////////////////////////////////
   $scope.comparison             = {};
+  $scope.comparison_graph  = function(str){
   $scope.cgraph_type            = 'line';
-  $scope.comparison.chart_title = 'Comparison Data';
-  
-  $scope.comparison_graph  = function(){
+  $scope.comparison.chart_title = 'Comparison Data';  
   $scope.comparison.chart  = {type:$scope.cgraph_type};
-  $scope.comparison.xAxis  = {categories:['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']};
-  $scope.comparison.series = [{
-        data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-        color: '#FF0000',
-        name: 'Clicks'
-      },
-      {
-        data: [39.9, 51.5, 106.4, 149.2, 144.0, 106.0, 105.6, 148.5, 206.4, 194.1, 90.6, 44.4],
-        color: '#004080',
-        name: 'Impression'
-      }];
+  $scope.comparison.xAxis  = $scope.fb_2d_line.xAxis;
+  $scope.comparison.series = $scope.fb_2d_line.series;
   Highcharts.chart('container', $scope.draw_graph($scope.comparison));
   }
+  /////////////////////////////////////////// Comparison  Graphs ////////////////////////////////////////////
   
-  $scope.comparison_graph();
-  /////////////////////////////////////////// Comparison  Graphs //////////////////////////////////////////////////////////////
-  
-  ////////////////////////////////////////////// Facebook Graphs ////////////////////////////////////////////////////////////
-    
+  ////////////////////////////////////////////// Facebook Graphs ///////////////////////////////////////////
   $scope.facebook_graph = function(str){
   
   $scope.fb_chart_title = str;
@@ -243,113 +234,42 @@ $scope.labelvalues.push(setstartdate+'-'+setenddate);
   $scope.facebook.chart_title     = 'Age wise data';
   $scope.facebook.chart_sub_title = 'Source: Facebook ads data';
   $scope.facebook.chart           = {type:str};
-  $scope.facebook.xAxis           = [{
-                categories: ['13-17', '18-24', '25-34', '35-44', '45-54', '55+'],
-                reversed: false,
-                labels: {
-                    step: 1
-                }
-            }, { // mirror axis on right side
-                opposite: true,
-                reversed: false,
-                categories: ['13-17', '18-24', '25-34', '35-44', '45-54', '55+'],
-                linkedTo: 0,
-                labels: {
-                    step: 1
-                }
-            }];
-  $scope.facebook.yAxis = {
-                title: {
-                    text: null
-                },
-                labels: {
-                    formatter: function () {
-                        return Math.abs(this.value) + '%';
-                    }
-                }
-            };
+  $scope.facebook.xAxis           = $scope.fb_2d_bar.xAxis;
+  $scope.facebook.yAxis           = $scope.fb_2d_bar.yAxis;
   
   
-  $scope.facebook.series          = [{
-                name: 'Male',
-                data: [-12.5, -22.3, -11.2, -20.6, -10.2, -30.0],
-                color:'#4B6DAA'
-            }, {
-                name: 'Female',
-                data: [2.5, 12.3, 31.2, 30.6, 15.2, 25.0],
-                color:'#A8B6D1'
-            }];
-  $scope.facebook.plotOptions = {
-                series: {
-                    stacking: 'normal'
-                }
-            },
+  $scope.facebook.series          = $scope.fb_2d_bar.series;
+  $scope.facebook.plotOptions     = $scope.fb_2d_bar.plotOptions;
 
-  $scope.facebook.tooltip = {
-                formatter: function () {
-                    return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-                        'Age: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
-                }
-            }
+  $scope.facebook.tooltip         = $scope.fb_2d_bar.tooltip;
   Highcharts.chart('container_fb', $scope.draw_graph($scope.facebook));
   }
-  $scope.facebook_graph('bar');
-  
-  ////////////////////////////////////////////// Facebook Graphs ////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////// Facebook Graphs //////////////////////////////////////////////
   
   
-  /////////////////////////////////////////// Sales Graphs //////////////////////////////////////////////////////////////
+  /////////////////////////////////////////// Sales Graphs ///////////////////////////////////////////////////
   $scope.sales_graph = function(str){
   $scope.sales_graph_title = str;
   $scope.sales = {};
   $scope.sales.chart_title     = 'Ticket Sales';
   $scope.sales.chart_sub_title = 'Source: sales';
   $scope.sales.chart           = {type:str};
-  $scope.sales.xAxis           = {
-            categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-            crosshair: true
-        };
-  $scope.sales.yAxis = {
-            min: 0,
-            title: {
-                text: 'Number'
-            }
-        };
-  
-  $scope.sales.series       = [{
-            name: 'Ticket Sold',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
-            color:'#FF0000' 
-        }, {
-            name: 'Total Revenue',
-            data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
-            color:'#004080'
-        }];
-  $scope.sales.plotOptions = {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-  $scope.sales.tooltip = {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        }
+  $scope.sales.xAxis           = $scope.sale_2d_column.series;
+  $scope.sales.yAxis           = { min: 0, title: { text: 'Number' } };
+  $scope.sales.series          = $scope.sale_2d_column.series;
+  $scope.sales.plotOptions     = $scope.sale_2d_column.plotOptions,
+  $scope.sales.tooltip         = $scope.sale_2d_column.tooltip
   Highcharts.chart('container_sales', $scope.draw_graph($scope.sales));
   }
-  $scope.sales_graph('column');
-  /////////////////////////////////////////// Sales Graphs //////////////////////////////////////////////////////////////
+  
+  /////////////////////////////////////////// Sales Graphs ///////////////////////////////////////////////
   
  
-  /////////////////////////////////////////// Email Graphs //////////////////////////////////////////////////////////////
+  /////////////////////////////////////////// Email Graphs ////////////////////////////////////
   $scope.email_graph = function(str){
   $scope.email_graph_title = str;
-  $scope.email = {};
-  $scope.email.chart           =  {
+  $scope.email       = {};
+  $scope.email.chart =  {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
@@ -366,76 +286,26 @@ $scope.labelvalues.push(setstartdate+'-'+setenddate);
   $scope.email.xAxis           = {
             categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
             crosshair: true
-        };
+  };
   $scope.email.yAxis           = {
             min: 0,
             title: {
                 text: 'Number'
             }
         };
-  
-  
-  $scope.email.series         = [{
-                name: 'Percent',
-                colorByPoint: true,
-                data: [{
-                    name: 'Opened',
-                    y: 56.33
-                }, {
-                    name: 'Links Clicked',
-                    y: 24.03,
-                    sliced: true,
-                    selected: true
-                }, {
-                    name: 'Bounced',
-                    y: 10.38
-                }, {
-                    name: 'Unopened',
-                    y: 4.77
-                }, {
-                    name: ' Unsubscribes',
-                    y: 0.91
-                }]
-            }];
-  $scope.email.plotOptions   = {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    depth: 35,
-                    dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
-                }
-            },
-  $scope.email.tooltip = {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            };
+  $scope.email.series         = $scope.email_3d_pie.series;
+  $scope.email.plotOptions    = $scope.email_3d_pie.plotOptions,
+  $scope.email.tooltip        = $scope.email_3d_pie.tooltip;
   Highcharts.chart('container_email', $scope.draw_graph($scope.email));
   }
-  $scope.email_graph('pie');
+   
   
-  /////////////////////////////////////////// Email Graphs ////////////////////////////////////////////////////////////// 
+  /////////////////////////////////////////// Email Graphs   /////////////////////////////////// 
     
   function sortNumber(a,b) {
       return a - b;
   }
-
-
-
-  function formatsearchDate(convertdate) {
-      if(convertdate != '' && convertdate != undefined)
-          var today = new Date(convertdate);
-      else 
-          var today = new Date();
-
-      var dd = today.getDate();
-      if(dd<10){ dd='0'+dd; }
-      var month = parseInt(today.getMonth())+1;        
-      if(month<10){  month='0'+month; } 
-      return  month + "-" + dd + "-" + today.getFullYear();
-  }
-
+ 
 })
 
 .filter('underscoreless', function () {

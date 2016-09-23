@@ -4,184 +4,162 @@
    <div ng-class="loadingclass"></div>
     <!-- Form COntainer --> 
     
+   <!-- Form COntainer -->
+    
     <div class="wt-frame form-section">
-        <section class="d-panel">
-            <section class="d-panel-heading">
-                <section class="row">
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label>Networks</label>
-                        <select class="form-control" ng-model="searchcampiagn" ng-change="searchdata()">
-                          <option value="1,2">All</option>
-                          <option value="1">Facebook</option>
-                          <option value="2">Google</option>
-                        </select>
-                      </div>
+         <section class="d-title form-group clearfix">
+             <div class="pull-left"><select class="form-control w-auto">
+                  <option value="Sort URL">Sort URL</option>
+                  <option value="www.facebook.com">www.facebook.com</option>
+                </select></div>
+             <div class="date-range pull-right">
+                   <div is-open="status.isopen" uib-dropdown="" class="btn-group btn-dropdown">
+                      <button ng-disabled="disabled" uib-dropdown-toggle="" class="btn" type="button" id="single-button">
+                        7 Days <span class="caret"></span>
+                      </button>
+                      <ul aria-labelledby="single-button" role="menu" uib-dropdown-menu="" class="dropdown-menu">
+                        <li role="menuitem"><a href="#">7 Days</a></li>
+                        <li role="menuitem"><a href="#">15 Days</a></li>
+                        <li role="menuitem"><a href="#">30 Days</a></li>
+                        <li role="menuitem"><a href="#">Custom</a></li>
+                      </ul>
                     </div>
-                    
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label>Campaigns</label>
-                        <select class="form-control" ng-model="findcampaign" ng-change="searchdata()">
-                          <option value="">All</option>
-                          <option ng-repeat="campaignname in campaignnamelist" value="{{campaignname}}">{{campaignname}}</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-2">
-                      <div class="form-group">
-                        <label>Group</label>
-                        <select class="form-control" ng-model="findcampaigngroup" ng-change="searchdata()">
-                          <option value="">All</option>
-                          <option ng-repeat="groupname in groupnamelist" value="{{groupname}}">{{groupname}}</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-2">
-                      <div class="form-group">
-                        <label>Objective</label>
-                        <select class="form-control" ng-model="findcampaignobjective" ng-change="searchdata()">
-                          <option value="">All</option>
-                          <option ng-repeat="objectivename in objectivenamelist" value="{{objectivename}}">{{objectivename | underscoreless}}</option>
-                        </select>
-                      </div>
-                    </div>
+                         
+                   </div>
+              <ul class="from-to posrt">
+                    <li>
+                       <label>From</label> 
+                       <input type="text" class="form-control w-auto calendar-input">
+                    </li>
+                    <li>
+                       <label>To</label> 
+                       <input type="text" class="form-control w-auto calendar-input">
+                    </li>
+                </ul>
+        </section>
+          
+          <section class="gray-frame">
+               
+               <section class="brief-info form-group">
+                    <ul class="values-list clearfix">
+                       <li>
+                           <div class="wtframe">
+                              <h3>50</h3>
+                              <p>Clicks</p>
+                          </div>
+                       </li>
+                      <li><div class="wtframe">
+                          <h3>50</h3>
+                          <p>Impressions</p></div>
+                       </li>
+                      <li><div class="wtframe">
+                          <h3>30</h3>
+                          <p>CTR</p></div>
+                       </li>
+                      <li><div class="wtframe">
+                          <h3>$30</h3>
+                          <p>Spend</p></div>
+                       </li>
+                      <li><div class="wtframe">
+                          <h3>$1.0</h3>
+                          <p>Avg. CPC</p></div>
+                       </li>
+                      
+                    </ul>
+                </section>
+          
+              <div class="form-group module-widget">
+                 <section class="panel-white">
+                     <img alt="" src="/images/grapg-1.jpg">
+                 </section>      
                    
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            <label>Graph Type</label>
-                            <select class="form-controlcd form-control" ng-model="graphtype">
-                                <option value="Spend">Spend</option>
-                                <option value="Impressions">Impressions</option>                                
-                                <option value="Clicks">Clicks</option>                               
-                            </select>
-                        </div>
-                    </div>
-                </section>    
-                <section class="row searchheight">
-                <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Date Filter</label>
-                            <select class="form-controlcd form-control" ng-model="datetype">
-                                <!-- <option value="LifeTime">LifeTime</option>-->
-                                <option value="Today">Today</option>
-                                <option value="Yesterday">Yesterday</option>
-                                <option value="Last 7 days">Last 7 days</option>
-                                <option value="Last 14 days">Last 14 days</option>
-                                <option value="Last 30 days">Last 30 days</option>
-                                <option value="Last month">Last month</option>
-                                <option value="This month">This month</option>                                
-                                <option value="Custom">Custom</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-2" ng-show="showdatereports">
-                        <div class="form-group">
-                                      <section class="left-label-reports">
-                                          <label for="EndTime">Start Date</label>
-                                          <section class="left-fields">                                            
-                                                <section class="select-date-reports">
-                                                    <div class='input-group date' id='datetimepicker1'>   
-                                                      <input type="text" class="form-control" uib-datepicker-popup="{{'MM-dd-yyyy'}}" ng-model="startdatereports" is-open="popuprepo.opened" datepicker-options="dateoptions"  close-text="Close" alt-input-formats="{{'MM-dd-yyyy'}}" ng-change="customsearchdata()"/>
-                                                      <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"  ng-click="openrep()"></span> </span>
-                                                    </div>
-                                                </section>
-                                            <section class="clearfix"></section>
-                                          </section>
-                                      </section>
-                                </div>
-                      </div>
-                      <div class="col-sm-2" ng-show="showdatereports">            
-                                    <div class="form-group">
-                                      <section class="left-label-reports">
-                                          <label for="EndTime">End Date</label>
-                                          <section class="left-fields">                                            
-                                                <section class="select-date-reports">
-                                                    <div class='input-group date' id='datetimepicker1'>
-                                                      <input type="text" class="form-control" uib-datepicker-popup="{{'MM-dd-yyyy'}}" ng-model="enddatereports" is-open="popuprepor.opened" datepicker-options="dateoptions"  close-text="Close" alt-input-formats="{{'MM-dd-yyyy'}}"  ng-change="customsearchdata()"/>
-                                                      <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"  ng-click="openrepo()"></span> </span>  
-                                                    </div>
-                                                </section>
-                                            
-                                          </section>
-                                      </section>
-                                    </div> 
-                         </div>
-                    </section>
-                </section>
-            </section>
-            <section class="d-panel-body">
-                <section class="row">
-                 <div id="container" style="min-width: 710px;height:500px; margin: 0 auto"></div>                  
-                </section>
-            </section>
-        </section> <!--/Top Section-->
-        <section class="module">
-            <section class="prof-hd no-icon">
-                    <h2>Campaign Listing </h2>
-            </section>
-            <section class="gray-frame removepadding">
-                <section class="grid-btn-top row">
-                    <section class="col-sm-12 right-btns text-right">
-                    
-                  </section>
-                </section>
-                
-                <section class="grid-widget">
-                  <div class="table-responsive">
-                    <!-- <table class="table table-striped table-reports">-->
-                    <table class="table table-striped table-reports widthset">
-                        <thead>
-                            <tr>
-                                <th class="maketableleft">Objective</th>
-                                <th class="maketableleft">Campaign Name</th>
-                                <th class="maketableleft">Group</th>
-                                <th class="numbers">Clicks</th>
-                                <th class="numbers">Impressions</th>
-                                <th class="numbers">CTR(%)</th>
-                                <th class="numbers">Spend($)</th>     
-                                <th class="numbers">Cost</th> 
-                                <th class="numbers">Results</th> 
-                                <th class="numbers">CPM</th>   
-                                <th class="numbers">CPC</th>
-                                <th class="numbers">Schedule</th>                                   
-                            </tr>
-                        </thead>
-                        <tbody>
-                           <!--<tr ng-repeat="campaignlistdata in campaignlist | filter:{campaign_name: findcampaign,group_name: findcampaigngroup,objective: findcampaignobjective}">-->
-                           <tr dir-paginate = "campaignlistdata in campaignlist | itemsPerPage:pagesize">
-                                <td class="maketableleft">{{campaignlistdata.objective | underscoreless}}</td>
-                                <td class="maketableleft" ng-show="campaignlistdata.network_id==1"><a href="#/reportdetails/{{campaignlistdata.ad_id}}/{{campaignlistdata.network_id}}">{{campaignlistdata.campaign_name}}</a></td>
-                                <td class="maketableleft" ng-show="campaignlistdata.network_id==2"><a href="#/reportdetails/{{campaignlistdata.campaign_id}}/{{campaignlistdata.network_id}}">{{campaignlistdata.campaign_name}}</a></td>
-                                <td class="maketableleft">{{campaignlistdata.group_name}}</td>   
-                                <td class="numbers">{{campaignlistdata.clickstotal}}</td>
-                                <td class="numbers">{{campaignlistdata.impressionstotal}}</td>
-                                <td class="numbers">{{campaignlistdata.ctrtotal}}</td>
-                                <td class="numbers">{{campaignlistdata.spendtotal}}</td>     
-                                <td class="numbers">{{campaignlistdata.totalaction}}</td>
-                                <td class="numbers">{{campaignlistdata.postengagement}}</td>  
-                                <td class="numbers">{{campaignlistdata.cpmtotal}}</td>   
-                                <td class="numbers">{{campaignlistdata.cpctotal}}</td>
-                                <td class="numbers">{{campaignlistdata.date_stop | cmdate:'MM dd, yyyy'}}</td> 
-                            </tr> 
-                            <tr ng-show="!campaignlist.length">
-                            <td colspan="10" align="center">No Record Found</td>
-                            </tr> 
-                           
-                        </tbody>                
-                    </table>
-                    
-                  </div> 
-                  <div ng-show="campaignlist.length"><span class="perpagesize">Campaigns Per Page: </span> <select class="form-control pagesize" ng-model="pagesize">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                  </select></div><dir-pagination-controls max-size=pagesize direction-links="true" boundary-links="true" ></dir-pagination-controls>                
+              </div>
+              
+              <section class="row" ng-controller="heightfunction" ng-init="getHeight();">
+                 <section class="col-sm-6">
+                     <section class="module-widget form-group" id="getfheight" style="height:{{setHeight}}">
+                         <section class="panel-white">
+                          <h3>Referrers</h3>
+                          <img alt="" src="/images/referrers.jpg">
+                        </section>
+                     </section>
+                 </section>
+                 <section class="col-sm-6">
+                     <section class="module-widget form-group" id="getsheight" style="height:{{setHeight}}">
+                         <section class="panel-white">
+                          <h3>Age</h3>
+                          <table class="data-tabl table-striped"> 
+                                      <thead> 
+                                         <tr>                                         
+                                            <th colspan="2" class="tb-tr rt-bdr">Male</th> 
+                                            <th colspan="2">Female</th> 
+                                         </tr> 
+                                     </thead>
+                                     <tbody> 
+                                     <tr> 
+                                        <td><strong>13-17</strong></td> 
+                                        <td class="tb-tr rt-bdr">19%</td> 
+                                        <td>8%</td> 
+                                        <td class="tb-tr totl-col">26%</td> 
+                                    </tr> 
+                                    <tr> 
+                                        <td><strong>18-24</strong></td> 
+                                        <td class="tb-tr rt-bdr">22%</td> 
+                                        <td>8%</td> 
+                                        <td class="tb-tr totl-col">30%</td> 
+                                    </tr> 
+                                    <tr> 
+                                        <td><strong>25-34</strong></td> 
+                                        <td class="tb-tr rt-bdr">9%</td> 
+                                        <td>5%</td> 
+                                        <td class="tb-tr totl-col">14%</td> 
+                                    </tr> 
+                                    <tr> 
+                                        <td><strong>35-44</strong></td> 
+                                        <td class="tb-tr rt-bdr">6%</td> 
+                                        <td>6%</td> 
+                                        <td class="tb-tr totl-col">12%</td> 
+                                    </tr> 
+                                    <tr> 
+                                        <td><strong>45-54</strong></td> 
+                                        <td class="tb-tr rt-bdr">6%</td> 
+                                        <td>6%</td> 
+                                        <td class="tb-tr totl-col">12%</td> 
+                                    </tr> 
+                                    <tr> 
+                                        <td><strong>55+</strong></td> 
+                                        <td class="tb-tr rt-bdr">2%</td> 
+                                        <td>5%</td> 
+                                        <td class="tb-tr totl-col">7%</td> 
+                                    </tr> 
+                                  </tbody> </table>
+                        </section>
+                     </section>
+                 </section>
               </section>
-            </section>
-        </section><!--/Upcoming Events-->
+              <section class="row">
+                 <section class="col-sm-6">
+                     <section class="module-widget form-group">
+                         <section class="panel-white">
+                          <h3>Countries</h3>
+                          <img alt="" src="/images/countries.jpg">
+                        </section>
+                     </section>
+                 </section>
+                 <section class="col-sm-6">
+                     <section class="module-widget form-group">
+                         <section class="panel-white">
+                          <h3>Comparison</h3>
+                          <div id="container" style="min-width: 310px; height: 300px; margin: 0 auto"></div></div> 
+                        </section>
+                     </section>
+                 </section>
+              </section>
+          </section>
+           
     </div>
+
+<!-- //Form COntainer -->
     <!-- //Form COntainer --> 
     <div id="sticky-anchor"></div>
 </div>

@@ -24,12 +24,13 @@ module.exports = function()
             else
             {
               facebook_ads.aggregate({$match:input_fb},{$group:{_id:"$created_date",count:{$sum:1},cpm:{$sum:"$cpm"},cpp:{$sum:"$cpp"},ctr:{$sum:"$ctr"},impressions:{$sum:"$impressions"},spend:{$sum:"$spend"},social_spend:{$sum:"$social_spend"},social_impressions:{$sum:"$social_impressions"},reach:{$sum:"$reach"},cpc:{$sum:"$cpc"},unique_clicks:{$sum:"$unique_clicks"},clicks:{$sum:"$clicks"}}},function(err, fb_count) {
-                var count_exp  = new common();
-                var count_email= new email_comp();
+                var count_exp       = new common();
+                var count_email     = new email_comp();
                 var exp_cnt         = count_exp.getKeySum(fb_count);
                 var exp_cnticket    = count_exp.getKeySumTicket(sales_count);
-                var exp_cnemail     = count_email.getSumEmail(req);
-                return next({sales_count:exp_cnticket,facebook_count:exp_cnt,email_count:0});
+                count_email.getSumEmail(req,function(tdata){
+                return next({sales_count:exp_cnticket,facebook_count:exp_cnt,cnemail:tdata});  
+                });
               });
             }
     });

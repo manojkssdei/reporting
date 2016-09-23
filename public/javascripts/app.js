@@ -123,7 +123,7 @@ var routerApp = angular.module('alisthub', ['angular-loading-bar','ngRoute','aut
                authentication:routerApp.logauthentication,
                resources: ['$ocLazyLoad', '$injector',function($ocLazyLoad, $injector) {
                 // you can lazy load files for an existing module
-                return $ocLazyLoad.load('modules/home/service.js')/*.then(function(){
+                return $ocLazyLoad.load(['modules/home/service.js','modules/graph_helpers/graphs/email_graph.js','modules/graph_helpers/graphs/sale_graph.js','modules/graph_helpers/graphs/fb_graph.js'])/*.then(function(){
                     //var $serviceTest = $injector.get("CustomerFirstLoad");
                            // return $serviceTest.testLoad(); // <-- CHANGED HERE
                     })*/.then(function(){
