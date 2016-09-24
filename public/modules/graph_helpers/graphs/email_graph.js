@@ -18,9 +18,9 @@ angular.module('alisthub').factory('EMAILGRAPH', ['$q', '$timeout','communicatio
     var subtotal = 0;var unsubs = 0;var unopened = 0; var bounced = 0;var clicked = 0;var opened = 0;
     total_sent = jsondata.sent;
     var jdata  = jsondata.e_graph;
-    console.log(jsondata);
+    
     jdata.forEach(function(value){
-      console.log(value);
+     
       if (value.event_type == 0) {
         opened  = (value.CNT/total_sent)*100;
         subtotal += value.CNT;
@@ -63,7 +63,7 @@ angular.module('alisthub').factory('EMAILGRAPH', ['$q', '$timeout','communicatio
                     y: Number(unsubs.toFixed(2))
                 }]
     }];
-    console.log(email.series);
+    
     email.plotOptions  = {
                 pie: {
                     allowPointSelect: true,

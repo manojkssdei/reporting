@@ -101,44 +101,44 @@
                 <section class="brief-info form-group">
                     <ul class="values-list clearfix">
                        <li>
-                           <div class="wtframe vl-div">
+                           <div class="wtframe vl-div {{focus_active1}}" ng-click="focus_on_breakdown('Clicks','clicks',facebook_count.clicks,1)">
                               <h3>{{facebook_count.clicks}}</h3>
                               <p>Clicks</p>
                           </div>
                        </li>
-                      <li><div class="wtframe vl-div active">
+                      <li><div class="wtframe vl-div {{focus_active2}}" ng-click="focus_on_breakdown('Impressions','impressions',facebook_count.impressions,2)">
                           <h3>{{facebook_count.impressions}}</h3>
                           <p>Impressions</p></div>
                        </li>
-                      <li><div class="wtframe vl-div">
+                      <li><div class="wtframe vl-div {{focus_active3}}" ng-click="focus_on_breakdown('CTR','ctr',facebook_count.ctr,3)">
                           <h3>{{facebook_count.ctr}}</h3>
                           <p>CTR</p></div>
                        </li>
-                      <li><div class="wtframe vl-div">
+                      <li><div class="wtframe vl-div {{focus_active4}}" ng-click="focus_on_breakdown('Spend','spend',facebook_count.spend,4)">
                           <h3>${{facebook_count.spend}}</h3>
                           <p>Spend</p></div>
                        </li>
-                      <li><div class="wtframe vl-div">
+                      <li><div class="wtframe vl-div {{focus_active5}}" ng-click="focus_on_breakdown('Avg. CPC','cpc',facebook_count.cpc,5)">
                           <h3>${{facebook_count.cpc}}</h3>
                           <p>Avg. CPC</p></div>
                        </li>
-                      <li><div class="wtframe vl-div">
+                      <li><div class="wtframe vl-div {{focus_active6}}" ng-click="focus_on_breakdown('CPP','cpp',facebook_count.cpp,6)">
                           <h3>{{facebook_count.cpp}}</h3>
                           <p>CPP</p></div>
                        </li>
-                      <li><div class="wtframe vl-div">
+                      <li><div class="wtframe vl-div {{focus_active7}}" ng-click="focus_on_breakdown('Social Spend','social_spend',facebook_count.social_spend,7)">
                           <h3>${{facebook_count.social_spend}}</h3>
                           <p>Social Spend</p></div>
                        </li>
-                      <li><div class="wtframe vl-div">
+                      <li><div class="wtframe vl-div {{focus_active8}}" ng-click="focus_on_breakdown('Social Impression','social_impressions',facebook_count.social_impressions,8)">
                           <h3>{{facebook_count.social_impressions}}</h3>
                           <p>Social Impression</p></div>
                        </li>
-                       <li><div class="wtframe vl-div">
+                       <li><div class="wtframe vl-div {{focus_active9}}" ng-click="focus_on_breakdown('Reach','reach',facebook_count.reach,9)">
                           <h3>{{facebook_count.reach}}</h3>
                           <p>Reach</p></div>
                        </li>
-                       <li><div class="wtframe vl-div">
+                       <li><div class="wtframe vl-div {{focus_active10}}" ng-click="focus_on_breakdown('CPM','cpm',facebook_count.cpm,10)">
                           <h3>{{facebook_count.cpm}}</h3>
                           <p>CPM</p></div>
                        </li>
@@ -196,7 +196,7 @@
                               <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                                 <li role="menuitem"><a ng-click="facebook_graph('bar');">Bar Graph</a></li>
                                 <li role="menuitem"><a ng-click="facebook_graph('line');">Line Chart</a></li>
-                                <li role="menuitem"><a ng-click="facebook_graph('pie');">Pie Chart</a></li>
+                                <!--<li role="menuitem"><a ng-click="facebook_graph('pie');">Pie Chart</a></li>-->
                               </ul>
                             </div>
                             </div>
@@ -208,8 +208,8 @@
                                     <div class="col-sm-4 pull-right">
                                        <div class="grp-vl">
                                           <div class="grpvl">
-                                               <h3 class="f-24">{{facebook_count.impressions}}</h3>
-                                               <p>Impression</p>
+                                               <h3 class="f-24">{{f_checked}}</h3>
+                                               <p>{{focus_title}}</p>
                                           </div>
                                        </div>
                                     </div>
@@ -229,13 +229,14 @@
                                          </tr> 
                                      </thead>
                                      <tbody> 
-                                     <tr> 
-                                        <td><strong>13-17</strong></td> 
-                                        <td class="tb-tr rt-bdr">19%</td> 
-                                        <td>8%</td> 
+                                     
+                                     <tr ng-repeat="(key,fbdata) in fb_2d_bar.m_categories"> 
+                                        <td><strong>{{fbdata}}</strong></td> 
+                                        <td class="tb-tr rt-bdr">{{fb_2d_bar.m_series_percent_data[key]}}%</td> 
+                                        <td>{{fb_2d_bar.f_series_percent_data[key]}}%</td> 
                                         <td class="tb-tr totl-col">26%</td> 
                                     </tr> 
-                                    <tr> 
+                                    <!--<tr> 
                                         <td><strong>18-24</strong></td> 
                                         <td class="tb-tr rt-bdr">22%</td> 
                                         <td>8%</td> 
@@ -264,7 +265,8 @@
                                         <td class="tb-tr rt-bdr">2%</td> 
                                         <td>5%</td> 
                                         <td class="tb-tr totl-col">7%</td> 
-                                    </tr> 
+                                    </tr>-->
+                                    
                                   </tbody> </table>
                              </section>
                          </section>  

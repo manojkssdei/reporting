@@ -21,5 +21,6 @@ Module : getBreakdownReport
 */
 
 exports.getBreakdownReport = function(req, res, next) {
-    res.send({"code":200,"sdata":"","message":"success!"});
+var facebook_manager    = require('./../../crons/controllers/facebook_crons.js');
+    facebook_manager.getFacebookBreakdownReports(req,res); 
 }

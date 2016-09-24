@@ -1,9 +1,9 @@
 var facebook_ads = require('./../../../models/facebook_ads.js');
 var db           = require('../../../db.js');
 // Creation of object for services
-var fbConfig     = require('./FacebookAdsConfig.js');  
+var fbConfig     = require('./FacebookAdsConfig.js');
+var component    = require('./../../../component/common.js');
 var fb           = fbConfig.getInstance();
-
 
 /**
 Express Controller to Add Facebook Campaign
@@ -14,9 +14,6 @@ Frequency : date_preset must be one of the following values: today, yesterday, l
 **/
 exports.saveFacebookReport = function(){
 
-//var setaccesstoken   = "EAAPuVVbNTTMBAL9AAkbkKazTgw66NCYaYVTwbKrqRtSzYJJXVteKsBX4zxkx3W4CvnEwDMxQJWZCZA2PWWLoOrM0wiXazoawrSn1wzAyO1I0TalmyGDjOXKOqxRNZASZAFaYPASzIYn15lX3gK5XvhN9LwgD3F9NIo7RKIXwUuf9hMXfGV1qyoHAJpZCSOixKUhhYjgY2Mnv6UUowWDfZA";
-//var useraccountid    = 114882752278348;
-    
     function save_data(data)
     {
       facebook_ads.collection.insert(data,function(err2,res)
@@ -66,19 +63,19 @@ exports.saveFacebookReport = function(){
       
     function run_facebook(setaccesstoken,useraccountid)
     {
-        var fields  = ["account_id","account_name","action_values","actions","ad_id","ad_name","adset_id","adset_name","app_store_clicks","buying_type","campaign_id","cost_per_unique_action_type","cost_per_unique_click","cpm","cpp","ctr","cost_per_unique_inline_link_click","call_to_action_clicks","campaign_name","canvas_avg_view_percent","canvas_avg_view_time","cost_per_10_sec_video_view","cost_per_action_type","cost_per_inline_link_click","cost_per_inline_post_engagement","cost_per_total_action","clicks","cpc","date_start","date_stop","deeplink_clicks","frequency","impressions","inline_link_clicks","inline_link_click_ctr","inline_post_engagement","newsfeed_avg_position","newsfeed_clicks","newsfeed_impressions","objective","place_page_name","reach","relevance_score","social_clicks","social_impressions","social_reach","social_spend","spend","total_action_value","total_actions","total_unique_actions","unique_ctr","unique_actions","unique_clicks","unique_impressions","unique_inline_link_click_ctr","unique_inline_link_clicks","unique_link_clicks_ctr","unique_social_clicks","unique_social_impressions","video_10_sec_watched_actions","video_15_sec_watched_actions","video_30_sec_watched_actions","video_avg_pct_watched_actions","video_avg_sec_watched_actions","video_complete_watched_actions","video_p100_watched_actions","video_p25_watched_actions","video_p50_watched_actions","video_p75_watched_actions","video_p95_watched_actions","website_clicks","website_ctr"];
-        
+        var fields       = ["account_id","account_name","action_values","actions","ad_id","ad_name","adset_id","adset_name","app_store_clicks","buying_type","campaign_id","cost_per_unique_action_type","cost_per_unique_click","cpm","cpp","ctr","cost_per_unique_inline_link_click","call_to_action_clicks","campaign_name","canvas_avg_view_percent","canvas_avg_view_time","cost_per_10_sec_video_view","cost_per_action_type","cost_per_inline_link_click","cost_per_inline_post_engagement","cost_per_total_action","clicks","cpc","date_start","date_stop","deeplink_clicks","frequency","impressions","inline_link_clicks","inline_link_click_ctr","inline_post_engagement","newsfeed_avg_position","newsfeed_clicks","newsfeed_impressions","objective","place_page_name","reach","relevance_score","social_clicks","social_impressions","social_reach","social_spend","spend","total_action_value","total_actions","total_unique_actions","unique_ctr","unique_actions","unique_clicks","unique_impressions","unique_inline_link_click_ctr","unique_inline_link_clicks","unique_link_clicks_ctr","unique_social_clicks","unique_social_impressions","video_10_sec_watched_actions","video_15_sec_watched_actions","video_30_sec_watched_actions","video_avg_pct_watched_actions","video_avg_sec_watched_actions","video_complete_watched_actions","video_p100_watched_actions","video_p25_watched_actions","video_p50_watched_actions","video_p75_watched_actions","video_p95_watched_actions","website_clicks","website_ctr"];
         fb.getreportCampaign({     
             fields:JSON.stringify(fields),     
-            date_preset:'last_90_days',
+            date_preset:'last_7_days',
             level:'ad',    
             access_token:setaccesstoken,
             account_id:useraccountid,
             time_increment:1
         },function(error, response){
+            console.log(response);
             console.log("step-2");
-            if(response.data !== undefined && response.data != null && response.data != "" && response.data.length>0){
-              console.log({created_date:formatDate(new Date(),'DATE')});
+            if(!response.error && response.data !== undefined && response.data != null && response.data != "" && response.data.length>0){
+              //console.log({created_date:formatDate(new Date(),'DATE')});
               var formatDate = new component();
               facebook_ads.collection.count({created_date:formatDate.formatDate(new Date(),'DATE'),account_id:useraccountid},function(err5,rcount)
               {
@@ -120,10 +117,7 @@ exports.saveFacebookReport = function(){
                     }
                     connection.end();
     });
-    // To save facebook data in db
-    // Createdby : Manoj Kumar Singh
-    // Date : 2016-09-15
-    //run_facebook(setaccesstoken,useraccountid);
+    
 }
 
 /**
@@ -132,24 +126,34 @@ Created : 2016-09-12
 Created By: Manoj Singh
 Module : getfacebookcampaignreports
 */
-
-
 exports.getfacebookcampaignreports = function(req,res){   
     
-    var fields = ["campaign_id","campaign_name","account_id","objective","cpm","cpc","impressions","spend","ctr","adset_name","ad_id","ad_name","clicks","cost_per_total_action","inline_post_engagement"];  
-
+    var fields = ["campaign_id","campaign_name","account_id","objective","cpm","cpc","impressions","spend","ctr","adset_name","ad_id","ad_name","clicks","cost_per_total_action","inline_post_engagement"];
+   // var fields = fields;
+    
    // act_114882752278348/campaigns?fields=id,name,objective,status,ads{adset,adset_id,bid_amount,bid_type,created_time,account_id,name},adsets{name,lifetime_budget,daily_budget,billing_event,budget_remaining,adset_schedule,start_time,end_time,targeting}
+  var setaccesstoken   = "EAAPuVVbNTTMBAL9AAkbkKazTgw66NCYaYVTwbKrqRtSzYJJXVteKsBX4zxkx3W4CvnEwDMxQJWZCZA2PWWLoOrM0wiXazoawrSn1wzAyO1I0TalmyGDjOXKOqxRNZASZAFaYPASzIYn15lX3gK5XvhN9LwgD3F9NIo7RKIXwUuf9hMXfGV1qyoHAJpZCSOixKUhhYjgY2Mnv6UUowWDfZA";
+  var useraccountid    = 114882752278348;
    
-    if(req.body.breakdown=='0'){
+    if(req.body.breakdown=='age-gender'){
       var breakdown = ['age','gender'];
     }else {
       var breakdown = [req.body.breakdown]; 
     }
-     
-    if(req.configuredetails.accesstoken!=""){ var setaccesstoken = req.configuredetails.accesstoken; }
-    if(req.configuredetails.useraccountid!=""){var useraccountid = req.configuredetails.useraccountid; }
-
-    if(req.body.facebookdateRangeType=='custom'){       
+    if(req.body.date_range == 7){ time_range = 'last_7_days'; }
+    if(req.body.date_range == 15){ time_range = 'last_14_days'; }
+    if(req.body.date_range == 30){ time_range = 'last_30_days'; }
+    if(req.body.date_range == "custom"){ time_range = 'last_14_days'; }
+    
+    if(req.configuredetails && req.configuredetails.accesstoken!="" && req.configuredetails.accesstoken !== undefined)
+    { var setaccesstoken = req.configuredetails.accesstoken; }
+    if(req.configuredetails && req.configuredetails.useraccountid!="" && req.configuredetails.useraccountid !== undefined)
+    {var useraccountid = req.configuredetails.useraccountid; }
+    // for testing
+    var setaccesstoken = setaccesstoken;
+    var useraccountid  = useraccountid;
+    
+    if(req.body.date_range == 'custom'){       
        var time_range = { "since":req.body.startdatereports,"until":req.body.enddatereports};
         fb.getreportCampaignlevel({ 
               campaignid:req.body.campaignid,  
@@ -161,7 +165,7 @@ exports.getfacebookcampaignreports = function(req,res){
             },function(error, response){      
               res.json({result:response,code:200}); 
             }); 
-    }else {      
+    } else {      
       fb.getreportCampaignlevel({
         campaignid:req.body.campaignid,       
         fields:JSON.stringify(fields),
@@ -169,12 +173,141 @@ exports.getfacebookcampaignreports = function(req,res){
         date_preset:req.body.facebookdateRangeType,    
         access_token:setaccesstoken,
         account_id:useraccountid
-      },function(error, response){      
-        res.json({result:response,code:200}); 
+      },function(error, response){
+        console.log(response.error);
+        if (response.error) {
+        res.json({result:response.error,code:101});
+        }else{
+        res.json({result:response,code:200});  
+        }
+         
       }); 
     }
 }
 
+/**
+Express Controller to getfacebookcampaignreports
+Created : 2016-09-12
+Created By: Manoj Singh
+Module : getfacebookcampaignreports
+*/
+exports.getFacebookBreakdownReports = function(req,res){   
+    
+    var fields = ["campaign_id","campaign_name","account_id","objective","cpm","cpp","cpc","impressions","ctr","adset_name","ad_id","ad_name","clicks","cost_per_total_action","inline_post_engagement","social_spend","spend","social_impressions","reach"];
+   // var fields = fields;
+    
+   // act_114882752278348/campaigns?fields=id,name,objective,status,ads{adset,adset_id,bid_amount,bid_type,created_time,account_id,name},adsets{name,lifetime_budget,daily_budget,billing_event,budget_remaining,adset_schedule,start_time,end_time,targeting}
+  var setaccesstoken   = "EAAPuVVbNTTMBAL9AAkbkKazTgw66NCYaYVTwbKrqRtSzYJJXVteKsBX4zxkx3W4CvnEwDMxQJWZCZA2PWWLoOrM0wiXazoawrSn1wzAyO1I0TalmyGDjOXKOqxRNZASZAFaYPASzIYn15lX3gK5XvhN9LwgD3F9NIo7RKIXwUuf9hMXfGV1qyoHAJpZCSOixKUhhYjgY2Mnv6UUowWDfZA";
+  var useraccountid    = 114882752278348;
+   
+    if(req.body.breakdown=='age-gender'){
+      var breakdown = ['age','gender'];
+    }else {
+      var breakdown = [req.body.breakdown]; 
+    }
+    var date_preset = '';
+    if(req.body.date_range == 7){ date_preset = 'last_7_days'; }
+    if(req.body.date_range == 15){ date_preset = 'last_14_days'; }
+    if(req.body.date_range == 30){ date_preset = 'last_30_days'; }
+    if(req.body.date_range == "custom"){ date_preset = 'last_14_days'; }
+    
+    if(req.configuredetails && req.configuredetails.accesstoken!="" && req.configuredetails.accesstoken !== undefined)
+    { var setaccesstoken = req.configuredetails.accesstoken; }
+    if(req.configuredetails && req.configuredetails.useraccountid!="" && req.configuredetails.useraccountid !== undefined)
+    {var useraccountid = req.configuredetails.useraccountid; }
+    // for testing
+    var setaccesstoken = setaccesstoken;
+    var useraccountid  = useraccountid;
+    
+    if(req.body.date_range == 'custom'){       
+       var time_range = { "since":req.body.startdatereports,"until":req.body.enddatereports};
+        fb.getreportCampaign({     
+            fields:JSON.stringify(fields),     
+            time_range:JSON.stringify(time_range),
+            breakdowns:JSON.stringify(breakdown),
+            level:'ad',    
+            access_token:setaccesstoken,
+            account_id:useraccountid,
+            //time_increment:1
+        },function(error, response){
+            res.json({result:response,code:200}); 
+            }); 
+    } else {      
+      fb.getreportCampaign({
+        fields:JSON.stringify(fields),
+        breakdowns:JSON.stringify(breakdown),     
+        date_preset:date_preset,    
+        access_token:setaccesstoken,
+        account_id:useraccountid
+      },function(error, response){
+        console.log(response.error);
+        if (response.error) {
+        res.json({result:response.error,code:101});
+        }else{
+        res.json({result:response,code:200});  
+        }
+         
+      }); 
+    }
+}
+
+
+/**
+Express Controller to getfacebookcampaignreports
+Created : 2016-09-12
+Created By: Manoj Singh
+Module : getfacebookcampaignreports
+*/
+exports.getFacebookDashboardCounts = function(req,res,next){   
+    
+  var fields = ["campaign_id","campaign_name","account_id","objective","cpm","cpp","cpc","impressions","ctr","adset_name","ad_id","ad_name","clicks","cost_per_total_action","inline_post_engagement","social_spend","spend","social_impressions","reach"];
+  var setaccesstoken   = "EAAPuVVbNTTMBAL9AAkbkKazTgw66NCYaYVTwbKrqRtSzYJJXVteKsBX4zxkx3W4CvnEwDMxQJWZCZA2PWWLoOrM0wiXazoawrSn1wzAyO1I0TalmyGDjOXKOqxRNZASZAFaYPASzIYn15lX3gK5XvhN9LwgD3F9NIo7RKIXwUuf9hMXfGV1qyoHAJpZCSOixKUhhYjgY2Mnv6UUowWDfZA";
+  var useraccountid    = 114882752278348;
+   
+    var date_preset = '';
+    if(req.body.date_range == 7){ date_preset = 'last_7_days'; }
+    if(req.body.date_range == 15){ date_preset = 'last_14_days'; }
+    if(req.body.date_range == 30){ date_preset = 'last_30_days'; }
+    if(req.body.date_range == "custom"){ date_preset = 'last_14_days'; }
+    
+    if(req.configuredetails && req.configuredetails.accesstoken!="" && req.configuredetails.accesstoken !== undefined)
+    { var setaccesstoken = req.configuredetails.accesstoken; }
+    if(req.configuredetails && req.configuredetails.useraccountid!="" && req.configuredetails.useraccountid !== undefined)
+    {var useraccountid = req.configuredetails.useraccountid; }
+    // for testing
+    var setaccesstoken = setaccesstoken;
+    var useraccountid  = useraccountid;
+    
+    if(req.body.date_range == 'custom'){       
+       var time_range = { "since":req.body.startdatereports,"until":req.body.enddatereports};
+        fb.getreportCampaign({     
+            fields:JSON.stringify(fields),     
+            time_range:JSON.stringify(time_range),
+            level:'account',    
+            access_token:setaccesstoken,
+            account_id:useraccountid,
+            //time_increment:1
+        },function(error, response){
+            return next({result:response,code:200});  
+            }); 
+    } else {      
+      fb.getreportCampaign({
+        fields:JSON.stringify(fields),
+        date_preset:date_preset,
+        level:'ad',
+        access_token:setaccesstoken,
+        account_id:useraccountid
+      },function(error, response){
+        console.log(response.error);
+        if (response.error) {
+        return next({result:response.error,code:101});
+        }else{
+        return next({result:response,code:200});  
+        }
+         
+      }); 
+    }
+}
 
 /**
 Express Controller to configureaccounts

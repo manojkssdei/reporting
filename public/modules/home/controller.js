@@ -48,7 +48,13 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     //$localStorage.configureaccountid = '114963642270259';
   $localStorage.configureaccountid = '';
   //$scope.marketingpage = 'current-menu-item';
-  var $serviceTest = $injector.get("home");
+  //Service
+  var $serviceTest       = $injector.get("home");
+  //Graph component
+  var $serviceEmailGraph = $injector.get("EMAILGRAPH");
+  var $serviceSaleGraph  = $injector.get("SALEGRAPH");
+  var $serviceFBGraph    = $injector.get("FACEBOOKGRAPH");
+  
   $anchorScroll();
   
   // Constant define for dashboard
@@ -61,9 +67,29 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.filter_title   = '7 Days';
   $scope.fb_breakdown_title = 'Age';
   var data              = {};
+  $scope.breakdown_response = {};
   
-  /**************************************** Services Start For Get Global Count  ******************************************/
-  $scope.filters = {from:"",to:""};
+  // Get filter
+  $scope.show_custom = 0;
+  $scope.getFilter   = function(str)
+  {
+    $scope.date_range = str;
+    if (str != 'custom') {
+     $scope.filter_title   = str+' Days'; 
+     $scope.show_custom      = 0;
+     var todayDate           = new Date();
+     $scope.startdatereports = todayDate;
+     $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt($scope.input_filter.id)));
+    }else{
+     $scope.show_custom = 1;
+     $scope.filter_title   = 'Custom';
+    }
+  }
+  $scope.getFilter(7);
+  
+  /******************************* Services Start For Get Global Count  **************************************/
+  $scope.filter = {};
+  
   $scope.email_count    = {};
   $scope.email_graph    = {};
   $scope.email_3d_pie   = {};
@@ -75,8 +101,10 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.progressbardiv = 'progressbardiv';
   $rootScope.noscrollclass = 'noscroll';
   $scope.current = 80;
+  $scope.filter.date_range  = $scope.date_range;
   
-  $serviceTest.getSummaryReport($scope.filters,function(response){
+  
+  $serviceTest.getSummaryReport($scope.filter,function(response){
     
     //////// end loader class //////////
       $scope.loadingclass = ''; 
@@ -89,6 +117,8 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
       
     /*****************************  COUNT DATA ************************************/
     $scope.facebook_count = response.sdata.facebook_count;
+    $scope.f_variable = 'impressions'; $scope.f_checked = $scope.facebook_count.impressions;$scope.focus_title = 'Impressions';
+    
     $scope.sales_count    = response.sdata.sales_count;
     if (response.sdata.cnemail && response.sdata.cnemail != '' && response.sdata.cnemail.clicks !== undefined) {
       $scope.email_count.email_clicks = response.sdata.cnemail.clicks[0].CLICKS;
@@ -106,10 +136,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     /*****************************  GRAPH DATA ************************************/
     // CASE 1 : EMAIL GRAPH DATA
     //0=opened, 1=clicked, 2=unsubscribed,3= rejected and failed
-    var $serviceEmailGraph = $injector.get("EMAILGRAPH");
-    var $serviceSaleGraph  = $injector.get("SALEGRAPH");
-    var $serviceFBGraph    = $injector.get("FACEBOOKGRAPH");
-    
+        
     var e_graph    = response.sdata.cnemail.email_graph_data;
      $scope.e_graph = e_graph; 
      $serviceEmailGraph.draw_3d_pie({sent:$scope.email_count.email_sent,e_graph:e_graph},function(response){
@@ -130,14 +157,9 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     });
     // CASE 3 : FACEBOOK GRAPH DATA
     // Breakdown base graph
-    
-     $serviceFBGraph.draw_2d_bar(e_graph,function(response3){
-     $scope.fb_2d_bar.plotOptions = response3.plotOptions;
-     $scope.fb_2d_bar.series      = response3.series;
-     $scope.fb_2d_bar.tooltip     = response3.tooltip;
-     $scope.fb_2d_bar.xAxis       = response3.xAxis;
-     $scope.facebook_graph('bar');
-    });
+     $scope.facebook_breakdown('age-gender');
+     //$scope.breakdown_draw_2d_bar(e_graph,'age-gender');
+     
     // CASE 4 : FACEBOOK  COMPARISON GRAPH DATA
     $serviceFBGraph.draw_2d_line(e_graph,function(response4){
      $scope.fb_2d_line.series      = response4.series;
@@ -152,38 +174,66 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   }); 
   /**************************** Services Start For Get Global Count******************************/
   
-  // Get filter
-  $scope.show_custom = 0;
-  $scope.getFilter   = function(str)
-  {
-    $scope.date_range = str;
-    if (str != 'custom') {
-     $scope.filter_title   = str+' Days'; 
-     $scope.show_custom      = 0;
-     var todayDate           = new Date();
-     $scope.startdatereports = todayDate;
-     $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt($scope.input_filter.id)));
-     
-     //$scope.calculatedaterange($scope.startdatereports,$scope.enddatereports);
-     console.log($scope.startdatereports +"::::::"+ $scope.enddatereports);
-     //$scope.format      = $scope.data($scope.input_filter);
-    }else{
-     $scope.show_custom = 1;
-     $scope.filter_title   = 'Custom';
-    }
+  // Breakdown base graph
+  $scope.focus_active2= 'active';
+  $scope.focus_active       = function(str){
+    if (str == 1) {$scope.focus_active1 = 'active'; $scope.focus_active2 =$scope.focus_active3 =$scope.focus_active4=$scope.focus_active5=$scope.focus_active6=$scope.focus_active7=$scope.focus_active8=$scope.focus_active9=$scope.focus_active10 = ''; }
+    if (str == 2) {$scope.focus_active2 = 'active'; $scope.focus_active1 =$scope.focus_active3 =$scope.focus_active4=$scope.focus_active5=$scope.focus_active6=$scope.focus_active7=$scope.focus_active8=$scope.focus_active9=$scope.focus_active10 = ''; }
+    if (str == 3) {$scope.focus_active3 = 'active'; $scope.focus_active2 =$scope.focus_active1 =$scope.focus_active4=$scope.focus_active5=$scope.focus_active6=$scope.focus_active7=$scope.focus_active8=$scope.focus_active9=$scope.focus_active10 = ''; }
+    if (str == 4) {$scope.focus_active4 = 'active'; $scope.focus_active2 =$scope.focus_active3 =$scope.focus_active1=$scope.focus_active5=$scope.focus_active6=$scope.focus_active7=$scope.focus_active8=$scope.focus_active9=$scope.focus_active10 = ''; }
+    if (str == 5) {$scope.focus_active5 = 'active'; $scope.focus_active2 =$scope.focus_active3 =$scope.focus_active4=$scope.focus_active1=$scope.focus_active6=$scope.focus_active7=$scope.focus_active8=$scope.focus_active9=$scope.focus_active10 = ''; }
+    if (str == 6) {$scope.focus_active6 = 'active'; $scope.focus_active2 =$scope.focus_active3 =$scope.focus_active4=$scope.focus_active5=$scope.focus_active1=$scope.focus_active7=$scope.focus_active8=$scope.focus_active9=$scope.focus_active10 = ''; }
+    if (str == 7) {$scope.focus_active1 = 'active'; $scope.focus_active2 =$scope.focus_active3 =$scope.focus_active4=$scope.focus_active5=$scope.focus_active6=$scope.focus_active1=$scope.focus_active8=$scope.focus_active9=$scope.focus_active10 = ''; }
+    if (str == 8) {$scope.focus_active1 = 'active'; $scope.focus_active2 =$scope.focus_active3 =$scope.focus_active4=$scope.focus_active5=$scope.focus_active6=$scope.focus_active7=$scope.focus_active8=$scope.focus_active9=$scope.focus_active10 = ''; }
+    if (str == 9) {$scope.focus_active9 = 'active'; $scope.focus_active2 =$scope.focus_active3 =$scope.focus_active4=$scope.focus_active5=$scope.focus_active6=$scope.focus_active7=$scope.focus_active8=$scope.focus_active1=$scope.focus_active10 = ''; }
+    if (str == 10) {$scope.focus_active10 = 'active'; $scope.focus_active2 =$scope.focus_active3 =$scope.focus_active4=$scope.focus_active5=$scope.focus_active6=$scope.focus_active7=$scope.focus_active8=$scope.focus_active9=$scope.focus_active1 = ''; }
+    
   }
-  $scope.getFilter(7);
+  $scope.focus_on_breakdown = function(focus_title,focus_name,focus_value,str){
+    $scope.f_variable   = focus_name;
+    $scope.f_checked    = focus_value;
+    $scope.focus_title  = focus_title;
+    $scope.focus_active(str);
+    $scope.breakdown_draw_2d_bar($scope.breakdown_response.result,$scope.fb_breakdown_title);
+  }
   
+  $scope.breakdown_draw_2d_bar = function(e_graph,type){
+     $serviceFBGraph.draw_2d_bar({e_graph:e_graph,type:type,total:$scope.f_checked,variable:$scope.f_variable},function(response3){
+     $scope.fb_2d_bar.plotOptions = response3.plotOptions;
+     $scope.fb_2d_bar.series      = response3.series;
+     $scope.fb_2d_bar.tooltip     = response3.tooltip;
+     $scope.fb_2d_bar.xAxis       = response3.xAxis;
+     /// Datapoint for grid
+     if ($scope.fb_breakdown_title == 'age-gender') {
+      $scope.fb_2d_bar.f_series_percent_data  = response3.f_series_percent_data;
+      $scope.fb_2d_bar.m_series_percent_data  = response3.m_series_percent_data;
+      $scope.fb_2d_bar.m_categories           = response3.m_categories;
+     }
+     
+     
+     $scope.facebook_graph('bar');
+     
+    });
+  }
   
   /*************************** Facebook Breakdown Code Start ************************************/
+   
   $scope.facebook_breakdown = function(breakdown)
   {
     var filter = {};
     filter.date_range         = $scope.date_range;
     filter.breakdown          = breakdown;
     $scope.fb_breakdown_title = breakdown;
-    $serviceTest.getBreakdownReport(filter,function(response){
-      
+    $serviceTest.getBreakdownReport(filter,function(breakdown_response){
+      console.log(breakdown_response);
+      if (breakdown_response.code == 101) {
+      $scope.breakdown_error_message = breakdown_response.result.message;
+      console.log($scope.breakdown_error_message);
+      }
+      else{
+      $scope.breakdown_response.result = breakdown_response.result;
+      $scope.breakdown_draw_2d_bar(breakdown_response.result,breakdown);  
+      }
     });
   }
   
@@ -231,7 +281,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.fb_chart_title = str;
   
   $scope.facebook = {};
-  $scope.facebook.chart_title     = 'Age wise data';
+  $scope.facebook.chart_title     = $scope.fb_breakdown_title+' wise data';
   $scope.facebook.chart_sub_title = 'Source: Facebook ads data';
   $scope.facebook.chart           = {type:str};
   $scope.facebook.xAxis           = $scope.fb_2d_bar.xAxis;

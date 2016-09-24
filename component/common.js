@@ -57,7 +57,8 @@ module.exports = function()
   this.getKeySum = function(array)
   { 
     var spend = cpp =  cpm =  ctr =  impressions = social_spend =  social_impressions = reach = cpc = clicks = unique_clicks = conversion = 0;
-    array.forEach(function(value,key){
+    var act_araay = array.data;
+    act_araay.forEach(function(value,key){
       /////////////////////////////////////////////
      spend += value.spend;
       cpp   += value.cpp;
