@@ -11,10 +11,17 @@
 		.social-media > li{padding:0 6px;}
 	}
 
-@media all and (max-width: 1023px) 
+@media all and (max-width: 1199px) 
 	{
 		.container{width:100%;}
 		.gray-frame, .fieldSection, .form-section{padding:15px;}
+		.fixed-row{width:100%; padding-left:30px; padding-right:30px; left:0;}
+		
+	}
+
+@media all and (max-width: 1023px) 
+	{
+		
 		.left-label > label{float:none; width:auto; text-align:left; margin:0 0 10px 0; }
 		.right-fields{margin-left:0;}
 		.iconic-text.actn-div a{margin-left:0;}
@@ -69,6 +76,8 @@
 		.from-to.posrt{position:static; padding:10px; margin-top:10px;}
 		.from-to.posrt > li{margin:5px;}
 		.from-to.posrt label{width:50px;}
+		
+		.sort-url > li .p-t10 {padding-top: 0;}
 	}
 
 @media all and (max-width: 550px)

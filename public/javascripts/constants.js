@@ -52,6 +52,7 @@ var webservices = {
 	///////////////////////////////////// NEW services ///////////////////////////////
 	"getSummaryReport"  :"/networks/getSummaryReport",
 	"getBreakdownReport":"/networks/getBreakdownReport",
+	"getBreakdownTimeReport":"/networks/getBreakdownTimeReport"
 }
 
 var global_message = {
@@ -103,8 +104,8 @@ var LOADER_CONS = {
                    stroke : 8,
                    radius : 70,
                    isSemi : isSemi,
-                   currentColor : '#c129b9',
-                   bgColor : '#eaeaea',
+                   currentColor : '#475059',
+                   bgColor : '#4DC5AC',
                    currentAnimation : 'easeOutCubic',
                    animationDelay : 0,
                    getStyle : function(){

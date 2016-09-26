@@ -20,6 +20,7 @@ module.exports = function(app, express) {
     router.get('/getSummaryReport/', auth.check_permission, service_con.getSummaryReport);
     router.post('/getSummaryReport/', auth.check_permission, service_con.getSummaryReport);
     router.post('/getBreakdownReport/', auth.check_permission, service_con.getBreakdownReport);
+    router.post('/getBreakdownTimeReport/', auth.check_permission, service_con.getBreakdownTimeReport);
     
     
     

@@ -5,7 +5,7 @@ Created By: Manoj Kumar Singh
 Module : Dashboard Setup
 */
 
-angular.module('alisthub').controller('homeController', function($scope,$localStorage,$location,$rootScope,$injector,ngDialog,$uibModal,cfpLoadingBar,$state ,SweetAlert,$anchorScroll,$timeout) {
+angular.module('alisthub').controller('homeController', function($scope,$localStorage,$location,$rootScope,$injector,ngDialog,$uibModal,cfpLoadingBar,$state ,SweetAlert,$anchorScroll,$timeout,$window) {
 
 
   $rootScope.class_status=false;
@@ -17,6 +17,18 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
         $scope.navCollapsed = $scope.navCollapsed === false ? true: false;
     };    
   }
+   angular.element($window).bind("scroll", function() {
+            if(window.innerWidth>767){
+				if (this.pageYOffset >= 230) {
+					angular.element(document.querySelector('.d-title')).addClass("fixed-row");
+					angular.element(document.querySelector('#fixed')).addClass("fixed-wrapper");
+				 } else {
+					angular.element(document.querySelector('.d-title')).removeClass("fixed-row");
+					angular.element(document.querySelector('#fixed')).removeClass("fixed-wrapper");
+				 }
+	    $scope.$apply();
+			}
+  });
   //////////// Loader class start ///////////////////////
         $scope.current =        LOADER_CONS.current;
         $scope.max =            LOADER_CONS.max;
@@ -100,7 +112,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.loadingclass = 'loadingclass';
   $scope.progressbardiv = 'progressbardiv';
   $rootScope.noscrollclass = 'noscroll';
-  $scope.current = 80;
+  $scope.current = 90;
   $scope.filter.date_range  = $scope.date_range;
   
   
@@ -161,11 +173,8 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
      //$scope.breakdown_draw_2d_bar(e_graph,'age-gender');
      
     // CASE 4 : FACEBOOK  COMPARISON GRAPH DATA
-    $serviceFBGraph.draw_2d_line(e_graph,function(response4){
-     $scope.fb_2d_line.series      = response4.series;
-     $scope.fb_2d_line.xAxis       = response4.xAxis;
-     $scope.comparison_graph('line');
-    }); 
+    $scope.comparison_draw_2d_line('clicks','impressions');
+    
      
     /*****************************  GRAPH DATA ************************************/
     }else{
@@ -196,7 +205,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     $scope.focus_active(str);
     $scope.breakdown_draw_2d_bar($scope.breakdown_response.result,$scope.fb_breakdown_title);
   }
-  
+  // breakdown graph
   $scope.breakdown_draw_2d_bar = function(e_graph,type){
      $serviceFBGraph.draw_2d_bar({e_graph:e_graph,type:type,total:$scope.f_checked,variable:$scope.f_variable},function(response3){
      $scope.fb_2d_bar.plotOptions = response3.plotOptions;
@@ -204,35 +213,67 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
      $scope.fb_2d_bar.tooltip     = response3.tooltip;
      $scope.fb_2d_bar.xAxis       = response3.xAxis;
      /// Datapoint for grid
-     if ($scope.fb_breakdown_title == 'age-gender') {
+     if ($scope.fb_breakdown_title == 'age-gender' || $scope.fb_breakdown_title == 'gender') {
       $scope.fb_2d_bar.f_series_percent_data  = response3.f_series_percent_data;
       $scope.fb_2d_bar.m_series_percent_data  = response3.m_series_percent_data;
       $scope.fb_2d_bar.m_categories           = response3.m_categories;
+     
+     }else{
+      $scope.fb_2d_bar.m_series_percent_data  = response3.m_series_percent_data;
+      $scope.fb_2d_bar.m_categories           = response3.m_categories;
+      
      }
-     
-     
      $scope.facebook_graph('bar');
-     
     });
+  }
+  // comparison graph
+  $scope.comparison_draw_2d_line = function(compare1,compare2){
+     var filter2 = {};
+     filter2.date_range         = $scope.date_range;
+     filter2.time_increment     = 1;
+     filter2.level              = 'account';
+     $scope.loadingclass = 'loadingclass';
+    $scope.progressbardiv = 'progressbardiv';
+    $rootScope.noscrollclass = 'noscroll';
+    $scope.current = 90;
+     $serviceTest.getBreakdownTimeReport(filter2,function(comparison_breakdown){
+      $scope.loadingclass = '';
+      $scope.progressbardiv = '';
+      $rootScope.noscrollclass = '';
+      $scope.current = 0;
+        $serviceFBGraph.draw_2d_line({compare1:compare1,compare2:compare2,comparison_breakdown:comparison_breakdown.result},function(response4){
+          $scope.fb_2d_line.series      = response4.series;
+          $scope.fb_2d_line.xAxis       = response4.xAxis;
+          $scope.comparison_graph('line');
+          
+        });
+     });
+     
   }
   
   /*************************** Facebook Breakdown Code Start ************************************/
    
   $scope.facebook_breakdown = function(breakdown)
   {
-    var filter = {};
+    var filter  = {};
     filter.date_range         = $scope.date_range;
     filter.breakdown          = breakdown;
     $scope.fb_breakdown_title = breakdown;
+    $scope.loadingclass = 'loadingclass';
+    $scope.progressbardiv = 'progressbardiv';
+    $rootScope.noscrollclass = 'noscroll';
+    $scope.current = 90;
     $serviceTest.getBreakdownReport(filter,function(breakdown_response){
-      console.log(breakdown_response);
+      $scope.loadingclass = '';
+  $scope.progressbardiv = '';
+  $rootScope.noscrollclass = '';
+  $scope.current = 0;
       if (breakdown_response.code == 101) {
       $scope.breakdown_error_message = breakdown_response.result.message;
-      console.log($scope.breakdown_error_message);
       }
       else{
       $scope.breakdown_response.result = breakdown_response.result;
-      $scope.breakdown_draw_2d_bar(breakdown_response.result,breakdown);  
+      $scope.breakdown_draw_2d_bar(breakdown_response.result,breakdown);
       }
     });
   }
@@ -357,7 +398,11 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   }
  
 })
-
+.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+})
 .filter('underscoreless', function () {
   return function (input) {
       return input.replace(/_/g, ' ');

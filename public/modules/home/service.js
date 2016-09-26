@@ -24,6 +24,11 @@ angular.module('alisthub').factory('home', ['$q', '$timeout','communicationServi
     });
   };
    
+  url.getBreakdownTimeReport = function(jsondata,callback){
+       communicationService.resultViaPost(webservices.getBreakdownTimeReport,appConstants.authorizationKey,headerConstants.json,jsondata, function(res,req){
+       callback(res.data);
+    });
+  };
   /*Webservice call for add network object*/
   url.updatecampaignstatus = function(jsondata,callback){
        communicationService.resultViaPost(webservices.updatecampaignstatus,appConstants.authorizationKey,headerConstants.json,jsondata, function(res,req){

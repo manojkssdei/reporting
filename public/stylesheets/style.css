@@ -24,7 +24,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /* Common CSS
    ========================================================================== */
 ol, ul {list-style: none;}
-a{color:#801517; white-space:nowrap;}
+a{color:#4dc5ac; white-space:nowrap;}
 a:active, a:hover, a:focus { outline: 0; text-decoration:none; color:#333; }
 b, strong { font-weight: bold;}
 img { border: 0;}
@@ -325,9 +325,9 @@ input[type="radio"]:checked + label span:after{ opacity: 1; transform: scale(0.7
 .from-to{margin:0 5px; float:left;}
 .from-to > li{float:left; margin: 0 5px;}
 .from-to label{float:left; margin:12px 10px;}
-.posrt{position:absolute; top:0; right:120px;}
+.posrt{position:absolute; top:0; right:140px;}
 .manual-cal{font-size:14px; padding:0 5px; text-align:center; height:30px; width:30px; line-height:30px; display:inline-block; color:#fff; background:#4dc5ac; vertical-align:middle; border-radius:50%;}
-.d-title{border-bottom:1px #ccc solid; padding-bottom:10px; position:relative; background:#fff;}
+.d-title > div{border-bottom:1px #ccc solid; padding-bottom:10px; position:relative; background:#fff;}
 .d-title h3{font-size:18px; margin:5px 0;}
 .top-overview{box-shadow: inset 0 0 1px rgba(0,0,0,0.5); -moz-box-shadow: inset 0 0 1px rgba(0,0,0,0.5); -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.5); overflow:hidden; position:relative;}
 .top-overview h3{font-weight:600; background:#f3f3f3; padding:10px; text-align:center; margin:0;}
@@ -426,16 +426,89 @@ input[type="radio"]:checked + label span:after{ opacity: 1; transform: scale(0.7
 .stats-info > li {border-bottom: 1px solid #eee; padding: 10px 0;}
 .ttl-email .badge{background:#e84c3d; color:#fff;}
 
-.panel-white {background: #fff none repeat scroll 0 0; padding:15px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1);}
+.panel-white {background: #fff none repeat scroll 0 0; padding:15px; box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); height:100%;}
 
 .btn-dropdown .btn{min-width:inherit; padding-left:10px; padding-right:10px;}
 .btn-dropdown .caret{margin-left:5px;}
+
+.sort-url > li{float:left; padding:10px 15px;}
+.vldiv{min-width:130px; text-align:center;  box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.1);}
+.vldiv h3 {margin-bottom: 5px;}
+
+.icon-fa {background: #666; border-radius: 50%; color: #fff; font-size: 18px; height: 30px; line-height: 30px; position: relative; text-align: center; width: 30px;}
+
+.sub-fa {background: #666; border-radius: 50%; bottom: 15%; font-size: 50%; height: 10px; position: absolute; right: 10%;  width: 10px; color:#fff; padding:2px;}
+.filename{position:absolute; background:#4dc5ac; right:70%; top:20%; font-size:40%; color:#fff; font-weight:600; padding:2px; line-height:1; border-radius:3px;}
+
+.fixed-wrapper{padding-top:75px;}
+.fixed-row{position:fixed; top:0;  width:1003px; z-index:99; }
+.fixed-row > div{padding-top:10px;}
+.fixed-row .from-to.posrt{top:10px;}
+.trans-div{transition: all .2s ease; -moz-transition: all .2s ease; -webkit-transition: all .2s ease; -o-transition: all .2s ease; -ms-transition: all .2s ease;}
+
+/**** Round Loader pregress css start ******/
+.progress-wrapper-bar{
+    position: relative;
+    /*margin:20px auto;*/
+    font-size: 40px;
+    /*left: 78px;*/
+}
+.progress-bar{
+    position: absolute;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 1;
+    color: /*#0275d0*/#fff;
+}
+.loader-container-bar{
+    width: 100%;
+	top:50%;
+     /*max-width: 960px;
+   margin:250px auto 100px;*/
+    text-align: center;
+    z-index: 9999999;
+    position: fixed;
+    display: none;
+	margin-top:-70px;
+	left:0;
+    
+}
+
+.progressbardiv{
+  display: inline;
+}
+
+.noscroll {overflow: hidden; }
+
+.loadingclass {
+background-color: #7b7b7a;
+bottom: 0;
+left: 0;
+opacity: 0.9;
+position: fixed;
+right: 0;
+top: 0;
+z-index: 999999;
+} 
+/**** Round Loader pregress css start ******/
+
+.ev-icon{margin-bottom:15px; display:inline-table; border-radius:50%; background:#fff; width:100px; height:100px;}
+.ev-icon span{display:table-cell; vertical-align:middle;}
+.events-col{padding:25px 15px; margin-bottom:15px; text-align:center; background:#f3f3f3;}
+.events-col h2{font-size:16px; margin-bottom:15px; font-weight:600;}
+.col-con{min-height:50px; margin-bottom:15px; line-height:20px;}
+
+.ev-icon .fa {
+    color: #ccc;
+    font-size: 50px;
+}
 
 
 /*--------Always at Bottom---------*/
 .f-w{width:100%;}
 .m-t0{margin-top:0;}
 .m-t10 {margin-top: 10px;}
+.m-t20{margin-top:20px;}
 .m-t35 {margin-top: 35px;}
 .m-t40 {margin-top: 40px;}
 .f-12{font-size:12px;}
@@ -446,6 +519,7 @@ input[type="radio"]:checked + label span:after{ opacity: 1; transform: scale(0.7
 .f-24{font-size:24px;}
 .f-30{font-size:30px;}
 .mt-3{margin-top:-3px;}
+.m-l15{margin-left:15px;}
 .m-b0{margin-bottom:0px;}
 .m-b20{margin-bottom:20px;}
 .p-t0{padding-top:0;}
@@ -470,14 +544,5 @@ input[type="radio"]:checked + label span:after{ opacity: 1; transform: scale(0.7
 .inline-el{display:inline-block; vertical-align:middle;}
 .l-b{display:block;}
 
-.ev-icon{margin-bottom:15px; display:inline-table; border-radius:50%; background:#fff; width:100px; height:100px;}
-.ev-icon span{display:table-cell; vertical-align:middle;}
-.events-col{padding:25px 15px; margin-bottom:15px; text-align:center; background:#f3f3f3;}
-.events-col h2{font-size:16px; margin-bottom:15px; font-weight:600;}
-.col-con{min-height:50px; margin-bottom:15px; line-height:20px;}
-
-.ev-icon .fa {
-    color: #ccc;
-    font-size: 50px;
-}
+.v-m{vertical-align:middle;}
 

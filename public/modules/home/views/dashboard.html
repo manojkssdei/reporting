@@ -1,14 +1,25 @@
 <div class="container">
      <h1>Welcome to ALIST Reporting</h1>
     <!-- start round loader--->
-     <div ng-class="loadingclass"></div>
-     
-    <!-- end round loader--->
+      <div ng-class="loadingclass"></div>
+    <div ng-class="progressbardiv" class="loader-container-bar">
+                <div class="progress-wrapper-bar">
+                    <div class="progress-bar ng-cloak" ng-style="getStyle()">{{ preciseCurrent || current }}%</div>
+                    <round-progress  max="max" current="current"  color="{{currentColor}}"  bgcolor="{{ bgColor }}"
+                        radius="{{ radius }}" semi="isSemi" rounded="true" stroke="{{stroke}}" clockwise="true"
+                        responsive="false" duration="{{ duration }}" animation="{{ currentAnimation }}"
+                        animation-delay="{{ animationDelay }}"  on-render="showPreciseCurrent">
+                    </round-progress>
+                </div>
+     </div>
+     <!-- end round loader--->
     <!-- Form COntainer -->
     
     <!-- Form COntainer -->
-    <div class="wt-frame form-section">
-      <section class="d-title form-group clearfix">
+    <div class="wt-frame form-section trans-div">
+     <section id="fixed">
+      <section class="d-title form-group trans-div">
+             <div class="clearfix">
              <h3 class="pull-left">Overview</h3>
              <div class="date-range pull-right">
                     <div class="btn-group btn-dropdown" uib-dropdown is-open="status2.isopen">
@@ -34,7 +45,8 @@
                        <input type="text" class="form-control w-auto calendar-input">
                     </li>
                 </ul>
-        </section>
+             </div>  
+      </section>
         
       <section class="row">
             <section class="col-sm-4 form-group">
@@ -199,8 +211,9 @@
                                 <!--<li role="menuitem"><a ng-click="facebook_graph('pie');">Pie Chart</a></li>-->
                               </ul>
                             </div>
+                            <a href="#" class="m-l15 v-m"><i class="fa fa-file-text-o icon-fa" aria-hidden="true"><span class="filename">CSV</span><span class="sub-fa fa fa-arrow-down"></span></i></a>
                             </div>
-                         </div>
+                          </div>
                          
                          <section class="row">
                              <section class="col-sm-8 form-group">
@@ -215,7 +228,7 @@
                                     </div>
                                    <div class="col-sm-8 data-div">
                                         <!--<img src="assets/images/graph.jpg" alt="" style="width:100%;" />-->
-                                        <div id="container_fb" style="min-width: 310px;height:300px; margin: 0 auto"></div> 
+                                        <div id="container_fb" style="min-width: 310px;height:auto; margin: 0 auto"></div> 
                                    
                                    </div>
                                 
@@ -223,50 +236,30 @@
                              <section class="col-sm-4">
                                    <table class="data-tabl table-striped"> 
                                       <thead> 
-                                         <tr>                                         
+                                         <tr ng-if="fb_breakdown_title == 'age-gender' ||  fb_breakdown_title == 'gender'">                                         
                                             <th colspan="2" class="tb-tr rt-bdr">Male</th> 
                                             <th colspan="2">Female</th> 
-                                         </tr> 
+                                         </tr>
+                                         <tr ng-if="fb_breakdown_title != 'age-gender' && fb_breakdown_title != 'gender'">                                         
+                                            <th colspan="2" class="tb-tr rt-bdr">% Value</th> 
+                                            
+                                         </tr>
                                      </thead>
                                      <tbody> 
                                      
-                                     <tr ng-repeat="(key,fbdata) in fb_2d_bar.m_categories"> 
+                                     <tr ng-if="fb_breakdown_title == 'age-gender' || fb_breakdown_title == 'gender'" ng-repeat="(key,fbdata) in fb_2d_bar.m_categories"> 
                                         <td><strong>{{fbdata}}</strong></td> 
                                         <td class="tb-tr rt-bdr">{{fb_2d_bar.m_series_percent_data[key]}}%</td> 
                                         <td>{{fb_2d_bar.f_series_percent_data[key]}}%</td> 
-                                        <td class="tb-tr totl-col">26%</td> 
+                                        <td class="tb-tr totl-col"></td> 
+                                    </tr>
+                                     <tr ng-if="fb_breakdown_title != 'age-gender' && fb_breakdown_title != 'gender'" ng-repeat="(key,fbdata) in fb_2d_bar.m_categories"> 
+                                        <td><strong>{{fbdata}}</strong></td> 
+                                        <td class="tb-tr rt-bdr">{{fb_2d_bar.m_series_percent_data[key]}}%</td> 
+                                        
+                                        <td class="tb-tr totl-col"></td> 
                                     </tr> 
-                                    <!--<tr> 
-                                        <td><strong>18-24</strong></td> 
-                                        <td class="tb-tr rt-bdr">22%</td> 
-                                        <td>8%</td> 
-                                        <td class="tb-tr totl-col">30%</td> 
-                                    </tr> 
-                                    <tr> 
-                                        <td><strong>25-34</strong></td> 
-                                        <td class="tb-tr rt-bdr">9%</td> 
-                                        <td>5%</td> 
-                                        <td class="tb-tr totl-col">14%</td> 
-                                    </tr> 
-                                    <tr> 
-                                        <td><strong>35-44</strong></td> 
-                                        <td class="tb-tr rt-bdr">6%</td> 
-                                        <td>6%</td> 
-                                        <td class="tb-tr totl-col">12%</td> 
-                                    </tr> 
-                                    <tr> 
-                                        <td><strong>45-54</strong></td> 
-                                        <td class="tb-tr rt-bdr">6%</td> 
-                                        <td>6%</td> 
-                                        <td class="tb-tr totl-col">12%</td> 
-                                    </tr> 
-                                    <tr> 
-                                        <td><strong>55+</strong></td> 
-                                        <td class="tb-tr rt-bdr">2%</td> 
-                                        <td>5%</td> 
-                                        <td class="tb-tr totl-col">7%</td> 
-                                    </tr>-->
-                                    
+                                   
                                   </tbody> </table>
                              </section>
                          </section>  
@@ -277,7 +270,7 @@
                   <div class="form-group module-widget">
                      <section class="panel-white">
                      <div class="row form-group">
-                        <h3 class="col-xs-7 ttl">Comperission</h3>
+                        <h3 class="col-xs-7 ttl">Comparison</h3>
                         <div class="col-xs-5 text-right rt-sort">
                            <div class="btn-group btn-dropdown" uib-dropdown is-open="status9.isopen">
                               <button id="single-button" type="button" class="btn btn-small" uib-dropdown-toggle ng-disabled="disabled">
@@ -285,6 +278,7 @@
                               </button>
                               <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                                 <li role="menuitem"><a href="#">Clicks</a></li>
+                                <li role="menuitem"><a href="#">Impressions</a></li>
                                 
                               </ul>
                             </div>
@@ -294,9 +288,13 @@
                               </button>
                               <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                                 <li role="menuitem"><a href="#">Impressions</a></li>
+                                <li role="menuitem"><a href="#">Deeplink clicks</a></li>
+                                
+                                
                                 
                               </ul>
                             </div>
+                            <a href="#" class="m-l15 v-m"><i class="fa fa-file-text-o icon-fa" aria-hidden="true"><span class="filename">CSV</span><span class="sub-fa fa fa-arrow-down"></span></i></a>
                          </div>
                      </div>
                                 
@@ -328,7 +326,7 @@
                               </ul>
                             </div></div>
                         <div class="col-xs-5 text-right rt-sort">                        
-                         <button class="btn btn-small">Export CSV</button>
+                          <a href="#" class="m-l15 v-m"><i class="fa fa-file-text-o icon-fa" aria-hidden="true"><span class="filename">CSV</span><span class="sub-fa fa fa-arrow-down"></span></i></a>
                          </div>
                      </div>
                      
@@ -339,7 +337,7 @@
                          <section class="col-sm-3 form-group">
                             <ul class="stats-info data-value">
                                <li>
-                               		<h3>1520</h3>
+                               	    <h3>1520</h3>
                                     <p class="gray-text">Ticket Sold</p>
                                </li> 
                                <li>
@@ -381,6 +379,8 @@
                               </ul>
                          </div>
                         </div>
+                        <div class="col-xs-5 text-right rt-sort"><a href="#"><i class="fa fa-file-text-o icon-fa" aria-hidden="true"><span class="filename">CSV</span><span class="sub-fa fa fa-arrow-down"></span></i></a></div>
+                       
                     </div>
                      
                      
@@ -423,7 +423,7 @@
                   
              </div>
             </div>  <!--Email Summary--> 
-           
+     </section> 
     </div>
 
 <!-- //Form COntainer -->
@@ -431,8 +431,7 @@
 <!-- //Form COntainer -->
     <!-- //Form COntainer --> 
     <div id="sticky-anchor"></div>
-    <div  ng-class="loadingclass" class=""></div>
-  </div>
+ </div>
 
 <style>
      .dropsubmenu li a{
