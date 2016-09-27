@@ -151,7 +151,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     /*****************************  GRAPH DATA ************************************/
     // CASE 1 : EMAIL GRAPH DATA
     //0=opened, 1=clicked, 2=unsubscribed,3= rejected and failed
-        
+    if(response.sdata.cnemail && response.sdata.cnemail.email_graph_data){    
     var e_graph    = response.sdata.cnemail.email_graph_data;
      $scope.e_graph = e_graph; 
      $serviceEmailGraph.draw_3d_pie({sent:$scope.email_count.email_sent,e_graph:e_graph},function(response){
@@ -161,6 +161,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
      $scope.email_3d_pie.total_unopened     = response.total_unopened;
      $scope.email_graph('pie');
     });
+    }
     // CASE 2 : SALES GRAPH DATA
     
      $serviceSaleGraph.draw_2d_column({sent:$scope.email_count.email_sent,e_graph:e_graph},function(response2){
