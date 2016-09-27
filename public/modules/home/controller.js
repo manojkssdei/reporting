@@ -42,8 +42,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
         $scope.animationDelay   = LOADER_CONS.animationDelay;
         $scope.getStyle = LOADER_CONS.getStyle;
   //////////// Loader class end ////////////////////////
-  
-  
+    
   $scope.status1  = {isopen: false}; $scope.status2 = { isopen: false }; $scope.status5 = { isopen: false };
   $scope.status8  = { isopen: false };$scope.status9 = { isopen: false }; $scope.status10 = { isopen: false };
   $scope.status11 = { isopen: false };
@@ -57,29 +56,30 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     $scope.status.isopen = !$scope.status.isopen;
   };
 
-    //$localStorage.configureaccountid = '114963642270259';
   $localStorage.configureaccountid = '';
-  //$scope.marketingpage = 'current-menu-item';
   //Service
   var $serviceTest       = $injector.get("home");
   //Graph component
   var $serviceEmailGraph = $injector.get("EMAILGRAPH");
   var $serviceSaleGraph  = $injector.get("SALEGRAPH");
   var $serviceFBGraph    = $injector.get("FACEBOOKGRAPH");
+  // common module
+  var $serviceCommon     = $injector.get("COMMON");
   
   $anchorScroll();
   
   // Constant define for dashboard
-  $scope.facebookdata   = true;
-  $scope.searchcampiagn = '1';
-  $scope.googledata     = false;
-  $scope.pagesize       = '10';
-  $scope.input_filter   = {};
-  $scope.input_filter.id= "7";
-  $scope.filter_title   = '7 Days';
+  $scope.facebookdata       = true;
+  $scope.searchcampiagn     = '1';
+  $scope.googledata         = false;
+  $scope.pagesize           = '10';
+  $scope.input_filter       = {};
+  $scope.input_filter.id    = "7";
+  $scope.filter_title       = '7 Days';
   $scope.fb_breakdown_title = 'Age';
-  var data              = {};
+  var data                  = {};
   $scope.breakdown_response = {};
+  $scope.compare_parameter  = CONSTANT_COMPARISON;
   
   // Get filter
   $scope.show_custom = 0;
@@ -92,9 +92,12 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
      var todayDate           = new Date();
      $scope.startdatereports = todayDate;
      $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt($scope.input_filter.id)));
+     console.log($serviceCommon.formatsearchDate($scope.startdatereports) +"::::"+ $serviceCommon.formatsearchDate(new Date($scope.enddatereports)));
+     
     }else{
      $scope.show_custom = 1;
      $scope.filter_title   = 'Custom';
+     console.log();
     }
   }
   $scope.getFilter(7);
@@ -173,8 +176,9 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
      //$scope.breakdown_draw_2d_bar(e_graph,'age-gender');
      
     // CASE 4 : FACEBOOK  COMPARISON GRAPH DATA
+    $scope.comparison_focus1 = 'Clicks';  
+    $scope.comparison_focus2 = 'Impressions';
     $scope.comparison_draw_2d_line('clicks','impressions');
-    
      
     /*****************************  GRAPH DATA ************************************/
     }else{
@@ -202,6 +206,10 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     $scope.f_variable   = focus_name;
     $scope.f_checked    = focus_value;
     $scope.focus_title  = focus_title;
+    $scope.sign_for_amount    = '';
+    if (str == 4) {
+      $scope.sign_for_amount = '$';
+    }
     $scope.focus_active(str);
     $scope.breakdown_draw_2d_bar($scope.breakdown_response.result,$scope.fb_breakdown_title);
   }
@@ -227,6 +235,20 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     });
   }
   // comparison graph
+  $scope.get_comparison_data  = function(params)
+  { console.log(params);
+    var compare1 = ''; var compare2 = '';
+    if (params.key1) { $scope.comparison_focus1 = params.value1; $scope.compare_parameter1 = params.key1;  }
+     
+    if (params.key2) { $scope.comparison_focus2 = params.value2; $scope.compare_parameter2 = params.key2; }
+     
+    $serviceFBGraph.draw_2d_line({compare1:$scope.compare_parameter1,compare2:$scope.compare_parameter2,comparison_breakdown:$scope.comparison_breakdown_result},function(response4){ console.log(5);
+          $scope.fb_2d_line.series      = response4.series;
+          $scope.fb_2d_line.xAxis       = response4.xAxis;
+          $scope.comparison_graph('line');
+    });
+  }
+  
   $scope.comparison_draw_2d_line = function(compare1,compare2){
      var filter2 = {};
      filter2.date_range         = $scope.date_range;
@@ -236,12 +258,14 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     $scope.progressbardiv = 'progressbardiv';
     $rootScope.noscrollclass = 'noscroll';
     $scope.current = 90;
+    $scope.compare_parameter1 =  compare1; $scope.compare_parameter2 =  compare2;
      $serviceTest.getBreakdownTimeReport(filter2,function(comparison_breakdown){
       $scope.loadingclass = '';
       $scope.progressbardiv = '';
       $rootScope.noscrollclass = '';
       $scope.current = 0;
-        $serviceFBGraph.draw_2d_line({compare1:compare1,compare2:compare2,comparison_breakdown:comparison_breakdown.result},function(response4){
+      $scope.comparison_breakdown_result = comparison_breakdown.result;
+      $serviceFBGraph.draw_2d_line({compare1:compare1,compare2:compare2,comparison_breakdown:comparison_breakdown.result},function(response4){
           $scope.fb_2d_line.series      = response4.series;
           $scope.fb_2d_line.xAxis       = response4.xAxis;
           $scope.comparison_graph('line');
@@ -396,8 +420,9 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   function sortNumber(a,b) {
       return a - b;
   }
- 
+  
 })
+
 .filter('reverse', function() {
   return function(items) {
     return items.slice().reverse();

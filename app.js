@@ -75,8 +75,8 @@ app.use(function(err, req, res, next) {
 
 process.on('uncaughtException', function (err) { console.log(err);});
 //process.on('SIGTERM', function (err) { console.log(err);});
-app.listen(5504, function(req, res){
-  console.log('Servers listening at port 5504');  
+app.listen(4023, function(req, res){
+  console.log('Servers listening at port 4023');  
  
 })
 

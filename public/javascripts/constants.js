@@ -122,7 +122,7 @@ var LOADER_CONS = {
     }
                 }
 /// loader constants end.
-
+var CONSTANT_COMPARISON = {"clicks":"Clicks","impressions":"Impressions","ctr":"CTR","spend":"Spend","cpc":"CPC","cpp":"CPP","social_spend":"Social Spend","social_impressions":"Social Impression","reach":"Reach","cpm":"CPM"};
 
 var CONSTANT_GR  = {
     "xData": [0.287166,1.298953,3.310644,1.321583,5.345676,9.356738,7.366782],

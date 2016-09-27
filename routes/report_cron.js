@@ -22,7 +22,7 @@ module.exports = function(app, express) {
        ticket_cron.saveTicketSales(); 
     }
     
-    setInterval(saveTicketSales, 150000000);
+    //setInterval(saveTicketSales, 150000000);
     /********************************************* END TICKET CRON   **************************************/
     
     /********************************************* START MARKET CRON  **************************************/
@@ -35,7 +35,7 @@ module.exports = function(app, express) {
        market_cron.saveMarketSales(); 
     }
     
-    setInterval(saveMarketSales, 150000000);
+    //setInterval(saveMarketSales, 150000000);
     /********************************************* END MARKET CRON   **************************************/
     
     /********************************************* START FACEBOOK CRON  **************************************/
@@ -48,7 +48,7 @@ module.exports = function(app, express) {
        fb_cron.saveFacebookReport(); 
     }
     
-    setInterval(saveFacebookReport, 150000000);
+    //setInterval(saveFacebookReport, 150000000);
     /********************************************* END FACEBOOK CRON   **************************************/
     
     

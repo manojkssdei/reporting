@@ -111,7 +111,6 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
       }
        
     });
-    console.log(a_categories);
     
     var options = {};
     if (jsondata.type == 'age-gender' || jsondata.type == 'gender') {
@@ -190,7 +189,7 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
   };
   
   
-  
+  /// This graph for facebook comparisons 
   
   url.draw_2d_line = function(jsondata,callback){
     var options = {}; 
