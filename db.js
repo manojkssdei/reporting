@@ -4,8 +4,8 @@ var constant = require('./constants.js');
 
 module.exports.connection=function (){
 
-var connection = mysql.createConnection(constant.MYSQL_DB);
-return connection;
+//var connection = mysql.createConnection(constant.MYSQL_DB);
+//return connection;
 /*connection.connect(function(err) {
   if (err) {
     console.error('error connecting: ' + err.stack);
