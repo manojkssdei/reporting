@@ -25,6 +25,30 @@ angular.module('alisthub').factory('COMMON', ['$q', '$timeout','communicationSer
       if(month<10){  month='0'+month; }
       return month + "-" + dd + "-" + today.getFullYear();
     };
+       
+   url.getDateLables = function(date1,date2,decrement){
+        console.log(date1 +":::"+ date2);
+        var date5      = new Date(date1);
+        var day        = 60 * 60 * 24 * 1000;
+        var oneDay     = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+        var firstDate  = new Date(date1);
+        var secondDate = new Date(date2);
+
+        var diffDays   = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(day)));
+        
+        //var enddatereports   =  new Date(date5.getTime() + day);
+        var labelvalues = []
+        for(var i=0;i<diffDays+1;i=i+decrement){              
+              var setdate = new Date(date2).setDate(new Date(date2).getDate() + i);
+              //$scope.graph_date.push({"start_date":setdate,"end_date":setdate});
+              var ddd = url.formatsearchDate(new Date(setdate));
+              labelvalues.push(ddd);
+              
+              //console.log(new Date(ddd));
+        }
+       console.log(labelvalues);
+        
+    }; 
   
   return url;
 

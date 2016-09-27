@@ -195,16 +195,24 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
     var options = {}; 
     
     var break_result = jsondata.comparison_breakdown.data;
-    var categories = []; var f_categories = []; var series_data_1 = []; var series_data_2 = []; 
+    var lables       = jsondata.date_lables;
+    var categories = []; var f_categories = []; var series_data_1 = []; var series_data_2 = [];
+    var series_data_3 = []; var series_data_4 = []; 
     var m_series_percent_data = []; var f_series_percent_data = []; var a_categories = [];
     var a_series_percent_data=[]; var a_series_data = [];
     break_result.forEach(function(value,key){
       categories.push(value.date_start);
+      //var series_data_1[value.date_start] = {};
+      //series_data_1.push({val:value[jsondata.compare1],dateob:value.date_start});
+      //series_data_2.push({val:parseInt(value[jsondata.compare2]),dateob:value.date_start});
       series_data_1.push(value[jsondata.compare1]);
       series_data_2.push(parseInt(value[jsondata.compare2]));
     })
-    console.log(series_data_2);
-     
+    //console.log(series_data_1);
+    //lables.forEach(function(value){
+      // console.log(new Date(value).getTime()); 
+    //});
+    //$scope.date_lables 
     options.xAxis        = {categories:categories};
     
     options.series       = [{

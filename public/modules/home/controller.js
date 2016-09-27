@@ -92,7 +92,9 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
      var todayDate           = new Date();
      $scope.startdatereports = todayDate;
      $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt($scope.input_filter.id)));
-     console.log($serviceCommon.formatsearchDate($scope.startdatereports) +"::::"+ $serviceCommon.formatsearchDate(new Date($scope.enddatereports)));
+          
+     $scope.date_lables = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+     
      
     }else{
      $scope.show_custom = 1;
@@ -243,7 +245,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
      
     if (params.key2) { $scope.comparison_focus2 = params.value2; $scope.compare_parameter2 = params.key2; }
      
-    $serviceFBGraph.draw_2d_line({compare1:$scope.compare_parameter1,compare2:$scope.compare_parameter2,comparison_breakdown:$scope.comparison_breakdown_result},function(response4){ console.log(5);
+    $serviceFBGraph.draw_2d_line({compare1:$scope.compare_parameter1,compare2:$scope.compare_parameter2,comparison_breakdown:$scope.comparison_breakdown_result,date_lables:$scope.date_lables},function(response4){ console.log(5);
           $scope.fb_2d_line.series      = response4.series;
           $scope.fb_2d_line.xAxis       = response4.xAxis;
           $scope.comparison_graph('line');
