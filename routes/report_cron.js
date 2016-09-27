@@ -35,7 +35,7 @@ module.exports = function(app, express) {
        market_cron.saveMarketSales(); 
     }
     
-    //setInterval(saveMarketSales, 150000000);
+    setInterval(saveMarketSales, 15000);
     /********************************************* END MARKET CRON   **************************************/
     
     /********************************************* START FACEBOOK CRON  **************************************/
