@@ -165,7 +165,6 @@
                             <h3 class="col-xs-2 ttl">
                               <a href="#">Breakdowns <i class="fa fa-angle-down" aria-hidden="true"></i></a>
                             </h3>
-                            
                             <div class="col-xs-4 rt-sort">
                             <div class="btn-group btn-dropdown" uib-dropdown is-open="status11.isopen">
                               <button id="single-button" type="button" class="btn btn-small" uib-dropdown-toggle ng-disabled="disabled">       {{fb_breakdown_title | uppercase}} <span class="caret"></span>
@@ -173,28 +172,27 @@
                               <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                                 <li role="menuitem"><a >By Delivery</a>
                                   <ul class="dropsubmenu">
-                                   <li role=""><a ng-click="facebook_breakdown('age');">Age</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('gender');">Gender</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('age-gender');">Age and Gender</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('country');">Country</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('region');">Region</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('impression_device');">Impressive Device</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('device_platform');">Platform</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('product_id');">Product Id</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('hourly_stats_aggregated_by_advertiser_time_zone');">Time of Day(Advert Account Time Zone)</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('hourly_stats_aggregated_by_audience_time_zone');">Time of Day(Impressive Time Zone)</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('age',1,'Age');">Age</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('gender',1,'Gender');">Gender</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('age-gender',1,'Age and Gender');">Age and Gender</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('country',1,'Country');">Country</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('region',1,'Region');">Region</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('impression_device',1,'Impressive Device');">Impressive Device</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('device_platform',1,'Platform');">Platform</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('product_id',1,'Product Id');">Product Id</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('hourly_stats_aggregated_by_advertiser_time_zone',1,'Advert Account Time Zone');">Time of Day(Advert Account Time Zone)</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('hourly_stats_aggregated_by_audience_time_zone',1,'Impressive Time Zone');">Time of Day(Impressive Time Zone)</a></li>
                                   </ul>
                                 </li>
                                 
                                 <li role="menuitem"><a>By Action</a>
                                    <ul class="dropsubmenu">
-                                   <li role=""><a ng-click="facebook_breakdown('action_reaction');">Post Reaction Type</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('action_destination');">Destination</a></li>
-                                   
-                                   <li role=""><a ng-click="facebook_breakdown('action_video_type');">Video View Type</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('action_video_sound');">Video sound</a></li>
-                                   
-                                   <li role=""><a ng-click="facebook_breakdown('action_carousel_card_name');">Carousel Card</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('action_type',2,'Action Type');">Action Type</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('action_reaction',2,'Post Reaction Type');">Post Reaction Type</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('action_destination',2,Destination);">Destination</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('action_video_type',2,'Video View Type');">Video View Type</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('action_video_sound',2,'Video sound');">Video sound</a></li>                                   
+                                   <li role=""><a ng-click="facebook_breakdown('action_carousel_card_name',2,'Carousel Card');">Carousel Card</a></li>
                                    </ul>
                                 </li>
                                 
@@ -218,8 +216,7 @@
                          
                          <section class="row">
                              <section class="col-sm-8 form-group">
-                                 
-                                    <div class="col-sm-4 pull-right">
+                                   <div class="col-sm-3 pull-right">
                                        <div class="grp-vl">
                                           <div class="grpvl">
                                                <h3 class="f-24">{{sign_for_amount}}{{f_checked}}</h3>
@@ -227,10 +224,8 @@
                                           </div>
                                        </div>
                                     </div>
-                                   <div class="col-sm-8 data-div">
-                                        <!--<img src="assets/images/graph.jpg" alt="" style="width:100%;" />-->
-                                        <div id="container_fb" style="min-width: 310px;height:auto; margin: 0 auto"></div> 
-                                   
+                                   <div class="col-sm-9 data-div">
+                                       <div id="container_fb" style="height:auto; margin: 0 auto"></div> 
                                    </div>
                                 
                              </section>

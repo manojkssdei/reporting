@@ -119,6 +119,12 @@ exports.getFacebookBreakdownReports = function(req,res){
         reqdata.breakdown = [req.body.breakdown]; 
       }
     }
+    
+    if(req.body.action_breakdowns && req.body.action_breakdowns !== undefined && req.body.action_breakdowns != "")
+    {
+      reqdata.action_breakdowns = [req.body.action_breakdowns]; 
+    }
+    
     if (req.body.level && req.body.level !== undefined && req.body.level != "") {
       reqdata.level      = req.body.level;
     }else{ reqdata.level = 'ad';}

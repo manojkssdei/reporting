@@ -81,29 +81,6 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.breakdown_response = {};
   $scope.compare_parameter  = CONSTANT_COMPARISON;
   
-  // Get filter
-  $scope.show_custom = 0;
-  $scope.getFilter   = function(str)
-  {
-    $scope.date_range = str;
-    if (str != 'custom') {
-     $scope.filter_title   = str+' Days'; 
-     $scope.show_custom      = 0;
-     var todayDate           = new Date();
-     $scope.startdatereports = todayDate;
-     $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt($scope.input_filter.id)));
-          
-     $scope.date_lables = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
-     
-     
-    }else{
-     $scope.show_custom = 1;
-     $scope.filter_title   = 'Custom';
-     console.log();
-    }
-  }
-  $scope.getFilter(7);
-  
   /******************************* Services Start For Get Global Count  **************************************/
   $scope.filter = {};
   
@@ -120,7 +97,8 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.current = 90;
   $scope.filter.date_range  = $scope.date_range;
   
-  
+  $scope.run_dashboard = function(str) {
+  $scope.filter.date_range = str;  
   $serviceTest.getSummaryReport($scope.filter,function(response){
     
     //////// end loader class //////////
@@ -175,7 +153,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     });
     // CASE 3 : FACEBOOK GRAPH DATA
     // Breakdown base graph
-     $scope.facebook_breakdown('age-gender');
+     $scope.facebook_breakdown('age-gender',1,'Age and Gender');
      //$scope.breakdown_draw_2d_bar(e_graph,'age-gender');
      
     // CASE 4 : FACEBOOK  COMPARISON GRAPH DATA
@@ -187,7 +165,31 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     }else{
       $scope.error_msg = global_message.dashboard_fetch_err;
     }
-  }); 
+  });
+  }
+  // Get filter
+  $scope.show_custom = 0;
+  $scope.getFilter   = function(str)
+  {
+    $scope.date_range = str;
+    if (str != 'custom') {
+     $scope.filter_title   = str+' Days'; 
+     $scope.show_custom      = 0;
+     var todayDate           = new Date();
+     $scope.startdatereports = todayDate;
+     $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
+     //if($scope.input_filter.id == 7){ $scope.input_filter.id=$scope.input_filter.id; }
+     $scope.input_filter.id  = str;
+     $scope.date_lables = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+     console.log($scope.date_lables);
+    }else{
+     $scope.show_custom = 1;
+     $scope.filter_title   = 'Custom';
+    }
+    $scope.run_dashboard(str);
+  }
+  $scope.getFilter(7);
+  
   /**************************** Services Start For Get Global Count******************************/
   
   // Breakdown base graph
@@ -214,7 +216,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
       $scope.sign_for_amount = '$';
     }
     $scope.focus_active(str);
-    $scope.breakdown_draw_2d_bar($scope.breakdown_response.result,$scope.fb_breakdown_title);
+    $scope.breakdown_draw_2d_bar($scope.breakdown_response.result,$scope.fb_breakdown_filter_title);
   }
   // breakdown graph
   $scope.breakdown_draw_2d_bar = function(e_graph,type){
@@ -224,7 +226,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
      $scope.fb_2d_bar.tooltip     = response3.tooltip;
      $scope.fb_2d_bar.xAxis       = response3.xAxis;
      /// Datapoint for grid
-     if ($scope.fb_breakdown_title == 'age-gender' || $scope.fb_breakdown_title == 'gender') {
+     if ($scope.fb_breakdown_filter_title == 'age-gender' || $scope.fb_breakdown_filter_title == 'gender') {
       $scope.fb_2d_bar.f_series_percent_data  = response3.f_series_percent_data;
       $scope.fb_2d_bar.m_series_percent_data  = response3.m_series_percent_data;
       $scope.fb_2d_bar.m_categories           = response3.m_categories;
@@ -268,7 +270,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
       $rootScope.noscrollclass = '';
       $scope.current = 0;
       $scope.comparison_breakdown_result = comparison_breakdown.result;
-      $serviceFBGraph.draw_2d_line({compare1:compare1,compare2:compare2,comparison_breakdown:comparison_breakdown.result},function(response4){
+      $serviceFBGraph.draw_2d_line({compare1:compare1,compare2:compare2,comparison_breakdown:comparison_breakdown.result,date_lables:$scope.date_lables},function(response4){
           $scope.fb_2d_line.series      = response4.series;
           $scope.fb_2d_line.xAxis       = response4.xAxis;
           $scope.comparison_graph('line');
@@ -280,21 +282,28 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   
   /*************************** Facebook Breakdown Code Start ************************************/
    
-  $scope.facebook_breakdown = function(breakdown)
+  $scope.facebook_breakdown = function(breakdown,breakdown_type,actual_title)
   {
     var filter  = {};
-    filter.date_range         = $scope.date_range;
-    filter.breakdown          = breakdown;
-    $scope.fb_breakdown_title = breakdown;
-    $scope.loadingclass = 'loadingclass';
-    $scope.progressbardiv = 'progressbardiv';
-    $rootScope.noscrollclass = 'noscroll';
-    $scope.current = 90;
+    filter.date_range          = $scope.date_range;
+    if (breakdown_type == 1) {
+      filter.breakdown         = breakdown;
+    }else{
+      filter.action_breakdowns = breakdown;
+    }
+    
+    
+    $scope.fb_breakdown_title = actual_title;
+    $scope.fb_breakdown_filter_title = breakdown;
+    $scope.loadingclass       = 'loadingclass';
+    $scope.progressbardiv     = 'progressbardiv';
+    $rootScope.noscrollclass  = 'noscroll';
+    $scope.current            = 90;
     $serviceTest.getBreakdownReport(filter,function(breakdown_response){
-      $scope.loadingclass = '';
-  $scope.progressbardiv = '';
-  $rootScope.noscrollclass = '';
-  $scope.current = 0;
+      $scope.loadingclass      = '';
+      $scope.progressbardiv    = '';
+      $rootScope.noscrollclass = '';
+      $scope.current           = 0;
       if (breakdown_response.code == 101) {
       $scope.breakdown_error_message = breakdown_response.result.message;
       }

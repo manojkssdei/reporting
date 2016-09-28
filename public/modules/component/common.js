@@ -23,11 +23,11 @@ angular.module('alisthub').factory('COMMON', ['$q', '$timeout','communicationSer
       if(dd<10){ dd='0'+dd; }
       var month = parseInt(today.getMonth())+1;        
       if(month<10){  month='0'+month; }
-      return month + "-" + dd + "-" + today.getFullYear();
+      return month+"-"+dd+"-"+today.getFullYear();
     };
        
    url.getDateLables = function(date1,date2,decrement){
-        console.log(date1 +":::"+ date2);
+        console.log(date1 +":::"+ new Date(date2));
         var date5      = new Date(date1);
         var day        = 60 * 60 * 24 * 1000;
         var oneDay     = 24*60*60*1000; // hours*minutes*seconds*milliseconds
@@ -41,12 +41,11 @@ angular.module('alisthub').factory('COMMON', ['$q', '$timeout','communicationSer
         for(var i=0;i<diffDays+1;i=i+decrement){              
               var setdate = new Date(date2).setDate(new Date(date2).getDate() + i);
               //$scope.graph_date.push({"start_date":setdate,"end_date":setdate});
-              var ddd = url.formatsearchDate(new Date(setdate));
+              var ddd = url.formatsearchDate(setdate);
               labelvalues.push(ddd);
-              
-              //console.log(new Date(ddd));
         }
-       console.log(labelvalues);
+        console.log(labelvalues);
+       return labelvalues;
         
     }; 
   

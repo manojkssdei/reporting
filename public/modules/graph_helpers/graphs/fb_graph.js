@@ -16,6 +16,7 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
     
     console.log(jsondata.total+"::::"+jsondata.type+"::::"+jsondata.variable);
     var break_result = jsondata.e_graph.data;
+    console.log(break_result);
     var m_categories = []; var f_categories = []; var m_series_data = []; var f_series_data = []; 
     var m_series_percent_data = []; var f_series_percent_data = []; var a_categories = [];
     var a_series_percent_data=[]; var a_series_data = [];
@@ -106,7 +107,23 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
             
             if (jsondata.variable) {
                 a_series_data.push(parseInt(value[jsondata.variable]));    
-                a_series_percent_data.push(parseInt(((parseInt(value[jsondata.variable])/parseInt(jsondata.total))*100).toFixed(2)));}    
+                a_series_percent_data.push(parseInt(((parseInt(value[jsondata.variable])/parseInt(jsondata.total))*100).toFixed(2)));}
+        break;
+        case 'action_reaction':
+            a_categories.push(value.action_reaction);
+            console.log(value.actions);
+            if (jsondata.variable) {
+                a_series_data.push(parseInt(value[jsondata.variable]));    
+                a_series_percent_data.push(parseInt(((parseInt(value[jsondata.variable])/parseInt(jsondata.total))*100).toFixed(2)));
+                }
+        break;
+        case 'action_type':
+            a_categories.push(value.action_type);
+            if (jsondata.variable) {
+                a_series_data.push(parseInt(value[jsondata.variable]));    
+                a_series_percent_data.push(parseInt(((parseInt(value[jsondata.variable])/parseInt(jsondata.total))*100).toFixed(2)));
+            }
+        break; 
         default: return 1;
       }
        
@@ -141,6 +158,8 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
     options.f_series_percent_data = f_series_percent_data;
     options.m_series_percent_data = m_series_percent_data;
     options.m_categories          = m_categories;
+    console.log(m_categories);
+    console.log(f_categories);
     }else{
         options.xAxis           = [{
                 categories: a_categories,
@@ -197,23 +216,28 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
     var break_result = jsondata.comparison_breakdown.data;
     var lables       = jsondata.date_lables;
     var categories = []; var f_categories = []; var series_data_1 = []; var series_data_2 = [];
-    var series_data_3 = []; var series_data_4 = []; 
-    var m_series_percent_data = []; var f_series_percent_data = []; var a_categories = [];
-    var a_series_percent_data=[]; var a_series_data = [];
+    var series_data_3 = {}; var series_data_4 = {}; 
+    console.log(jsondata.compare1+":::"+jsondata.compare2);
     break_result.forEach(function(value,key){
       categories.push(value.date_start);
-      //var series_data_1[value.date_start] = {};
-      //series_data_1.push({val:value[jsondata.compare1],dateob:value.date_start});
-      //series_data_2.push({val:parseInt(value[jsondata.compare2]),dateob:value.date_start});
-      series_data_1.push(value[jsondata.compare1]);
-      series_data_2.push(parseInt(value[jsondata.compare2]));
+      series_data_3[value.date_start] = parseInt(value[jsondata.compare1]);
+      series_data_4[value.date_start] = parseInt(value[jsondata.compare2]);
     })
-    //console.log(series_data_1);
-    //lables.forEach(function(value){
-      // console.log(new Date(value).getTime()); 
-    //});
+    lables.forEach(function(value){
+        var exp = value.split("-");
+        var new_form = exp[2]+'-'+exp[0]+'-'+exp[1];
+        if(series_data_3[new_form]){
+           series_data_1.push(series_data_3[new_form]);
+        }
+        else{ series_data_1.push(0); }
+        /////////////////////////////////////////
+        if(series_data_4[new_form]){
+           series_data_2.push(series_data_4[new_form]);
+        }
+        else{ series_data_2.push(0); }
+    });
     //$scope.date_lables 
-    options.xAxis        = {categories:categories};
+    options.xAxis        = {categories:lables};
     
     options.series       = [{
         data: series_data_1,

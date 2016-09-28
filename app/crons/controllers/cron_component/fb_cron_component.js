@@ -51,6 +51,9 @@ Module : Get Report of Breakdowns **/
     if (filter.breakdown) {
         query.breakdowns    = JSON.stringify(filter.breakdown);
     }
+    if (filter.action_breakdowns) {
+        query.action_breakdowns    = JSON.stringify(filter.action_breakdowns);
+    }
     if (filter.level) {
         query.level         = filter.level;
     }
@@ -58,15 +61,15 @@ Module : Get Report of Breakdowns **/
         query.time_increment= req.body.time_increment;
         //delete query.date_preset;
     }
-        //console.log(query);
-        fb.getreportCampaign(query,function(error, response){
+    //console.log(query);
+    fb.getreportCampaign(query,function(error, response){
                 if (response.error) {
                  return next({status:0,response:response.error});   
                 }
                 else{
                  return next({status:1,response:response});   
                 }
-        }); 
+    }); 
   }
   
   
@@ -99,7 +102,6 @@ Module : Get Report of Breakdowns **/
         if (response.error) {
         return next({result:response.error,status:0});
         }else{
-            
         return next({result:response,status:1});  
         }
          
