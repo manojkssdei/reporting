@@ -7,10 +7,79 @@
 
 
 angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-loading-bar','ngTagsInput','angularjs-dropdown-multiselect','ngTouch','chart.js','angularUtils.directives.dirPagination']).controller('combineReportController', function($scope,$localStorage,$stateParams,$injector,$http,$state,$location,$rootScope,$window,$parse,$filter,$anchorScroll,cfpLoadingBar) {
+  
+  $rootScope.class_status=false;
+  if(window.innerWidth>767){  
+      $scope.navCollapsed = false;    
+  }else{ 
+      $scope.navCollapsed = true;
+      $scope.toggleMenu = function() {
+        $scope.navCollapsed = $scope.navCollapsed === false ? true: false;
+    };    
+  }
+  angular.element($window).bind("scroll", function() {
+            if(window.innerWidth>767){
+				if (this.pageYOffset >= 230) {
+					angular.element(document.querySelector('.d-title')).addClass("fixed-row");
+					angular.element(document.querySelector('#fixed')).addClass("fixed-wrapper");
+				 } else {
+					angular.element(document.querySelector('.d-title')).removeClass("fixed-row");
+					angular.element(document.querySelector('#fixed')).removeClass("fixed-wrapper");
+				 }
+	    $scope.$apply();
+			}
+  });
+  //////////// Loader class start ///////////////////////
+        $scope.current =        LOADER_CONS.current;
+        $scope.max =            LOADER_CONS.max;
+        $scope.duration =       LOADER_CONS.duration;
+        $scope.stroke =         LOADER_CONS.stroke;
+        $scope.radius =         LOADER_CONS.radius;
+        $scope.isSemi =         LOADER_CONS.isSemi;
+        $scope.currentColor =   LOADER_CONS.currentColor;
+        $scope.bgColor =        LOADER_CONS.bgColor;
+        $scope.currentAnimation = LOADER_CONS.currentAnimation;
+        $scope.animationDelay   = LOADER_CONS.animationDelay;
+        $scope.getStyle = LOADER_CONS.getStyle;
+  //////////// Loader class end ////////////////////////
+  $scope.facebookdata       = true;
+  $scope.searchcampiagn     = '1';
+  $scope.googledata         = false;
+  $scope.pagesize           = '10';
+  $scope.input_filter       = {};
+  $scope.input_filter.id    = "7";
+  $scope.filter_title       = '7 Days';
+  $scope.fb_breakdown_title = 'Age';
+  var data                  = {};
+  $scope.breakdown_response = {};
+  $scope.compare_parameter  = CONSTANT_COMPARISON;
    
   $anchorScroll();
   
-    	
+  // common module
+  var $serviceCommon     = $injector.get("COMMON");
+  // Get filter
+  $scope.show_custom = 0;
+  $scope.getFilter   = function(str)
+  {
+    $scope.date_range = str;
+    if (str != 'custom') {
+     $scope.filter_title   = str+' Days'; 
+     $scope.show_custom      = 0;
+     var todayDate           = new Date();
+     $scope.startdatereports = todayDate;
+     $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
+     //if($scope.input_filter.id == 7){ $scope.input_filter.id=$scope.input_filter.id; }
+     $scope.input_filter.id  = str;
+     $scope.date_lables = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+     console.log($scope.date_lables);
+    }else{
+     $scope.show_custom = 1;
+     $scope.filter_title   = 'Custom';
+    }
+    //$scope.run_dashboard(str);
+  }
+  $scope.getFilter(7);  	
     		
   /**
      * In order to synchronize tooltips and crosshairs, override the

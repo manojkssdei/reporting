@@ -8,8 +8,81 @@
 
 angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-loading-bar','ngTagsInput','angularjs-dropdown-multiselect','ngTouch','chart.js','angularUtils.directives.dirPagination']).controller('facebookReportController', function($scope,$localStorage,$stateParams,$injector,$http,$state,$location,$rootScope,$window,$parse,$filter,$anchorScroll,cfpLoadingBar) {
    
+  $rootScope.class_status=false;
+  if(window.innerWidth>767){  
+      $scope.navCollapsed = false;    
+  }else{ 
+      $scope.navCollapsed = true;
+      $scope.toggleMenu = function() {
+        $scope.navCollapsed = $scope.navCollapsed === false ? true: false;
+    };    
+  }
+  angular.element($window).bind("scroll", function() {
+            if(window.innerWidth>767){
+				if (this.pageYOffset >= 230) {
+					angular.element(document.querySelector('.d-title')).addClass("fixed-row");
+					angular.element(document.querySelector('#fixed')).addClass("fixed-wrapper");
+				 } else {
+					angular.element(document.querySelector('.d-title')).removeClass("fixed-row");
+					angular.element(document.querySelector('#fixed')).removeClass("fixed-wrapper");
+				 }
+	    $scope.$apply();
+			}
+  });
+  //////////// Loader class start ///////////////////////
+        $scope.current =        LOADER_CONS.current;
+        $scope.max =            LOADER_CONS.max;
+        $scope.duration =       LOADER_CONS.duration;
+        $scope.stroke =         LOADER_CONS.stroke;
+        $scope.radius =         LOADER_CONS.radius;
+        $scope.isSemi =         LOADER_CONS.isSemi;
+        $scope.currentColor =   LOADER_CONS.currentColor;
+        $scope.bgColor =        LOADER_CONS.bgColor;
+        $scope.currentAnimation = LOADER_CONS.currentAnimation;
+        $scope.animationDelay   = LOADER_CONS.animationDelay;
+        $scope.getStyle = LOADER_CONS.getStyle;
+  //////////// Loader class end ////////////////////////
+  $scope.facebookdata       = true;
+  $scope.searchcampiagn     = '1';
+  $scope.googledata         = false;
+  $scope.pagesize           = '10';
+  $scope.input_filter       = {};
+  $scope.input_filter.id    = "7";
+  $scope.filter_title       = '7 Days';
+  $scope.fb_breakdown_title = 'Age';
+  var data                  = {};
+  $scope.breakdown_response = {};
+  $scope.compare_parameter  = CONSTANT_COMPARISON;
+   
   $anchorScroll();
-
+  
+  // common module
+  var $serviceCommon     = $injector.get("COMMON");
+  // Get filter
+  $scope.show_custom = 0;
+  $scope.getFilter   = function(str)
+  {
+    $scope.date_range = str;
+    if (str != 'custom') {
+     $scope.filter_title   = str+' Days'; 
+     $scope.show_custom      = 0;
+     var todayDate           = new Date();
+     $scope.startdatereports = todayDate;
+     $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
+     //if($scope.input_filter.id == 7){ $scope.input_filter.id=$scope.input_filter.id; }
+     $scope.input_filter.id  = str;
+     $scope.date_lables = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+     console.log($scope.date_lables);
+    }else{
+     $scope.show_custom = 1;
+     $scope.filter_title   = 'Custom';
+    }
+    //$scope.run_dashboard(str);
+  }
+  $scope.getFilter(7); 
+  
+  
+  
   $scope.facebookdaterange = 'last_7_days';
    //For Step 1
   $scope.searchcampiagn = '1,2';
@@ -24,8 +97,6 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
   if($stateParams.campaignname!="" && $stateParams.campaignname!=undefined){
     $scope.findcampaign = $stateParams.campaignname;
   }
-  
-  $anchorScroll();
   
   //////////////////////////////////////////////////
   
@@ -296,8 +367,8 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
   });
 
   $scope.searchdata = function(){
-    managegraph();
-    managefacebookcampaigndata();
+    //managegraph();
+    //managefacebookcampaigndata();
   }
   
  
@@ -364,7 +435,7 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
 
         $scope.labelvalues.push('Life Time');
         managefacebookcampaigndata();
-        managegraph();
+        //managegraph();
       }
       if(gettype=='Today'){  
         $scope.labelvalues = [];      
@@ -375,8 +446,8 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
         $scope.graph_date = [{"start_date":$scope.facebookstartdate,"end_date":$scope.facebookenddate}];
         
         $scope.labelvalues.push("","","Today","","","");
-        managefacebookcampaigndata();
-        managegraph();
+        //managefacebookcampaigndata();
+        //managegraph();
       }
       if(gettype=='Yesterday'){
         $scope.labelvalues = [];          
@@ -388,8 +459,8 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
         $scope.graph_date = [{"start_date":$scope.facebookstartdate,"end_date":$scope.facebookenddate}];
         
         $scope.labelvalues.push("","","Yesterday","","","");
-        managefacebookcampaigndata();
-        managegraph();
+        //managefacebookcampaigndata();
+       // managegraph();
       }
       if(gettype=='Last 7 days'){  
         $scope.labelvalues = []; 
@@ -406,8 +477,8 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
           $scope.graph_date.push({"start_date":setdate,"end_date":setdate});
           $scope.labelvalues.push(graphDate(setdate));
         }
-        managefacebookcampaigndata();
-        managegraph();
+        //managefacebookcampaigndata();
+        //managegraph();
       }
       if(gettype=='Last 14 days'){ 
         $scope.labelvalues = [];
@@ -425,8 +496,8 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
           $scope.labelvalues.push(graphDate(setdate));
         }
        
-        managefacebookcampaigndata();
-        managegraph();
+        //managefacebookcampaigndata();
+        //managegraph();
       }
       if(gettype=='Last 30 days'){ 
         $scope.labelvalues = []; 
@@ -443,8 +514,8 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
           $scope.graph_date.push({"start_date":setdate,"end_date":setdate});
           $scope.labelvalues.push(graphDate(setdate));
         }
-        managefacebookcampaigndata();
-        managegraph();
+        //managefacebookcampaigndata();
+       // managegraph();
       }
       if(gettype=='Last month'){
         $scope.labelvalues = [];
@@ -465,8 +536,8 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
           $scope.graph_date.push({"start_date":setdate,"end_date":setdate});
           $scope.labelvalues.push(graphDate(setdate));
         }
-        managefacebookcampaigndata();
-        managegraph();
+        //managefacebookcampaigndata();
+        //managegraph();
       }
 
       if(gettype=='This month'){ 
@@ -487,8 +558,8 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
           $scope.graph_date.push({"start_date":setdate,"end_date":setdate});
           $scope.labelvalues.push(graphDate(setdate));
         }
-        managefacebookcampaigndata();
-        managegraph();
+        //managefacebookcampaigndata();
+        //managegraph();
       }
       if(gettype=='This year'){ 
         $scope.labelvalues = []; 
@@ -526,8 +597,8 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
         $scope.graph_date = [{"start_date":startdate1,"end_date":enddate1},{"start_date":startdate2,"end_date":enddate2},{"start_date":startdate3,"end_date":enddate3},{"start_date":startdate4,"end_date":enddate4},{"start_date":startdate5,"end_date":enddate5},{"start_date":startdate6,"end_date":enddate6},{"start_date":startdate7,"end_date":enddate7},{"start_date":startdate8,"end_date":enddate8},{"start_date":startdate9,"end_date":enddate9},{"start_date":startdate10,"end_date":enddate10},{"start_date":startdate11,"end_date":enddate11},{"start_date":startdate12,"end_date":enddate12}];
 
         $scope.labelvalues.push("Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
-        managefacebookcampaigndata();
-        managegraph();
+        //managefacebookcampaigndata();
+        //managegraph();
       }
       if(gettype=='Custom'){  
         $scope.labelvalues = [];         
@@ -539,7 +610,7 @@ angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-
         $scope.showdatereports = true;
         $scope.googledateRangeType = 'ALL_TIME';
         $scope.facebookdaterange = 'custom';
-        calculatedaterange();
+        //calculatedaterange();
        
       }
 

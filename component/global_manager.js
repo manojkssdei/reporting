@@ -45,4 +45,27 @@ module.exports = function()
     //});
     
   }
+  /**
+  Express Controller to getShowclixTicketReport
+  Created : 2016-09-29
+  Created By: Manoj Singh
+  Module : getShowclixTicketReport
+ */
+  this.getShowclixTicketReport = function(req,res,next){
+    if (req.body.from && req.body.from != "" && req.body.from !== undefined && req.body.to && req.body.to != "" && req.body.to !== undefined) {
+        var input = {date:{$gte:req.body.from,$lte:req.body.to}};
+    }else{
+        var input = {};       
+    }
+        
+    ticket_sales.find(input,function(err, sales_data) {
+            if (err) {
+              res.json({code:101,errmsg:"Data Fetch Err",err:err});
+            }
+            else{
+              
+            }
+    })
+    
+  }
 }

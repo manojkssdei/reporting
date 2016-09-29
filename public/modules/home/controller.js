@@ -241,7 +241,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   }
   // comparison graph
   $scope.get_comparison_data  = function(params)
-  { console.log(params);
+  { 
     var compare1 = ''; var compare2 = '';
     if (params.key1) { $scope.comparison_focus1 = params.value1; $scope.compare_parameter1 = params.key1;  }
      
@@ -259,11 +259,11 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
      filter2.date_range         = $scope.date_range;
      filter2.time_increment     = 1;
      filter2.level              = 'account';
-     $scope.loadingclass = 'loadingclass';
-    $scope.progressbardiv = 'progressbardiv';
-    $rootScope.noscrollclass = 'noscroll';
+     $scope.loadingclass        = 'loadingclass';
+    $scope.progressbardiv       = 'progressbardiv';
+    $rootScope.noscrollclass    = 'noscroll';
     $scope.current = 90;
-    $scope.compare_parameter1 =  compare1; $scope.compare_parameter2 =  compare2;
+    $scope.compare_parameter1   =  compare1; $scope.compare_parameter2 =  compare2;
      $serviceTest.getBreakdownTimeReport(filter2,function(comparison_breakdown){
       $scope.loadingclass = '';
       $scope.progressbardiv = '';
@@ -277,7 +277,6 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
           
         });
      });
-     
   }
   
   /*************************** Facebook Breakdown Code Start ************************************/

@@ -1,6 +1,6 @@
 <!-- Container -->
   <div class="container">
-      <h1>Reports</h1>
+      <h1>Facebook Reports</h1>
    <div ng-class="loadingclass"></div>
     <!-- Form COntainer --> 
     
@@ -8,37 +8,101 @@
     
     <div class="wt-frame form-section">
          <section class="d-title form-group clearfix">
-             <div class="pull-left"><select class="form-control w-auto">
-                  <option value="Sort URL">Sort URL</option>
-                  <option value="www.facebook.com">www.facebook.com</option>
-                </select></div>
+            <div class="clearfix">
+             <h3 class="pull-left">Overview</h3>
              <div class="date-range pull-right">
-                   <div is-open="status.isopen" uib-dropdown="" class="btn-group btn-dropdown">
-                      <button ng-disabled="disabled" uib-dropdown-toggle="" class="btn" type="button" id="single-button">
-                        7 Days <span class="caret"></span>
+                    <strong>{{startdatereports | date}} - {{enddatereports | date}}</strong>
+                    <div class="btn-group btn-dropdown" uib-dropdown is-open="status2.isopen">
+                      <button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
+                        {{ filter_title }} <span class="caret"></span>
                       </button>
-                      <ul aria-labelledby="single-button" role="menu" uib-dropdown-menu="" class="dropdown-menu">
-                        <li role="menuitem"><a href="#">7 Days</a></li>
-                        <li role="menuitem"><a href="#">15 Days</a></li>
-                        <li role="menuitem"><a href="#">30 Days</a></li>
-                        <li role="menuitem"><a href="#">Custom</a></li>
+                      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                        <li role="menuitem"><a ng-click="getFilter('today');">Today</a></li>
+                        <li role="menuitem"><a ng-click="getFilter('yesterday');">Yesterday</a></li>
+                        <li role="menuitem"><a ng-click="getFilter(7);">Last 7 Days</a></li>
+                        <li role="menuitem"><a ng-click="getFilter(15);">Last 14 Days</a></li>
+                        <li role="menuitem"><a ng-click="getFilter(30);">Last 30 Days</a></li>
+                        <li role="menuitem"><a ng-click="getFilter('last_month');">Last month</a></li>
+                        <li role="menuitem"><a ng-click="getFilter('this_month');">This month</a></li>
+                        <li role="menuitem"><a ng-click="getFilter('custom');">Custom</a></li>
                       </ul>
                     </div>
-                         
-                   </div>
-              <ul class="from-to posrt">
+                <a class="m-l15 v-m"><i class="fa fa-file-text-o icon-fa" aria-hidden="true"><span class="filename">CSV</span><span class="sub-fa fa fa-arrow-down"></span></i></a>         
+              </div>
+              <ul class="from-to posrt" ng-if="show_custom == 1">
                     <li>
                        <label>From</label> 
-                       <input type="text" class="form-control w-auto calendar-input">
+                       <input type="text" name="search_from" ng-model="search_from" class="form-control w-auto calendar-input">       <!--<div class='input-group date' id='datetimepicker1'>   
+                                                      <input type="text" class="form-control" uib-datepicker-popup="{{'MM-dd-yyyy'}}" ng-model="startdatereports" is-open="popuprepo.opened" datepicker-options="dateoptions"  close-text="Close" alt-input-formats="{{'MM-dd-yyyy'}}" ng-change="customsearchdata()"/>
+                                                      <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"  ng-click="openrep()"></span> </span>
+                            </div>-->
                     </li>
                     <li>
                        <label>To</label> 
-                       <input type="text" class="form-control w-auto calendar-input">
+                       <input type="text" name="search_to" ng-model="search_to" class="form-control w-auto calendar-input">
                     </li>
                 </ul>
-        </section>
-          
-          <section class="gray-frame">
+             </div>  
+        </section>   
+        <section class="row">
+                <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>Fb Account</label>
+                        <select class="form-control" ng-model="searchcampiagn">
+                          <option value="1,2,3">All</option>
+                          <option value="1">Lavlesh Mishra</option>
+                          <option value="2">Sales</option>
+                          <option value="3">Email</option>
+                        </select>
+                      </div>
+                </div>
+                <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>Fb Campaign</label>
+                        <select class="form-control" ng-model="searchcampiagn">
+                          <option value="1,2,3">All</option>
+                          <option value="0">Facebook</option>
+                          <option value="2">Sales</option>
+                          <option value="3">Email</option>
+                        </select>
+                      </div>
+                </div>
+                <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>Fb Adsets</label>
+                        <select class="form-control" ng-model="searchcampiagn">
+                          <option value="1,2,3">All</option>
+                          <option value="0">Facebook</option>
+                          <option value="2">Sales</option>
+                          <option value="3">Email</option>
+                        </select>
+                      </div>
+                </div>
+                <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>Fb Ads</label>
+                        <select class="form-control" ng-model="searchcampiagn">
+                          <option value="1,2,3">All</option>
+                          <option value="0">Facebook</option>
+                          <option value="2">Sales</option>
+                          <option value="3">Email</option>
+                        </select>
+                      </div>
+                </div>
+                <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>Select Event</label>
+                        <select class="form-control" ng-model="searchcampiagn">
+                          <option value="1,2,3">All</option>
+                          <option value="0">Facebook</option>
+                          <option value="2">Sales</option>
+                          <option value="3">Email</option>
+                        </select>
+                      </div>
+                </div>
+                
+        </section>    
+        <section class="gray-frame">
                
                <section class="brief-info form-group">
                     <ul class="values-list clearfix">
@@ -75,7 +139,7 @@
                    
               </div>
               
-              <section class="row" ng-controller="heightfunction" ng-init="getHeight();">
+              <section class="row">
                  <section class="col-sm-6">
                      <section class="module-widget form-group" id="getfheight" style="height:{{setHeight}}">
                          <section class="panel-white">

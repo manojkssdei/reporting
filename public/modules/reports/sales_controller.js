@@ -7,7 +7,53 @@
 
 
 angular.module('alisthub', ['ui.bootstrap','angularjs-datetime-picker','angular-loading-bar','ngTagsInput','angularjs-dropdown-multiselect','ngTouch','chart.js','angularUtils.directives.dirPagination']).controller('salesReportController', function($scope,$localStorage,$stateParams,$injector,$http,$state,$location,$rootScope,$window,$parse,$filter,$anchorScroll,cfpLoadingBar) {
-   
+  
+  $rootScope.class_status=false;
+  if(window.innerWidth>767){  
+      $scope.navCollapsed = false;    
+  }else{ 
+      $scope.navCollapsed = true;
+      $scope.toggleMenu = function() {
+        $scope.navCollapsed = $scope.navCollapsed === false ? true: false;
+    };    
+  }
+  angular.element($window).bind("scroll", function() {
+            if(window.innerWidth>767){
+				if (this.pageYOffset >= 230) {
+					angular.element(document.querySelector('.d-title')).addClass("fixed-row");
+					angular.element(document.querySelector('#fixed')).addClass("fixed-wrapper");
+				 } else {
+					angular.element(document.querySelector('.d-title')).removeClass("fixed-row");
+					angular.element(document.querySelector('#fixed')).removeClass("fixed-wrapper");
+				 }
+	    $scope.$apply();
+			}
+  });
+  //////////// Loader class start ///////////////////////
+        $scope.current =        LOADER_CONS.current;
+        $scope.max =            LOADER_CONS.max;
+        $scope.duration =       LOADER_CONS.duration;
+        $scope.stroke =         LOADER_CONS.stroke;
+        $scope.radius =         LOADER_CONS.radius;
+        $scope.isSemi =         LOADER_CONS.isSemi;
+        $scope.currentColor =   LOADER_CONS.currentColor;
+        $scope.bgColor =        LOADER_CONS.bgColor;
+        $scope.currentAnimation = LOADER_CONS.currentAnimation;
+        $scope.animationDelay   = LOADER_CONS.animationDelay;
+        $scope.getStyle = LOADER_CONS.getStyle;
+  //////////// Loader class end ////////////////////////
+  //////////// Loader class end ////////////////////////
+  $scope.facebookdata       = true;
+  $scope.searchcampiagn     = '1';
+  $scope.googledata         = false;
+  $scope.pagesize           = '10';
+  $scope.input_filter       = {};
+  $scope.input_filter.id    = "7";
+  $scope.filter_title       = '7 Days';
+  $scope.fb_breakdown_title = 'Age';
+  var data                  = {};
+  $scope.breakdown_response = {};
+    
   $anchorScroll();
   
   Highcharts.chart('container',{

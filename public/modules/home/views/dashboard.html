@@ -22,14 +22,19 @@
              <div class="clearfix">
              <h3 class="pull-left">Overview</h3>
              <div class="date-range pull-right">
+                    <strong>{{startdatereports | date}} - {{enddatereports | date}}</strong>
                     <div class="btn-group btn-dropdown" uib-dropdown is-open="status2.isopen">
                       <button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
                         {{ filter_title }} <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                        <li role="menuitem"><a ng-click="getFilter(7);">7 Days</a></li>
-                        <li role="menuitem"><a ng-click="getFilter(15);">15 Days</a></li>
-                        <li role="menuitem"><a ng-click="getFilter(30);">30 Days</a></li>
+                        <li role="menuitem"><a ng-click="getFilter('today');">Today</a></li>
+                        <li role="menuitem"><a ng-click="getFilter('yesterday');">Yesterday</a></li>
+                        <li role="menuitem"><a ng-click="getFilter(7);">Last 7 Days</a></li>
+                        <li role="menuitem"><a ng-click="getFilter(15);">Last 14 Days</a></li>
+                        <li role="menuitem"><a ng-click="getFilter(30);">Last 30 Days</a></li>
+                        <li role="menuitem"><a ng-click="getFilter('last_month');">Last month</a></li>
+                        <li role="menuitem"><a ng-click="getFilter('this_month');">This month</a></li>
                         <li role="menuitem"><a ng-click="getFilter('custom');">Custom</a></li>
                       </ul>
                     </div>
@@ -232,24 +237,27 @@
                              <section class="col-sm-4">
                                    <table class="data-tabl table-striped"> 
                                       <thead> 
-                                         <tr ng-if="fb_breakdown_title == 'age-gender' ||  fb_breakdown_title == 'gender'">                                         
+                                         <tr ng-if="fb_breakdown_filter_title == 'age-gender' ||  fb_breakdown_filter_title == 'gender'">                                         
                                             <th colspan="2" class="tb-tr rt-bdr">Male</th> 
                                             <th colspan="2">Female</th> 
                                          </tr>
-                                         <tr ng-if="fb_breakdown_title != 'age-gender' && fb_breakdown_title != 'gender'">                                         
+                                         <tr ng-if="fb_breakdown_filter_title != 'age-gender' && fb_breakdown_filter_title != 'gender'">                                         
                                             <th colspan="2" class="tb-tr rt-bdr">% Value</th> 
                                             
                                          </tr>
                                      </thead>
                                      <tbody> 
-                                     
-                                     <tr ng-if="fb_breakdown_title == 'age-gender' || fb_breakdown_title == 'gender'" ng-repeat="(key,fbdata) in fb_2d_bar.m_categories"> 
+                                    
+                                     <tr ng-if="fb_breakdown_filter_title == 'age-gender' || fb_breakdown_filter_title == 'gender'" ng-repeat="(key,fbdata) in fb_2d_bar.m_categories"> 
                                         <td><strong>{{fbdata}}</strong></td> 
                                         <td class="tb-tr rt-bdr">{{fb_2d_bar.m_series_percent_data[key]}}%</td> 
-                                        <td>{{fb_2d_bar.f_series_percent_data[key]}}%</td> 
+                                        <td>
+                                             <div ng-if="fb_2d_bar.f_series_percent_data[key] == null">0%</div>
+                                             <div ng-if="fb_2d_bar.f_series_percent_data[key] != null">{{fb_2d_bar.f_series_percent_data[key]}}%</div>
+                                        </td> 
                                         <td class="tb-tr totl-col"></td> 
                                     </tr>
-                                     <tr ng-if="fb_breakdown_title != 'age-gender' && fb_breakdown_title != 'gender'" ng-repeat="(key,fbdata) in fb_2d_bar.m_categories"> 
+                                     <tr ng-if="fb_breakdown_filter_title != 'age-gender' && fb_breakdown_filter_title != 'gender'" ng-repeat="(key,fbdata) in fb_2d_bar.m_categories"> 
                                         <td><strong>{{fbdata}}</strong></td> 
                                         <td class="tb-tr rt-bdr">{{fb_2d_bar.m_series_percent_data[key]}}%</td> 
                                         

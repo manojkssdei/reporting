@@ -158,8 +158,10 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
     options.f_series_percent_data = f_series_percent_data;
     options.m_series_percent_data = m_series_percent_data;
     options.m_categories          = m_categories;
-    console.log(m_categories);
-    console.log(f_categories);
+    console.log("=============");
+    console.log(f_series_percent_data);
+    console.log("=============");
+    //console.log(m_series_percent_data);
     }else{
         options.xAxis           = [{
                 categories: a_categories,

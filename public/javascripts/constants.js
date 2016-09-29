@@ -52,7 +52,8 @@ var webservices = {
 	///////////////////////////////////// NEW services ///////////////////////////////
 	"getSummaryReport"  :"/networks/getSummaryReport",
 	"getBreakdownReport":"/networks/getBreakdownReport",
-	"getBreakdownTimeReport":"/networks/getBreakdownTimeReport"
+	"getBreakdownTimeReport":"/networks/getBreakdownTimeReport",
+	"getTicketSalesReport":"/networks/getTicketSalesReport"
 }
 
 var global_message = {

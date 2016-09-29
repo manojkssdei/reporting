@@ -34,3 +34,17 @@ Module : getBreakdownTimeReport
 exports.getBreakdownTimeReport = function(req, res, next) {
   facebook_manager.getFacebookBreakdownReports(req,res); 
 }
+
+/**
+Express Controller to getBreakdownTimeReport
+Created : 2016-09-26
+Created By: Manoj Singh
+Module : getTicketSalesReport
+*/
+
+exports.getTicketSalesReport = function(req, res, next) {
+    var obj_global_manager = new global_manager();
+       obj_global_manager.getShowclixTicketReport(req,res,function(sdata){
+         res.send({"code":200,"sdata":sdata,"message":"success!"});
+    });
+}
