@@ -23,7 +23,7 @@ var SaleSchema = new Schema({
     discount             : {type:Number},
     cardnumber           : {type:String},
     first_four           : {type:String},
-    date                 : {type:String},
+    date                 : {type:Date},
     address              : {type:String},
     address_2            : {type:String},
     city                 : {type:String},

@@ -35,7 +35,7 @@ module.exports = function(app, express) {
     
     /*Created : 2016-09-29 
     Created By: Manoj Singh
-    Service : get Ticket Sales report */
+    Service : get Ticket Sales report */ 
     router.post('/getTicketSalesReport/', auth.check_permission, service_con.getTicketSalesReport);
     /************************** DASHBOARD SERVICE END******************************************/
     

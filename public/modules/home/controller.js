@@ -74,8 +74,8 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.googledata         = false;
   $scope.pagesize           = '10';
   $scope.input_filter       = {};
-  $scope.input_filter.id    = "7";
-  $scope.filter_title       = '7 Days';
+  $scope.input_filter.id    = "14";
+  $scope.filter_title       = '14 Days';
   $scope.fb_breakdown_title = 'Age';
   var data                  = {};
   $scope.breakdown_response = {};
@@ -94,105 +94,144 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.loadingclass = 'loadingclass';
   $scope.progressbardiv = 'progressbardiv';
   $rootScope.noscrollclass = 'noscroll';
-  $scope.current = 90;
+  $scope.current = 70;
   $scope.filter.date_range  = $scope.date_range;
   
-  $scope.run_dashboard = function(str) {
-  $scope.filter.date_range = str;  
-  $serviceTest.getSummaryReport($scope.filter,function(response){
-    
-    //////// end loader class //////////
-      $scope.loadingclass = ''; 
-      $scope.progressbardiv = ''; 
-      $rootScope.noscrollclass = '';  
-      $scope.current = 0;
-    //////// end loader class //////////
+  $scope.run_dashboard = function(str)
+  {
+      $scope.filter.date_range = str;  
+      $serviceTest.getSummaryReport($scope.filter,function(response){
+        //////// end loader class //////////
+        $scope.current = 80;
+        //////// end loader class //////////
+        if (response.code == 200) {
+        /*****************************  COUNT DATA ************************************/
+        $scope.facebook_count = response.sdata.facebook_count;
+        $scope.f_variable = 'impressions'; $scope.f_checked = $scope.facebook_count.impressions;$scope.focus_title = 'Impressions';
         
-    if (response.code == 200) {
-      
-    /*****************************  COUNT DATA ************************************/
-    $scope.facebook_count = response.sdata.facebook_count;
-    $scope.f_variable = 'impressions'; $scope.f_checked = $scope.facebook_count.impressions;$scope.focus_title = 'Impressions';
-    
-    $scope.sales_count    = response.sdata.sales_count;
-    if (response.sdata.cnemail && response.sdata.cnemail != '' && response.sdata.cnemail.clicks !== undefined) {
-      $scope.email_count.email_clicks = response.sdata.cnemail.clicks[0].CLICKS;
-    }else{
-      $scope.email_count.email_sent   = 0;
-      $scope.email_count.email_clicks = 0;
-    }
-    if (response.sdata.cnemail && response.sdata.cnemail != '' && response.sdata.cnemail.email_count !== undefined) {
-      $scope.email_count.email_sent   = response.sdata.cnemail.email_count[0].COUNT; 
-    }
-    else{
-      $scope.email_count.email_sent = 0;
-    }
-    /*****************************  COUNT DATA ************************************/
-    /*****************************  GRAPH DATA ************************************/
-    // CASE 1 : EMAIL GRAPH DATA
-    //0=opened, 1=clicked, 2=unsubscribed,3= rejected and failed
-    if(response.sdata.cnemail && response.sdata.cnemail.email_graph_data){    
-    var e_graph    = response.sdata.cnemail.email_graph_data;
-     $scope.e_graph = e_graph; 
-     $serviceEmailGraph.draw_3d_pie({sent:$scope.email_count.email_sent,e_graph:e_graph},function(response){
-     $scope.email_3d_pie.plotOptions = response.plotOptions;
-     $scope.email_3d_pie.series      = response.series;
-     $scope.email_3d_pie.tooltip     = response.tooltip;
-     $scope.email_3d_pie.total_unopened     = response.total_unopened;
-     $scope.email_graph('pie');
-    });
-    }
-    // CASE 2 : SALES GRAPH DATA
-    
-     $serviceSaleGraph.draw_2d_column({sent:$scope.email_count.email_sent,e_graph:e_graph},function(response2){
-     $scope.sale_2d_column.plotOptions = response2.plotOptions;
-     $scope.sale_2d_column.series      = response2.series;
-     $scope.sale_2d_column.tooltip     = response2.tooltip;
-     $scope.sale_2d_column.xAxis       = response2.xAxis;
-     $scope.sales_graph('column');
-    });
-    // CASE 3 : FACEBOOK GRAPH DATA
-    // Breakdown base graph
-     $scope.facebook_breakdown('age-gender',1,'Age and Gender');
-     //$scope.breakdown_draw_2d_bar(e_graph,'age-gender');
-     
-    // CASE 4 : FACEBOOK  COMPARISON GRAPH DATA
-    $scope.comparison_focus1 = 'Clicks';  
-    $scope.comparison_focus2 = 'Impressions';
-    $scope.comparison_draw_2d_line('clicks','impressions');
-     
-    /*****************************  GRAPH DATA ************************************/
-    }else{
-      $scope.error_msg = global_message.dashboard_fetch_err;
-    }
-  });
+        $scope.sales_count    = response.sdata.sales_count;
+        if (response.sdata.cnemail && response.sdata.cnemail != '' && response.sdata.cnemail.clicks !== undefined) {
+          $scope.email_count.email_clicks = response.sdata.cnemail.clicks[0].CLICKS;
+        }else{
+          $scope.email_count.email_sent   = 0;
+          $scope.email_count.email_clicks = 0;
+        }
+        if (response.sdata.cnemail && response.sdata.cnemail != '' && response.sdata.cnemail.email_count !== undefined)        {
+          $scope.email_count.email_sent   = response.sdata.cnemail.email_count[0].COUNT; 
+        }
+        else{
+          $scope.email_count.email_sent = 0;
+        }
+        /*****************************  COUNT DATA ************************************/
+        /*****************************  GRAPH DATA ************************************/
+        // CASE 1 : EMAIL GRAPH DATA
+        //0=opened, 1=clicked, 2=unsubscribed,3= rejected and failed
+        if(response.sdata.cnemail && response.sdata.cnemail.email_graph_data){    
+        var e_graph    = response.sdata.cnemail.email_graph_data;
+         $scope.e_graph = e_graph; 
+         $serviceEmailGraph.draw_3d_pie({sent:$scope.email_count.email_sent,e_graph:e_graph},function(response){
+         $scope.email_3d_pie.plotOptions = response.plotOptions;
+         $scope.email_3d_pie.series      = response.series;
+         $scope.email_3d_pie.tooltip     = response.tooltip;
+         $scope.email_3d_pie.total_unopened     = response.total_unopened;
+         $scope.email_graph('pie');
+        });
+        }
+        // CASE 2 : SALES GRAPH DATA
+        $serviceTest.getTicketSalesReport($scope.filter,function(sale_response){
+          //////// end loader class //////////
+          $scope.current = 90;
+        //////// end loader class //////////
+          if(sale_response.code == 200){  
+          $scope.draw_sales_graph({sales_graph:sale_response.result,xbase:'date'});
+          }
+          // CASE 3 : FACEBOOK GRAPH DATA
+          // Breakdown base graph
+          $scope.facebook_breakdown('age-gender',1,'Age and Gender');
+        });
+              
+        // CASE 4 : FACEBOOK  COMPARISON GRAPH DATA
+        $scope.comparison_focus1 = 'Clicks';  
+        $scope.comparison_focus2 = 'Impressions';
+        $scope.comparison_draw_2d_line('clicks','impressions');
+        
+        /*****************************  GRAPH DATA ************************************/
+        }else{
+          $scope.error_msg = global_message.dashboard_fetch_err;
+        }
+      });
+  
   }
   // Get filter
   $scope.show_custom = 0;
   $scope.getFilter   = function(str)
   {
     $scope.date_range = str;
-    if (str != 'custom') {
-     $scope.filter_title   = str+' Days'; 
+    /*if (str != 'custom') {
+     $scope.filter_title     = str+' Days'; 
      $scope.show_custom      = 0;
      var todayDate           = new Date();
      $scope.startdatereports = todayDate;
      $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
-     //if($scope.input_filter.id == 7){ $scope.input_filter.id=$scope.input_filter.id; }
      $scope.input_filter.id  = str;
      $scope.date_lables = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
-     console.log($scope.date_lables);
-    }else{
-     $scope.show_custom = 1;
-     $scope.filter_title   = 'Custom';
+     }else{
+     $scope.show_custom     = 1;
+     $scope.filter_title    = 'Custom';
+    }*/
+    ////////////////////////////////////////////////////////////////
+    if(str == 7 || str == 14 || str == 30)
+    {
+      var type = 'NUMBER'; $scope.filter_title = str+' Days'; $scope.show_custom = 0;
     }
+    if(str == 'this_month')
+    {
+      var type = 'THIS_MONTH'; $scope.filter_title    = 'THIS_MONTH'; $scope.show_custom = 0;
+    }
+    if(str == 'last_month')
+    {
+      var type = 'LAST_MONTH'; $scope.filter_title    = 'LAST_MONTH'; $scope.show_custom = 0;
+    }
+    if(str == "custom")
+    {
+      var type = 'custom'; $scope.filter_title    = 'custom'; $scope.show_custom    = 1;
+    }
+    
+    switch (type) {
+    case 'NUMBER':
+      var todayDate           = new Date();
+      $scope.startdatereports = todayDate;
+      $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
+      $scope.enddatereports   = new Date($scope.enddatereports);
+      $scope.date_lables   = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+    break;
+    case 'LAST_MONTH':
+      var date             = new Date();
+      $scope.startdatereports = new Date(date.getFullYear(), date.getMonth()-1, 1);
+      $scope.enddatereports   = new Date(date.getFullYear(), date.getMonth() , 0);
+      $scope.date_lables      = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+      
+    break;
+    case 'THIS_MONTH':
+      var date             = new Date();
+      $scope.startdatereports = new Date(date.getFullYear(), date.getMonth(), 1);
+      $scope.enddatereports   = new Date(date.getFullYear(), date.getMonth() + 1 , 0);
+      $scope.date_lables      = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+    break;
+    case 'CUSTOM':
+      $scope.startdatereports = new Date();
+      $scope.enddatereports   = new Date();
+      
+    break;
+    default: return 1;  
+    }  
+    ////////////////////////////////////////////////////////////////
     $scope.run_dashboard(str);
   }
-  $scope.getFilter(7);
+  $scope.getFilter(14);
   
   /**************************** Services Start For Get Global Count******************************/
-  
-  // Breakdown base graph
+ // Breakdown base graph
   $scope.focus_active2= 'active';
   $scope.focus_active       = function(str){
     if (str == 1) {$scope.focus_active1 = 'active'; $scope.focus_active2 =$scope.focus_active3 =$scope.focus_active4=$scope.focus_active5=$scope.focus_active6=$scope.focus_active7=$scope.focus_active8=$scope.focus_active9=$scope.focus_active10 = ''; }
@@ -314,8 +353,24 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   }
   
   /*************************** Facebook Breakdown Code Start ************************************/
+  /*************************** Sales Graph data Code Start ************************************/
+  $scope.draw_sales_graph = function(sales_input)
+  {  
+    $serviceSaleGraph.draw_2d_column({sales_input:sales_input,date_lables:$scope.date_lables,xbase:sales_input.xbase},function(response2){
+        $scope.sale_2d_column.plotOptions = response2.plotOptions;
+        $scope.sale_2d_column.series      = response2.series;
+        $scope.sale_2d_column.tooltip     = response2.tooltip;
+        $scope.sale_2d_column.xAxis       = response2.xAxis;
+        //// To show total values
+        $scope.total_sales_ticket         = response2.total_ticket_sold;
+        $scope.total_revenue              = response2.total_revenue;
+        $scope.max_revenue_day            = response2.max_revenue_day;
+        $scope.maxdate                    = response2.maxdate;
+        $scope.sales_graph('line');
+    });
+  }
+  /*************************** Sales Graph data Code Start ************************************/
   
-    
   $scope.draw_graph = function(child)
   {
     var data = {
@@ -380,8 +435,8 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.sales.chart_title     = 'Ticket Sales';
   $scope.sales.chart_sub_title = 'Source: sales';
   $scope.sales.chart           = {type:str};
-  $scope.sales.xAxis           = $scope.sale_2d_column.series;
-  $scope.sales.yAxis           = { min: 0, title: { text: 'Number' } };
+  $scope.sales.xAxis           = $scope.sale_2d_column.xAxis;
+  $scope.sales.yAxis           = $scope.sale_2d_column.yAxis;
   $scope.sales.series          = $scope.sale_2d_column.series;
   $scope.sales.plotOptions     = $scope.sale_2d_column.plotOptions,
   $scope.sales.tooltip         = $scope.sale_2d_column.tooltip

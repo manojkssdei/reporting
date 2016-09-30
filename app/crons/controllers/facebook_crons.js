@@ -102,10 +102,12 @@ exports.getFacebookBreakdownReports = function(req,res){
   var setaccesstoken   = "EAAPuVVbNTTMBAL9AAkbkKazTgw66NCYaYVTwbKrqRtSzYJJXVteKsBX4zxkx3W4CvnEwDMxQJWZCZA2PWWLoOrM0wiXazoawrSn1wzAyO1I0TalmyGDjOXKOqxRNZASZAFaYPASzIYn15lX3gK5XvhN9LwgD3F9NIo7RKIXwUuf9hMXfGV1qyoHAJpZCSOixKUhhYjgY2Mnv6UUowWDfZA";
   var useraccountid    = 114882752278348;
     var date_preset = '';
-    if(req.body.date_range == 7){        date_preset = 'last_7_days'; }
-    if(req.body.date_range == 15){       date_preset = 'last_14_days'; }
-    if(req.body.date_range == 30){       date_preset = 'last_30_days'; }
-    if(req.body.date_range == "custom"){ date_preset = 'last_14_days'; }
+    if(req.body.date_range == 7)           { date_preset = 'last_7_days';  }
+    if(req.body.date_range == 14)          { date_preset = 'last_14_days'; }
+    if(req.body.date_range == 30)          { date_preset = 'last_30_days'; }
+    if(req.body.date_range == 'this_month'){ date_preset = 'this_month';   }
+    if(req.body.date_range == 'last_month'){ date_preset = 'last_month';   }
+    if(req.body.date_range == "custom")    { date_preset = 'last_14_days'; }
     
     // for testing
     var setaccesstoken = setaccesstoken;
@@ -151,11 +153,13 @@ exports.getFacebookDashboardCounts = function(req,res,next){
   var setaccesstoken   = "EAAPuVVbNTTMBAL9AAkbkKazTgw66NCYaYVTwbKrqRtSzYJJXVteKsBX4zxkx3W4CvnEwDMxQJWZCZA2PWWLoOrM0wiXazoawrSn1wzAyO1I0TalmyGDjOXKOqxRNZASZAFaYPASzIYn15lX3gK5XvhN9LwgD3F9NIo7RKIXwUuf9hMXfGV1qyoHAJpZCSOixKUhhYjgY2Mnv6UUowWDfZA";
   var useraccountid    = 114882752278348;
    
-  var date_preset = '';
-  if(req.body.date_range == 7){ date_preset = 'last_7_days'; }
-  if(req.body.date_range == 15){ date_preset = 'last_14_days'; }
-  if(req.body.date_range == 30){ date_preset = 'last_30_days'; }
-  if(req.body.date_range == "custom"){ date_preset = 'last_14_days'; }
+    var date_preset = '';
+    if(req.body.date_range == 7)           { date_preset = 'last_7_days';  }
+    if(req.body.date_range == 14)          { date_preset = 'last_14_days'; }
+    if(req.body.date_range == 30)          { date_preset = 'last_30_days'; }
+    if(req.body.date_range == 'this_month'){ date_preset = 'this_month';   }
+    if(req.body.date_range == 'last_month'){ date_preset = 'last_month';   }
+    if(req.body.date_range == "custom")    { date_preset = 'last_14_days'; }
     
   // for testing
   var setaccesstoken = setaccesstoken;

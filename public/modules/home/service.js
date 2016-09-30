@@ -29,6 +29,13 @@ angular.module('alisthub').factory('home', ['$q', '$timeout','communicationServi
        callback(res.data);
     });
   };
+  
+  url.getTicketSalesReport = function(jsondata,callback){
+       communicationService.resultViaPost(webservices.getTicketSalesReport,appConstants.authorizationKey,headerConstants.json,jsondata, function(res,req){
+       callback(res.data);
+    });
+  };
+  
   /*Webservice call for add network object*/
   url.updatecampaignstatus = function(jsondata,callback){
        communicationService.resultViaPost(webservices.updatecampaignstatus,appConstants.authorizationKey,headerConstants.json,jsondata, function(res,req){

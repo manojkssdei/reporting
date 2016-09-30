@@ -22,7 +22,7 @@
              <div class="clearfix">
              <h3 class="pull-left">Overview</h3>
              <div class="date-range pull-right">
-                    <strong>{{startdatereports | date}} - {{enddatereports | date}}</strong>
+                    <strong>{{enddatereports | date}} - {{startdatereports | date}}</strong>
                     <div class="btn-group btn-dropdown" uib-dropdown is-open="status2.isopen">
                       <button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
                         {{ filter_title }} <span class="caret"></span>
@@ -38,7 +38,7 @@
                         <li role="menuitem"><a ng-click="getFilter('custom');">Custom</a></li>
                       </ul>
                     </div>
-                         
+                     <a href="#" class="m-l15 v-m"><i class="fa fa-file-text-o icon-fa" aria-hidden="true"><span class="filename">CSV</span><span class="sub-fa fa fa-arrow-down"></span></i></a>     
                    </div>
               <ul class="from-to posrt" ng-if="show_custom == 1">
                     <li>
@@ -318,7 +318,7 @@
                               <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
                                 <li role="menuitem"><a ng-click="sales_graph('bar');">Bar Graph</a></li>
                                 <li role="menuitem"><a ng-click="sales_graph('line');">Line Chart</a></li>
-                                <li role="menuitem"><a ng-click="sales_graph('pie');">Pie Chart</a></li>
+                                <li role="menuitem"><a ng-click="sales_graph('column');">Column Chart</a></li>
                               </ul>
                             </div></div>
                         <div class="col-xs-5 text-right rt-sort">                        
@@ -333,16 +333,16 @@
                          <section class="col-sm-3 form-group">
                             <ul class="stats-info data-value">
                                <li>
-                               	    <h3>1520</h3>
+                               	    <h3>{{total_sales_ticket}}</h3>
                                     <p class="gray-text">Ticket Sold</p>
                                </li> 
                                <li>
-                               		<h3>$520</h3>
+                               		<h3>${{total_revenue}}</h3>
                                    <p class="gray-text">Total Revenue</p>
                                </li> 
                                <li>
-                               		<h3>$400</h3>
-                                   <p class="date-txt">Aug 15, 2016</p>
+                               		<h3>${{max_revenue_day}}</h3>
+                                   <p class="date-txt">{{maxdate | date}}</p>
                                    <p class="gray-text">Top Day</p>
                                </li> 
                             </ul>

@@ -16,31 +16,34 @@ angular.module('alisthub').factory('EMAILGRAPH', ['$q', '$timeout','communicatio
     var email = {};
     var total_sent  = 0; 
     var subtotal = 0;var unsubs = 0;var unopened = 0; var bounced = 0;var clicked = 0;var opened = 0;
-    total_sent = jsondata.sent;
+    total_sent = parseInt(jsondata.sent);
     var jdata  = jsondata.e_graph;
     
     jdata.forEach(function(value){
-     
+      var CNT = parseInt(value.CNT);
       if (value.event_type == 0) {
-        opened  = (value.CNT/total_sent)*100;
-        subtotal += value.CNT;
+        opened  = (CNT/total_sent)*100;
+        subtotal += CNT;
+        
       }
       if (value.event_type == 1) {
-        clicked = (value.CNT/total_sent)*100;
-        subtotal += value.CNT;
+        clicked = (CNT/total_sent)*100;
+        subtotal += CNT;
+        
       }
       if (value.event_type == 2) {
-        unsubs  = (value.CNT/total_sent)*100;
-        subtotal += value.CNT;
+        unsubs  = (CNT/total_sent)*100;
+        subtotal += CNT;
+        
       }
       if (value.event_type == 3) {
-        bounced = (value.CNT/total_sent)*100;
-        subtotal += value.CNT;
+        bounced = (CNT/total_sent)*100;
+        subtotal += CNT;
+        
       }
       
     })
-    unopened = (total_sent-subtotal/total_sent)*100;
-      
+    unopened = (parseInt(total_sent-subtotal)/total_sent)*100;
     email.series    = [{
                 name: 'Percent',
                 colorByPoint: true,

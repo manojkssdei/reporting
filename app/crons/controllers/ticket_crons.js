@@ -9,12 +9,14 @@ exports.saveTicketSales = function(req, res, next) {
         
         var input = [];
             for (var key in req_data){
-                    //console.log(key);
+                console.log(req_data[key]);
+                req_data[key].date = new Date(req_data[key].date);
                 input.push(req_data[key]); 
             }
         
         /** To save new data ***/
             if (input.length > 0) {
+                
                 ticket_sales.insertMany(input,function(err1,data)
                 {
                     if (err1)

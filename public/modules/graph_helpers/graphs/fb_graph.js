@@ -14,9 +14,8 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
   
   url.draw_2d_bar = function(jsondata,callback){
     
-    console.log(jsondata.total+"::::"+jsondata.type+"::::"+jsondata.variable);
+    //console.log(jsondata.total+"::::"+jsondata.type+"::::"+jsondata.variable);
     var break_result = jsondata.e_graph.data;
-    console.log(break_result);
     var m_categories = []; var f_categories = []; var m_series_data = []; var f_series_data = []; 
     var m_series_percent_data = []; var f_series_percent_data = []; var a_categories = [];
     var a_series_percent_data=[]; var a_series_data = [];
@@ -47,7 +46,6 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
                 }
             break;
         case 'gender':
-            console.log("gender:",value.gender);
             if(value.gender == "male")  {
             m_categories.push(value.gender);    
             if (jsondata.variable) {
@@ -158,9 +156,7 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
     options.f_series_percent_data = f_series_percent_data;
     options.m_series_percent_data = m_series_percent_data;
     options.m_categories          = m_categories;
-    console.log("=============");
-    console.log(f_series_percent_data);
-    console.log("=============");
+    
     //console.log(m_series_percent_data);
     }else{
         options.xAxis           = [{
@@ -219,7 +215,6 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
     var lables       = jsondata.date_lables;
     var categories = []; var f_categories = []; var series_data_1 = []; var series_data_2 = [];
     var series_data_3 = {}; var series_data_4 = {}; 
-    console.log(jsondata.compare1+":::"+jsondata.compare2);
     break_result.forEach(function(value,key){
       categories.push(value.date_start);
       series_data_3[value.date_start] = parseInt(value[jsondata.compare1]);

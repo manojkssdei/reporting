@@ -27,7 +27,6 @@ angular.module('alisthub').factory('COMMON', ['$q', '$timeout','communicationSer
     };
        
    url.getDateLables = function(date1,date2,decrement){
-        console.log(date1 +":::"+ new Date(date2));
         var date5      = new Date(date1);
         var day        = 60 * 60 * 24 * 1000;
         var oneDay     = 24*60*60*1000; // hours*minutes*seconds*milliseconds
@@ -36,16 +35,13 @@ angular.module('alisthub').factory('COMMON', ['$q', '$timeout','communicationSer
 
         var diffDays   = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(day)));
         
-        //var enddatereports   =  new Date(date5.getTime() + day);
         var labelvalues = []
         for(var i=0;i<diffDays+1;i=i+decrement){              
               var setdate = new Date(date2).setDate(new Date(date2).getDate() + i);
-              //$scope.graph_date.push({"start_date":setdate,"end_date":setdate});
-              var ddd = url.formatsearchDate(setdate);
+              var ddd     = url.formatsearchDate(setdate);
               labelvalues.push(ddd);
         }
-        console.log(labelvalues);
-       return labelvalues;
+        return labelvalues;
         
     }; 
   

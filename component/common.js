@@ -21,6 +21,45 @@ module.exports = function()
     return {"new_keys":result,"old_keys":cresult,'new_input':array1};
   }
   
+  /***
+    To get start and end date
+    Created : 2016-09-30
+    Created By : Manoj Kumar Singh
+  ***/
+  this.getDateFilter  = function(str,req)
+  {
+    if(str == 7 || str == 14 || str == 30) { var type = 'NUMBER';       }
+    if(str == 'this_month')                { var type = 'THIS_MONTH';   }
+    if(str == 'last_month')                { var type = 'LAST_MONTH';   }
+    if(str == "custom")                    { var type = 'custom'; }
+    switch (type) {
+    case 'NUMBER':
+      var todayDate        = new Date();
+      var startdatereports = todayDate;
+      var enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
+      var enddatereports   = new Date(enddatereports);
+      return {from:this.formatDate(startdatereports,'DATE'),to:this.formatDate(enddatereports,'DATE')};
+    break;
+    case 'LAST_MONTH':
+      var date             = new Date();
+      var startdatereports = new Date(date.getFullYear(), date.getMonth()-1, 1);
+      var enddatereports   = new Date(date.getFullYear(), date.getMonth() , 0);
+      return {from:startdatereports,to:enddatereports};
+    break;
+    case 'THIS_MONTH':
+      var date             = new Date();
+      var startdatereports = new Date(date.getFullYear(), date.getMonth(), 1);
+      var enddatereports   = new Date(date.getFullYear(), date.getMonth() + 1 , 0);
+      return {from:startdatereports,to:enddatereports};
+    break;
+    case 'CUSTOM':
+      var startdatereports = new Date(req.body.from);
+      var enddatereports   = new Date(req.body.to);
+      return {from:startdatereports,to:enddatereports};
+    break;
+    default: return 1;  
+    }
+  }
   
   /***
     To get current date foramt (YYYY-MM-DD HH:MM)

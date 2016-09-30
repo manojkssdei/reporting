@@ -22,7 +22,7 @@ module.exports = function(app, express) {
        ticket_cron.saveTicketSales(); 
     }
     
-    //setInterval(saveTicketSales, 150000000);
+    //setInterval(saveTicketSales, 1500000000000);
     /********************************************* END TICKET CRON   **************************************/
     
     /********************************************* START MARKET CRON  **************************************/

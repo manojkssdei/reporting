@@ -44,7 +44,7 @@ Module : getTicketSalesReport
 
 exports.getTicketSalesReport = function(req, res, next) {
     var obj_global_manager = new global_manager();
-       obj_global_manager.getShowclixTicketReport(req,res,function(sdata){
+        obj_global_manager.getShowclixTicketReport(req,res,function(sdata){
          res.send({"code":200,"sdata":sdata,"message":"success!"});
     });
 }
