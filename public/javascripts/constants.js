@@ -72,7 +72,9 @@ var global_message = {
     "date_comparison":'End time must be greater than start time. ',
     "endDateError" : 'End date must be same or greater than start date',
     "minbudgetamount":'The entered Budget is very less!',
-    "dashboard_fetch_err":'There is some problem in server, Please try after some time.'
+    "dashboard_fetch_err":'There is some problem in server, Please try after some time.',
+    "custom_date_validation":"From Date should be greater than to date.",
+    "search_date_selection":"Please select both dates for getting result."
 }
  
 var appConstants = {

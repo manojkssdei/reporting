@@ -22,7 +22,6 @@ module.exports = function()
     
     // Sales data
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    console.log(input);
     ticket_sales.aggregate({$match:input},{$group:{_id:"$created",count:{$sum:1},total_ticket:{$sum:"$tickets"},revenue:{$sum:"$total_cost"}}},function(err, sales_count) {
             if (err) {
                 res.json({code:101,errmsg:"Data Fetch Err",err:err});

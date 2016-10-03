@@ -31,13 +31,15 @@ module.exports = function()
     if(str == 7 || str == 14 || str == 30) { var type = 'NUMBER';       }
     if(str == 'this_month')                { var type = 'THIS_MONTH';   }
     if(str == 'last_month')                { var type = 'LAST_MONTH';   }
-    if(str == "custom")                    { var type = 'custom'; }
+    if(str == 'yesterday')                 { var type = 'YESTERDAY';    }
+    if(str == 'today')                     { var type = 'TODAY';        }
+    if(str == "custom")                    { var type = 'custom';       }
     switch (type) {
     case 'NUMBER':
       var todayDate        = new Date();
-      var startdatereports = todayDate;
-      var enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
-      var enddatereports   = new Date(enddatereports);
+      var enddatereports   = todayDate;
+      var startdatereports = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
+      var startdatereports = new Date(startdatereports);
       return {from:this.formatDate(startdatereports,'DATE'),to:this.formatDate(enddatereports,'DATE')};
     break;
     case 'LAST_MONTH':
@@ -51,6 +53,20 @@ module.exports = function()
       var startdatereports = new Date(date.getFullYear(), date.getMonth(), 1);
       var enddatereports   = new Date(date.getFullYear(), date.getMonth() + 1 , 0);
       return {from:startdatereports,to:enddatereports};
+    break;
+    case 'YESTERDAY':
+      var todayDate        = new Date();
+      var enddatereports   = todayDate;
+      var startdatereports = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(1)));
+      var startdatereports = new Date(startdatereports);
+      return {from:this.formatDate(startdatereports,'DATE'),to:this.formatDate(enddatereports,'DATE')};
+    break;
+    case 'TODAY':
+      var todayDate        = new Date();
+      var startdatereports = todayDate;
+      var enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() + (parseInt(1)));
+      var enddatereports   = new Date(enddatereports);
+      return {from:this.formatDate(startdatereports,'DATE'),to:this.formatDate(enddatereports,'DATE')};
     break;
     case 'CUSTOM':
       var startdatereports = new Date(req.body.from);
@@ -85,7 +101,7 @@ module.exports = function()
       
     default: return today.getFullYear() + "-" + month + "-" + today.getDate();
   }
-}
+  }
 
   
   /***

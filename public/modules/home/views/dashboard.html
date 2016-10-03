@@ -22,7 +22,7 @@
              <div class="clearfix">
              <h3 class="pull-left">Overview</h3>
              <div class="date-range pull-right">
-                    <strong>{{enddatereports | date}} - {{startdatereports | date}}</strong>
+                    <strong ng-if="show_custom == 0">{{startdatereports | date}} - {{enddatereports | date}}</strong>
                     <div class="btn-group btn-dropdown" uib-dropdown is-open="status2.isopen">
                       <button id="single-button" type="button" class="btn" uib-dropdown-toggle ng-disabled="disabled">
                         {{ filter_title }} <span class="caret"></span>
@@ -31,7 +31,7 @@
                         <li role="menuitem"><a ng-click="getFilter('today');">Today</a></li>
                         <li role="menuitem"><a ng-click="getFilter('yesterday');">Yesterday</a></li>
                         <li role="menuitem"><a ng-click="getFilter(7);">Last 7 Days</a></li>
-                        <li role="menuitem"><a ng-click="getFilter(15);">Last 14 Days</a></li>
+                        <li role="menuitem"><a ng-click="getFilter(14);">Last 14 Days</a></li>
                         <li role="menuitem"><a ng-click="getFilter(30);">Last 30 Days</a></li>
                         <li role="menuitem"><a ng-click="getFilter('last_month');">Last month</a></li>
                         <li role="menuitem"><a ng-click="getFilter('this_month');">This month</a></li>
@@ -42,12 +42,30 @@
                    </div>
               <ul class="from-to posrt" ng-if="show_custom == 1">
                     <li>
-                       <label>From</label> 
-                       <input type="text" name="search_from" ng-model="search_from" class="form-control w-auto calendar-input">
+                       <label>From</label>
+                       
+                         <section class="left-fields">                                            
+                              <section class="select-date-reports">
+                                   <div class='input-group date' id='datetimepicker1'>   
+                                        <input type="text" class="form-control" uib-datepicker-popup="{{'MM-dd-yyyy'}}" ng-model="search_from" is-open="popuprepo.opened" datepicker-options="dateoptions"  close-text="Close" alt-input-formats="{{'MM-dd-yyyy'}}" ng-change="getFilter('custom');"/>
+                                   <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"  ng-click="openrep()"></span> </span>
+                                   </div>
+                              </section>
+                              <section class="clearfix"></section>
+                         </section>
                     </li>
                     <li>
-                       <label>To</label> 
-                       <input type="text" name="search_to" ng-model="search_to" class="form-control w-auto calendar-input">
+                       <label>To</label>
+                          <section class="left-label-reports">
+                                        <section class="left-fields">                                            
+                                                <section class="select-date-reports">
+                                                    <div class='input-group date' id='datetimepicker1'>
+                                                      <input type="text" class="form-control" uib-datepicker-popup="{{'MM-dd-yyyy'}}" ng-model="search_to" is-open="popuprepor.opened" datepicker-options="dateoptions"  close-text="Close" alt-input-formats="{{'MM-dd-yyyy'}}"  ng-change="getFilter('custom');"/>
+                                                      <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"  ng-click="openrepo()"></span> </span>  
+                                                    </div>
+                                                </section>
+                                        </section>
+                         </section>
                     </li>
                 </ul>
              </div>  

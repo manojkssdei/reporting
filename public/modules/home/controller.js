@@ -55,7 +55,30 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     $event.stopPropagation();
     $scope.status.isopen = !$scope.status.isopen;
   };
+  ///////////// DATE VARS //////////////////
+  $scope.openrep  = function()  { $scope.popuprepo.opened = true; };
+  $scope.openrepo = function() { $scope.popuprepor.opened = true;};
 
+  $scope.popuprepo  = { opened: false };
+  $scope.popuprepor = { opened: false };
+  $scope.dateoptions = { formatYear: 'yy', showWeeks: false, startingDay: 1 };
+  
+  $scope.validateDates = function(startdatereports,enddatereports) {
+    var endDate     = enddatereports;
+    var startDate   = startdatereports;  
+    var stdate      = Date.parse(startdatereports);
+    var currentdate = new Date().getTime();
+    console.log(startDate +"::::::::"+endDate);
+    if(endDate < startDate) {
+      return true;
+    }else {
+      return false;
+    }          
+  }
+  ///////////// DATE VARS //////////////////
+  
+  
+  
   $localStorage.configureaccountid = '';
   //Service
   var $serviceTest       = $injector.get("home");
@@ -91,14 +114,18 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.fb_2d_bar      = {};
   $scope.fb_2d_line     = {};
   
-  $scope.loadingclass = 'loadingclass';
+  /*$scope.loadingclass = 'loadingclass';
   $scope.progressbardiv = 'progressbardiv';
   $rootScope.noscrollclass = 'noscroll';
-  $scope.current = 70;
+  $scope.current = 70;*/
   $scope.filter.date_range  = $scope.date_range;
   
   $scope.run_dashboard = function(str)
   {
+      $scope.loadingclass = 'loadingclass';
+      $scope.progressbardiv = 'progressbardiv';
+      $rootScope.noscrollclass = 'noscroll';
+      $scope.current = 70;
       $scope.filter.date_range = str;  
       $serviceTest.getSummaryReport($scope.filter,function(response){
         //////// end loader class //////////
@@ -167,18 +194,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   $scope.getFilter   = function(str)
   {
     $scope.date_range = str;
-    /*if (str != 'custom') {
-     $scope.filter_title     = str+' Days'; 
-     $scope.show_custom      = 0;
-     var todayDate           = new Date();
-     $scope.startdatereports = todayDate;
-     $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
-     $scope.input_filter.id  = str;
-     $scope.date_lables = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
-     }else{
-     $scope.show_custom     = 1;
-     $scope.filter_title    = 'Custom';
-    }*/
+    
     ////////////////////////////////////////////////////////////////
     if(str == 7 || str == 14 || str == 30)
     {
@@ -186,42 +202,77 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     }
     if(str == 'this_month')
     {
-      var type = 'THIS_MONTH'; $scope.filter_title    = 'THIS_MONTH'; $scope.show_custom = 0;
+      var type = 'THIS_MONTH'; $scope.filter_title    = 'This Month'; $scope.show_custom = 0;
     }
     if(str == 'last_month')
     {
-      var type = 'LAST_MONTH'; $scope.filter_title    = 'LAST_MONTH'; $scope.show_custom = 0;
+      var type = 'LAST_MONTH'; $scope.filter_title    = 'Last Month'; $scope.show_custom = 0;
     }
     if(str == "custom")
     {
-      var type = 'custom'; $scope.filter_title    = 'custom'; $scope.show_custom    = 1;
+      var type = 'CUSTOM'; $scope.filter_title    = 'Custom'; $scope.show_custom    = 1;
+      
+      console.log($scope);
+      if ($scope.search_from !== undefined && $scope.search_from != '' && $scope.search_to !== undefined && $scope.search_to != '') {
+        $scope.startdatereports = new Date($scope.search_from);
+        $scope.enddatereports   = new Date($scope.search_to);
+        var validate            = $scope.validateDates($scope.startdatereports,$scope.enddatereports);
+        console.log("========"+validate+"=====");
+      }
+      else{
+        $scope.search_date_selection = global_message.search_date_selection;
+        console.log($scope.search_date_selection);
+      }
+      
+    }
+    if(str == "today")
+    {
+      var type = 'TODAY'; $scope.filter_title    = 'Today'; $scope.show_custom  = 0;
+    }
+    if(str == "yesterday")
+    {
+      var type = 'YESTERDAY'; $scope.filter_title    = 'Yesterday'; $scope.show_custom = 0;
     }
     
     switch (type) {
     case 'NUMBER':
-      var todayDate           = new Date();
-      $scope.startdatereports = todayDate;
-      $scope.enddatereports   = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
-      $scope.enddatereports   = new Date($scope.enddatereports);
-      $scope.date_lables   = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+      var todayDate            = new Date();
+      $scope.enddatereports    = todayDate;
+      $scope.startdatereports  = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(str)));
+      $scope.startdatereports  = new Date($scope.startdatereports);
+      $scope.date_lables       = $serviceCommon.getDateLables($scope.enddatereports,$scope.startdatereports,1);
     break;
     case 'LAST_MONTH':
-      var date             = new Date();
-      $scope.startdatereports = new Date(date.getFullYear(), date.getMonth()-1, 1);
+      var date                = new Date();
       $scope.enddatereports   = new Date(date.getFullYear(), date.getMonth() , 0);
-      $scope.date_lables      = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+      $scope.startdatereports = new Date(date.getFullYear(), date.getMonth()-1, 1);
+      $scope.date_lables      = $serviceCommon.getDateLables($scope.enddatereports,$scope.startdatereports,1);
       
     break;
     case 'THIS_MONTH':
-      var date             = new Date();
-      $scope.startdatereports = new Date(date.getFullYear(), date.getMonth(), 1);
+      var date                = new Date();
       $scope.enddatereports   = new Date(date.getFullYear(), date.getMonth() + 1 , 0);
-      $scope.date_lables      = $serviceCommon.getDateLables($scope.startdatereports,$scope.enddatereports,1);
+      $scope.startdatereports = new Date(date.getFullYear(), date.getMonth(), 1);
+      $scope.date_lables      = $serviceCommon.getDateLables($scope.enddatereports,$scope.startdatereports,1);
     break;
-    case 'CUSTOM':
+    case 'TODAY':
+      var date                = new Date();
+      $scope.startdatereports = date;
+      $scope.enddatereports   = date;
+      $scope.date_lables      = $serviceCommon.getDateLables($scope.enddatereports,$scope.startdatereports,1);
+    break;
+    case 'YESTERDAY':
+      var todayDate           = new Date();
+      $scope.enddatereports   = todayDate;
+      $scope.startdatereports = new Date(todayDate).setDate(new Date(todayDate).getDate() - (parseInt(1)));
+      $scope.startdatereports = new Date($scope.startdatereports);
+      $scope.date_lables      = $serviceCommon.getDateLables($scope.enddatereports,$scope.startdatereports,1);
+    break;
+    case 'CUSTOM1':
       $scope.startdatereports = new Date();
       $scope.enddatereports   = new Date();
-      
+      var validate            = $scope.validateDates($scope.startdatereports,$scope.enddatereports);
+      console.log("========"+validate+"=====");
     break;
     default: return 1;  
     }  
@@ -229,6 +280,18 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     $scope.run_dashboard(str);
   }
   $scope.getFilter(14);
+  
+  $scope.getCustomResult = function()
+  {
+     var validate   = $scope.validateDates($scope.startdatereports,$scope.enddatereports);
+     if (validate) {
+      $scope.run_dashboard(str); 
+     }
+     else{
+      $scope.custom_date_validation = global_message.custom_date_validation;
+      console.log($scope.custom_date_validation);
+     }
+  }
   
   /**************************** Services Start For Get Global Count******************************/
  // Breakdown base graph

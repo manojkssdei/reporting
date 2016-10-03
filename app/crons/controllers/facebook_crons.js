@@ -107,6 +107,8 @@ exports.getFacebookBreakdownReports = function(req,res){
     if(req.body.date_range == 30)          { date_preset = 'last_30_days'; }
     if(req.body.date_range == 'this_month'){ date_preset = 'this_month';   }
     if(req.body.date_range == 'last_month'){ date_preset = 'last_month';   }
+    if(req.body.date_range == 'yesterday') { date_preset = 'yesterday';    }
+    if(req.body.date_range == 'today')     { date_preset = 'today';        }
     if(req.body.date_range == "custom")    { date_preset = 'last_14_days'; }
     
     // for testing
@@ -159,6 +161,8 @@ exports.getFacebookDashboardCounts = function(req,res,next){
     if(req.body.date_range == 30)          { date_preset = 'last_30_days'; }
     if(req.body.date_range == 'this_month'){ date_preset = 'this_month';   }
     if(req.body.date_range == 'last_month'){ date_preset = 'last_month';   }
+    if(req.body.date_range == 'yesterday') { date_preset = 'yesterday';    }
+    if(req.body.date_range == 'today')     { date_preset = 'today';        }
     if(req.body.date_range == "custom")    { date_preset = 'last_14_days'; }
     
   // for testing
