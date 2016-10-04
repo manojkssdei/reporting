@@ -53,9 +53,8 @@ exports.saveFacebookReport = function(){
                 console.log("rcount : "+ rcount);
                   if (rcount > 0) {
                   console.log("1");  
-                  truncate_data(formatDate(new Date(),'DATE'),resultdata.response,useraccountid);
+                  truncate_data(formatDate.formatDate(new Date(),'DATE'),resultdata.response,useraccountid);
                   }else{
-                  console.log("2");   
                   save_data(resultdata.response);  
                   }
             });              
@@ -92,7 +91,7 @@ exports.saveFacebookReport = function(){
 }
 
 /**
-Express Controller to getFacebookBreakdownReports
+Express Controller to get Facebook BreakdownReports
 Created : 2016-09-12
 Created By: Manoj Singh
 Module : getfacebookcampaignreports
@@ -109,7 +108,12 @@ exports.getFacebookBreakdownReports = function(req,res){
     if(req.body.date_range == 'last_month'){ date_preset = 'last_month';   }
     if(req.body.date_range == 'yesterday') { date_preset = 'yesterday';    }
     if(req.body.date_range == 'today')     { date_preset = 'today';        }
-    if(req.body.date_range == "custom")    { date_preset = 'last_14_days'; }
+    if(req.body.date_range == "custom")    {
+    var from_d = new Date(req.body.from);  var to_d = new Date(req.body.to); 
+    var formatDate1    = new component();//FBDATE
+    req.body.from      = formatDate1.formatDate(from_d,'FBDATE');
+    req.body.to        = formatDate1.formatDate(to_d,'FBDATE')
+    }
     
     // for testing
     var setaccesstoken = setaccesstoken;
@@ -130,8 +134,9 @@ exports.getFacebookBreakdownReports = function(req,res){
     }
     
     if (req.body.level && req.body.level !== undefined && req.body.level != "") {
-      reqdata.level      = req.body.level;
-    }else{ reqdata.level = 'ad';}
+      reqdata.level = req.body.level;
+    }else{
+      reqdata.level = 'ad';}
     
     var fb_component1 = new fb_component();
     fb_component1.getFacebookBreakdownReports(req,reqdata,function(resultdata){
@@ -163,7 +168,7 @@ exports.getFacebookDashboardCounts = function(req,res,next){
     if(req.body.date_range == 'last_month'){ date_preset = 'last_month';   }
     if(req.body.date_range == 'yesterday') { date_preset = 'yesterday';    }
     if(req.body.date_range == 'today')     { date_preset = 'today';        }
-    if(req.body.date_range == "custom")    { date_preset = 'last_14_days'; }
+    if(req.body.date_range == "custom")    { date_preset = ''; }
     
   // for testing
   var setaccesstoken = setaccesstoken;
@@ -174,7 +179,7 @@ exports.getFacebookDashboardCounts = function(req,res,next){
           if (resultdata.status == 1) {
             return next({result:resultdata.result,status:1});  
           }else{
-            return next({result:response.error,code:101});
+            return next({result:resultdata.result,code:101});
           }
   });  
   
@@ -222,7 +227,7 @@ exports.getfacebookcampaigndetails = function(req,res,next){
               if (resultdata.status == 1) {
                 res.json({result:resultdata.response,code:200});  
               }else{
-                res.json({result:response.error,code:101});
+                res.json({result:response.response,code:101});
               }
         });
         

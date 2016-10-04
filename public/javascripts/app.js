@@ -8,7 +8,7 @@ Montive: It defined routes to call different files.It will provide you direction
 angular.module("communicationModule", []);
 // Declare app level module which depends on filters, and services
 
-var routerApp = angular.module('alisthub', ['angular-loading-bar','ngRoute','autocomplete','ngSanitize','ui.router','ngStorage','oc.lazyLoad','communicationModule', 'ui.bootstrap','ckeditor','angularUtils.directives.dirPagination','angularjs-dropdown-multiselect','oitozero.ngSweetAlert','ngAnimate','ngDialog','ngLodash','angular-confirm','angular-svg-round-progressbar'])
+var routerApp = angular.module('alisthub', ['angular-loading-bar','ngRoute','autocomplete','ngSanitize','ui.router','ngStorage','oc.lazyLoad','communicationModule', 'ui.bootstrap','ckeditor','angularUtils.directives.dirPagination','angularjs-dropdown-multiselect','oitozero.ngSweetAlert','ngAnimate','ngDialog','ngLodash','angular-confirm','angular-svg-round-progressbar','angularjs-datetime-picker'])
 
 
 
@@ -318,6 +318,31 @@ var routerApp = angular.module('alisthub', ['angular-loading-bar','ngRoute','aut
                            // return $serviceTest.testLoad(); // <-- CHANGED HERE
                     })*/.then(function(){
                     return $ocLazyLoad.load(['modules/configureaccounts/controller.js']);
+                    })
+               
+              }]
+            }
+        })
+        
+        //Network Preview
+         .state('reports22', {
+            url: '/reports22',
+            
+            views: {
+                "lazyLoadView": {
+                  controller: 'reportsController', // This view will use AppCtrl loaded below in the resolve
+                  templateUrl: 'modules/reports22/views/listing.html'
+                }
+            },
+            resolve: { // Any property in resolve should return a promise and is executed before the view is loaded
+              //authentication:routerApp.logauthentication,
+              resources: ['$ocLazyLoad', '$injector',function($ocLazyLoad, $injector) {
+                // you can lazy load files for an existing module
+                return $ocLazyLoad.load('modules/reports22/service.js')/*.then(function(){
+                    //var $serviceTest = $injector.get("CustomerFirstLoad");
+                           // return $serviceTest.testLoad(); // <-- CHANGED HERE
+                    })*/.then(function(){
+                    return $ocLazyLoad.load(['modules/reports22/controller.js']);
                     })
                
               }]

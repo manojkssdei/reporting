@@ -17,6 +17,7 @@
     
     <!-- Form COntainer -->
     <div class="wt-frame form-section trans-div">
+     <form>
      <section id="fixed">
       <section class="d-title form-group trans-div">
              <div class="clearfix">
@@ -40,14 +41,14 @@
                     </div>
                      <a href="#" class="m-l15 v-m"><i class="fa fa-file-text-o icon-fa" aria-hidden="true"><span class="filename">CSV</span><span class="sub-fa fa fa-arrow-down"></span></i></a>     
                    </div>
-              <ul class="from-to posrt" ng-if="show_custom == 1">
+              <ul class="from-to posrt" ng-show="show_custom == 1">
                     <li>
                        <label>From</label>
                        
                          <section class="left-fields">                                            
                               <section class="select-date-reports">
                                    <div class='input-group date' id='datetimepicker1'>   
-                                        <input type="text" class="form-control" uib-datepicker-popup="{{'MM-dd-yyyy'}}" ng-model="search_from" is-open="popuprepo.opened" datepicker-options="dateoptions"  close-text="Close" alt-input-formats="{{'MM-dd-yyyy'}}" ng-change="getFilter('custom');"/>
+                                        <input type="text" class="form-control" uib-datepicker-popup="{{'MM-dd-yyyy'}}" ng-model="search_from" is-open="popuprepo.opened" datepicker-options="dateoptions"  close-text="Close" alt-input-formats="{{'MM-dd-yyyy'}}"  ng-change="getFilter('custom');"/>
                                    <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"  ng-click="openrep()"></span> </span>
                                    </div>
                               </section>
@@ -212,7 +213,7 @@
                                    <ul class="dropsubmenu">
                                    <li role=""><a ng-click="facebook_breakdown('action_type',2,'Action Type');">Action Type</a></li>
                                    <li role=""><a ng-click="facebook_breakdown('action_reaction',2,'Post Reaction Type');">Post Reaction Type</a></li>
-                                   <li role=""><a ng-click="facebook_breakdown('action_destination',2,Destination);">Destination</a></li>
+                                   <li role=""><a ng-click="facebook_breakdown('action_destination',2,'Destination');">Destination</a></li>
                                    <li role=""><a ng-click="facebook_breakdown('action_video_type',2,'Video View Type');">Video View Type</a></li>
                                    <li role=""><a ng-click="facebook_breakdown('action_video_sound',2,'Video sound');">Video sound</a></li>                                   
                                    <li role=""><a ng-click="facebook_breakdown('action_carousel_card_name',2,'Carousel Card');">Carousel Card</a></li>
@@ -248,7 +249,7 @@
                                        </div>
                                     </div>
                                    <div class="col-sm-9 data-div">
-                                       <div id="container_fb" style="height:auto; margin: 0 auto"></div> 
+                                       <div id="container_fb" style="height:{{fb_height}}; margin: 0 auto"></div> 
                                    </div>
                                 
                              </section>
@@ -437,7 +438,8 @@
                   
              </div>
             </div>  <!--Email Summary--> 
-     </section> 
+     </section>
+     </form>
     </div>
 
 <!-- //Form COntainer -->

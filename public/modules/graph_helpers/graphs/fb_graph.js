@@ -101,27 +101,54 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
                 a_series_percent_data.push(parseInt(((parseInt(value[jsondata.variable])/parseInt(jsondata.total))*100).toFixed(2)));}
             break;
         case 'hourly_stats_aggregated_by_audience_time_zone':
-        a_categories.push(value.product_id);
-            
+            a_categories.push(value.product_id);
             if (jsondata.variable) {
                 a_series_data.push(parseInt(value[jsondata.variable]));    
                 a_series_percent_data.push(parseInt(((parseInt(value[jsondata.variable])/parseInt(jsondata.total))*100).toFixed(2)));}
         break;
         case 'action_reaction':
-            a_categories.push(value.action_reaction);
-            console.log(value.actions);
-            if (jsondata.variable) {
-                a_series_data.push(parseInt(value[jsondata.variable]));    
-                a_series_percent_data.push(parseInt(((parseInt(value[jsondata.variable])/parseInt(jsondata.total))*100).toFixed(2)));
-                }
+            value.actions.forEach(function(value1,key1){
+            a_categories.push(value1.action_type);
+            a_series_data.push(parseInt(value1.value));    
+            a_series_percent_data.push(parseInt(value1.value));
+            })
+            
         break;
         case 'action_type':
-            a_categories.push(value.action_type);
-            if (jsondata.variable) {
-                a_series_data.push(parseInt(value[jsondata.variable]));    
-                a_series_percent_data.push(parseInt(((parseInt(value[jsondata.variable])/parseInt(jsondata.total))*100).toFixed(2)));
-            }
-        break; 
+            value.actions.forEach(function(value1,key1){
+            a_categories.push(value1.action_type);
+            a_series_data.push(parseInt(value1.value));    
+            a_series_percent_data.push(parseInt(value1.value));
+            })
+        break;
+        case 'action_destination':
+            value.actions.forEach(function(value1,key1){
+            a_categories.push(value1.action_destination);
+            a_series_data.push(parseInt(value1.value));    
+            a_series_percent_data.push(parseInt(value1.value));
+            })
+            break;
+        case 'action_video_type':
+            value.actions.forEach(function(value1,key1){
+            a_categories.push(value1.action_type);
+            a_series_data.push(parseInt(value1.value));    
+            a_series_percent_data.push(parseInt(value1.value));
+            })
+            break;
+        case 'action_video_sound':
+            value.actions.forEach(function(value1,key1){
+            a_categories.push(value1.action_type);
+            a_series_data.push(parseInt(value1.value));    
+            a_series_percent_data.push(parseInt(value1.value));
+            })
+            break;
+        case 'action_carousel_card_name':
+            value.cost_per_unique_action_type.forEach(function(value1,key1){
+            a_categories.push(value1.action_type);
+            a_series_data.push(parseInt(value1.value));    
+            a_series_percent_data.push(parseInt(value1.value));
+            })    
+        break;
         default: return 1;
       }
        
@@ -233,6 +260,7 @@ angular.module('alisthub').factory('FACEBOOKGRAPH', ['$q', '$timeout','communica
         }
         else{ series_data_2.push(0); }
     });
+    
     //$scope.date_lables 
     options.xAxis        = {categories:lables};
     

@@ -33,7 +33,7 @@ module.exports = function()
     if(str == 'last_month')                { var type = 'LAST_MONTH';   }
     if(str == 'yesterday')                 { var type = 'YESTERDAY';    }
     if(str == 'today')                     { var type = 'TODAY';        }
-    if(str == "custom")                    { var type = 'custom';       }
+    if(str == "custom")                    { var type = 'CUSTOM';       }
     switch (type) {
     case 'NUMBER':
       var todayDate        = new Date();
@@ -46,13 +46,13 @@ module.exports = function()
       var date             = new Date();
       var startdatereports = new Date(date.getFullYear(), date.getMonth()-1, 1);
       var enddatereports   = new Date(date.getFullYear(), date.getMonth() , 0);
-      return {from:startdatereports,to:enddatereports};
+      return {from:this.formatDate(startdatereports,'DATE'),to:this.formatDate(enddatereports,'DATE')};
     break;
     case 'THIS_MONTH':
       var date             = new Date();
       var startdatereports = new Date(date.getFullYear(), date.getMonth(), 1);
       var enddatereports   = new Date(date.getFullYear(), date.getMonth() + 1 , 0);
-      return {from:startdatereports,to:enddatereports};
+      return {from:this.formatDate(startdatereports,'DATE'),to:this.formatDate(enddatereports,'DATE')};
     break;
     case 'YESTERDAY':
       var todayDate        = new Date();
@@ -71,7 +71,7 @@ module.exports = function()
     case 'CUSTOM':
       var startdatereports = new Date(req.body.from);
       var enddatereports   = new Date(req.body.to);
-      return {from:startdatereports,to:enddatereports};
+      return {from:this.formatDate(startdatereports,'DATE'),to:this.formatDate(enddatereports,'DATE')};
     break;
     default: return 1;  
     }
@@ -84,12 +84,16 @@ module.exports = function()
   ***/
   this.formatDate    = function(convertdate,type) {
   var today = convertdate;
-  var month = today.getMonth() + +1;
+  var month = parseInt(today.getMonth()) +1;
   if (month < 10) { month = "0" + month; } else { month = month; }
+  
   switch (type) {
     case 'DATE':
         return today.getFullYear() + "-" + month + "-" + today.getDate();
         break;
+    case 'FBDATE':
+        return today.getFullYear() + "-" + month + "-" + today.getDate();
+        break;  
     case 'DATETIME':
         var hours = today.getHours();
         var minutes = today.getMinutes();
@@ -111,8 +115,8 @@ module.exports = function()
   ***/
   this.getKeySum = function(array)
   { 
-    var spend = cpp =  cpm =  impressions = social_spend =  social_impressions = reach = cpc = clicks = unique_clicks = conversion = 0;
-    var ctr = 0;
+    var spend = 0; var cpp   = 0; var cpm = 0; var impressions = 0; var social_spend = 0; var social_impressions = 0; var reach = 0; var cpc = 0; var clicks = 0; var unique_clicks = 0; var conversion = 0; var ctr = 0;
+    if (array.data && array.data !== undefined) {
     var act_araay = array.data;
     act_araay.forEach(function(value,key){
       /////////////////////////////////////////////
@@ -126,9 +130,9 @@ module.exports = function()
       cpc += value.cpc;
       clicks += value.clicks;
       unique_clicks += value.unique_clicks;
-      
       /////////////////////////////////////////////
     });
+  }
     return {spend:spend.toFixed(2), cpp:cpp.toFixed(2), cpm:cpm, ctr:ctr.toFixed(2), impressions:impressions, social_spend:social_spend.toFixed(2), social_impressions:social_impressions, reach:reach, cpc:cpc.toFixed(2), clicks:clicks, unique_clicks:unique_clicks.toFixed(2),conversion:conversion}; 
   }
   

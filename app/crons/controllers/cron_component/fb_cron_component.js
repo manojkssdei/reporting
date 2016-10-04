@@ -43,7 +43,7 @@ Module : Get Report of Breakdowns **/
   {
     var query = {fields:JSON.stringify(fields),access_token:filter.setaccesstoken,account_id:filter.useraccountid};
     if(req.body.date_range == 'custom'){       
-       var time_range   = { "since":req.body.startdatereports,"until":req.body.enddatereports};
+       var time_range   = { "since":req.body.from,"until":req.body.to};
        query.time_range = JSON.stringify(time_range);
     }else{
        query.date_preset = filter.date_preset; 
@@ -61,13 +61,12 @@ Module : Get Report of Breakdowns **/
         query.time_increment= req.body.time_increment;
         //delete query.date_preset;
     }
-    //console.log(query);
     fb.getreportCampaign(query,function(error, response){
                 if (response.error) {
-                 return next({status:0,response:response.error});   
+                  return next({status:0,response:response.error});   
                 }
                 else{
-                 return next({status:1,response:response});   
+                  return next({status:1,response:response});   
                 }
     }); 
   }
@@ -76,7 +75,7 @@ Module : Get Report of Breakdowns **/
   this.getFacebookDashboardCounts = function(req,filter,next)
   {
     if(req.body.date_range == 'custom'){       
-       var time_range = { "since":req.body.startdatereports,"until":req.body.enddatereports};
+       var time_range = { "since":req.body.from,"until":req.body.to};
         fb.getreportCampaign({     
             fields:JSON.stringify(fields),     
             time_range:JSON.stringify(time_range),
@@ -84,10 +83,10 @@ Module : Get Report of Breakdowns **/
             access_token:filter.setaccesstoken,
             account_id:filter.useraccountid,
             //time_increment:1
-        },function(error, response){
-            if (response.error) {
+        },function(error, response){ 
+            if (response.error) { 
             return next({result:response.error,status:0});
-            }else{
+            }else{ 
             return next({result:response,status:1});
             }
             }); 

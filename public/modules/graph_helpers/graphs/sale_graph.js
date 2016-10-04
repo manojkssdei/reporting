@@ -52,20 +52,23 @@ angular.module('alisthub').factory('SALEGRAPH', ['$q', '$timeout','communication
         switch (jsondata.xbase) {
         case 'date':
             var exp       = value.date.split("-");
-            var newforamt = url.formatDate(new Date(value.date),'USDATE');
+            var newforamt = url.formatDate(new Date(value.date),'USDATEFORMAT');
+            if(ticket_count1[newforamt] === undefined){ ticket_count1[newforamt] = 0;}
+            if(ticket_revenue1[newforamt] === undefined){ ticket_revenue1[newforamt] = 0;} 
             var new_form  = exp[2]+"-"+exp[1]+"-"+exp[0];
             categories.push(newforamt);
-            ticket_count1[newforamt]   = value.tickets;
-            ticket_revenue1[newforamt] = value.total_cost;
+            ticket_count1[newforamt]   = Number(value.tickets)+Number(ticket_count1[newforamt]);
+            ticket_revenue1[newforamt] = Number(value.total_cost)+Number(ticket_revenue1[newforamt]);
             ticket_test[newforamt]     = value.total_cost;
-            total_ticket_sold        += value.tickets;
-            total_revenue            += value.total_cost;
+            total_ticket_sold         += value.tickets;
+            total_revenue              += value.total_cost;
             break;
         
         default: return 1;
         }
     });
-    
+    console.log(lables);
+     console.log(ticket_count1);
     lables.forEach(function(value){
         if(ticket_count1[value]){
            ticket_count.push(ticket_count1[value]);

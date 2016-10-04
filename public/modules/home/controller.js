@@ -68,13 +68,13 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     var startDate   = startdatereports;  
     var stdate      = Date.parse(startdatereports);
     var currentdate = new Date().getTime();
-    console.log(startDate +"::::::::"+endDate);
     if(endDate < startDate) {
-      return true;
-    }else {
       return false;
+    }else {
+      return true;
     }          
   }
+   
   ///////////// DATE VARS //////////////////
   
   
@@ -103,6 +103,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   var data                  = {};
   $scope.breakdown_response = {};
   $scope.compare_parameter  = CONSTANT_COMPARISON;
+  $scope.fb_height = 'auto';
   
   /******************************* Services Start For Get Global Count  **************************************/
   $scope.filter = {};
@@ -126,7 +127,12 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
       $scope.progressbardiv = 'progressbardiv';
       $rootScope.noscrollclass = 'noscroll';
       $scope.current = 70;
-      $scope.filter.date_range = str;  
+      $scope.filter.date_range = str;
+      if (str == 'custom') {
+        $scope.filter.from = $scope.startdatereports;
+        $scope.filter.to   = $scope.enddatereports;  
+      }
+      
       $serviceTest.getSummaryReport($scope.filter,function(response){
         //////// end loader class //////////
         $scope.current = 80;
@@ -153,7 +159,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
         /*****************************  GRAPH DATA ************************************/
         // CASE 1 : EMAIL GRAPH DATA
         //0=opened, 1=clicked, 2=unsubscribed,3= rejected and failed
-        if(response.sdata.cnemail && response.sdata.cnemail.email_graph_data){    
+        if(response.sdata.cnemail && response.sdata.cnemail.email_graph_data && response.sdata.cnemail.email_graph_data !== undefined){    
         var e_graph    = response.sdata.cnemail.email_graph_data;
          $scope.e_graph = e_graph; 
          $serviceEmailGraph.draw_3d_pie({sent:$scope.email_count.email_sent,e_graph:e_graph},function(response){
@@ -191,10 +197,14 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   }
   // Get filter
   $scope.show_custom = 0;
+  $scope.user={};
+  
+  
+  
   $scope.getFilter   = function(str)
   {
     $scope.date_range = str;
-    
+            
     ////////////////////////////////////////////////////////////////
     if(str == 7 || str == 14 || str == 30)
     {
@@ -208,23 +218,6 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     {
       var type = 'LAST_MONTH'; $scope.filter_title    = 'Last Month'; $scope.show_custom = 0;
     }
-    if(str == "custom")
-    {
-      var type = 'CUSTOM'; $scope.filter_title    = 'Custom'; $scope.show_custom    = 1;
-      
-      console.log($scope);
-      if ($scope.search_from !== undefined && $scope.search_from != '' && $scope.search_to !== undefined && $scope.search_to != '') {
-        $scope.startdatereports = new Date($scope.search_from);
-        $scope.enddatereports   = new Date($scope.search_to);
-        var validate            = $scope.validateDates($scope.startdatereports,$scope.enddatereports);
-        console.log("========"+validate+"=====");
-      }
-      else{
-        $scope.search_date_selection = global_message.search_date_selection;
-        console.log($scope.search_date_selection);
-      }
-      
-    }
     if(str == "today")
     {
       var type = 'TODAY'; $scope.filter_title    = 'Today'; $scope.show_custom  = 0;
@@ -232,6 +225,24 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     if(str == "yesterday")
     {
       var type = 'YESTERDAY'; $scope.filter_title    = 'Yesterday'; $scope.show_custom = 0;
+    }
+    
+    if(str == "custom")
+    {
+       $scope.filter_title    = 'Custom'; $scope.show_custom    = 1;
+      if ($scope.search_from !== undefined && $scope.search_from != '' && $scope.search_to !== undefined && $scope.search_to != '') {
+        $scope.startdatereports = new Date($scope.search_from);
+        $scope.enddatereports   = new Date($scope.search_to);
+        var validate            = $scope.validateDates($scope.startdatereports,$scope.enddatereports);
+        
+        if(validate){
+           $scope.date_lables      = $serviceCommon.getDateLables($scope.enddatereports,$scope.startdatereports,1);
+          $scope.run_dashboard(str);
+          }        
+      }
+      else{
+        $scope.search_date_selection = global_message.search_date_selection;
+      }
     }
     
     switch (type) {
@@ -338,6 +349,12 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
       $scope.fb_2d_bar.m_categories           = response3.m_categories;
       
      }
+     console.log($scope.fb_2d_bar.m_series_percent_data.length+"----------------------");
+     if ($scope.fb_2d_bar.m_series_percent_data.length > 10) {
+      //$scope.fb_height = ($scope.fb_2d_bar.m_series_percent_data.length*40)+"px";
+     }else{
+      //$scope.fb_height = 'auto';
+     }
      $scope.facebook_graph('bar');
     });
   }
@@ -357,7 +374,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   }
   
   $scope.comparison_draw_2d_line = function(compare1,compare2){
-     var filter2 = {};
+     var filter2 = {}; $scope.fb_2d_line = {};
      filter2.date_range         = $scope.date_range;
      filter2.time_increment     = 1;
      filter2.level              = 'account';
@@ -366,11 +383,17 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
     $rootScope.noscrollclass    = 'noscroll';
     $scope.current = 90;
     $scope.compare_parameter1   =  compare1; $scope.compare_parameter2 =  compare2;
-     $serviceTest.getBreakdownTimeReport(filter2,function(comparison_breakdown){
+    if ($scope.filter_title == 'Custom') {
+        filter2.from = $scope.startdatereports;
+        filter2.to   = $scope.enddatereports;  
+    }
+    $serviceTest.getBreakdownTimeReport(filter2,function(comparison_breakdown){
       $scope.loadingclass = '';
       $scope.progressbardiv = '';
       $rootScope.noscrollclass = '';
       $scope.current = 0;
+      
+      if (comparison_breakdown.code == 200) {
       $scope.comparison_breakdown_result = comparison_breakdown.result;
       $serviceFBGraph.draw_2d_line({compare1:compare1,compare2:compare2,comparison_breakdown:comparison_breakdown.result,date_lables:$scope.date_lables},function(response4){
           $scope.fb_2d_line.series      = response4.series;
@@ -378,6 +401,7 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
           $scope.comparison_graph('line');
           
         });
+     }
      });
   }
   
@@ -385,21 +409,24 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
    
   $scope.facebook_breakdown = function(breakdown,breakdown_type,actual_title)
   {
-    var filter  = {};
+    var filter  = {}; $scope.breakdown_response = {};
     filter.date_range          = $scope.date_range;
     if (breakdown_type == 1) {
       filter.breakdown         = breakdown;
     }else{
       filter.action_breakdowns = breakdown;
     }
-    
-    
+        
     $scope.fb_breakdown_title = actual_title;
     $scope.fb_breakdown_filter_title = breakdown;
     $scope.loadingclass       = 'loadingclass';
     $scope.progressbardiv     = 'progressbardiv';
     $rootScope.noscrollclass  = 'noscroll';
     $scope.current            = 90;
+    if ($scope.date_range == 'custom') {
+        filter.from = $scope.startdatereports;
+        filter.to   = $scope.enddatereports;  
+    }
     $serviceTest.getBreakdownReport(filter,function(breakdown_response){
       $scope.loadingclass      = '';
       $scope.progressbardiv    = '';
@@ -551,7 +578,20 @@ angular.module('alisthub').controller('homeController', function($scope,$localSt
   }
   
 })
-
+.directive('dt', function () {
+  function dateFilter(val,format) {
+    //return $.datepicker.formatDate(format,val);
+  }  
+return {
+    restrict: 'EAC',
+    require: 'ngModel',
+    link: function (scope, element, attr, ngModel) {
+        ngModel.$parsers.push(function (viewValue) {
+           return dateFilter(viewValue, 'MM-dd-yyyy');
+        });
+    }
+ }
+})
 .filter('reverse', function() {
   return function(items) {
     return items.slice().reverse();
